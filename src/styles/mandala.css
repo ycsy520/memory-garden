@@ -1,0 +1,91 @@
+/**
+ * MandalaLoader 动画样式
+ *
+ * 呼吸缩放：2.4s，scale 0.98→1.035→0.98
+ * 慢速旋转：12s，360° 匀速
+ * 无障碍：prefers-reduced-motion 时停止动画
+ */
+
+.mandala-loader {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-brand, #7D9683);
+}
+
+.mandala-loader svg {
+  display: block;
+  overflow: visible;
+}
+
+/* 圆环 */
+.mandala-ring {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.4;
+  opacity: 0.38;
+}
+
+.mandala-ring-soft {
+  opacity: 0.25;
+}
+
+/* 花瓣 */
+.mandala-petals path {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  opacity: 0.72;
+}
+
+/* 中心点 */
+.mandala-center {
+  fill: currentColor;
+  opacity: 0.65;
+}
+
+/* 呼吸动画 */
+.mandala-breathe {
+  transform-origin: 50px 50px;
+  animation: mandala-breathe 2.4s ease-in-out infinite;
+}
+
+/* 旋转动画 */
+.mandala-spin {
+  transform-origin: 50px 50px;
+  animation: mandala-spin 12s linear infinite;
+}
+
+@keyframes mandala-breathe {
+  0% {
+    transform: scale(0.98);
+    opacity: 0.72;
+  }
+  50% {
+    transform: scale(1.035);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(0.98);
+    opacity: 0.72;
+  }
+}
+
+@keyframes mandala-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* 无障碍：减少动画 */
+@media (prefers-reduced-motion: reduce) {
+  .mandala-breathe,
+  .mandala-spin {
+    animation: none;
+  }
+}

@@ -1,0 +1,112 @@
+{
+  "title": "记忆小花园",
+  "subtitle": "一段找回遗忘时光的旅程",
+  "startBtn": "推开花园的门",
+  "dedication": "献给最亲爱的奶奶",
+  "deviceSupport": { "mobile": "手机", "pc": "电脑", "tablet": "平板" },
+  "guide": {
+    "steps": [
+      { "title": "花园起了雾", "text": "奶奶，我们的花园里最近起了一些雾，有些花儿看不清了。不过没关系，我们慢慢来。", "sub": "放松心情，深呼吸..." },
+      { "title": "记住这朵花", "text": "花儿会一朵接一朵地盛开。请您仔细看着它们可爱的样子。", "sub": "每一朵花都会停留一会儿" },
+      { "title": "寻找记忆的影子", "text": "如果看到这朵花，和\"之前\"的那朵一模一样...", "sub": "那就是记忆回来了！" },
+      { "title": "按下按钮", "text": "当您发现花朵重复出现时，就轻轻按下这个「似曾相识」的按钮。", "sub": "如果错过了也没关系，我们只是在散步。" }
+    ],
+    "prev": "上一步",
+    "next": "下一步",
+    "done": "明白了"
+  },
+  "menu": {
+    "weather": "今天天气真好",
+    "prompt": "准备好去哪里了吗？",
+    "startWalk": "开始散步",
+    "levels": [
+      { "label": "初晨 (简单)", "desc": "和 刚刚那朵 一样吗？" },
+      { "label": "午后 (进阶)", "desc": "和 上上朵 一样吗？" },
+      { "label": "暮色 (挑战)", "desc": "寻找 更早之前 的花" }
+    ],
+    "encounter": "次相遇",
+    "highScore": "最高",
+    "factorLabel": "记忆素材",
+    "viewStats": "查看统计",
+    "viewLeaderboard": "排行榜",
+    "viewAchievements": "成就",
+    "ebbinghaus": "花园想你了",
+    "recommendedN": "推荐难度",
+    "streakDays": "天连续训练",
+    "dailyChallenge": "每日挑战",
+    "dailyCompleted": "已完成",
+    "points": "分"
+  },
+  "stats": {
+    "title": "记忆花园日记",
+    "overview": "总体概览",
+    "totalGames": "总场次",
+    "avgAccuracy": "平均准确率",
+    "dPrime": "记忆灵敏度",
+    "bestStreak": "最佳连胜",
+    "totalTime": "总训练时长",
+    "bestScores": "最高分",
+    "history": "最近记录",
+    "noHistory": "还没有训练记录，去花园散步吧！",
+    "accuracy": "准确率",
+    "score": "分"
+  },
+  "game": {
+    "back": "返回",
+    "memoryFragment": "记忆碎片",
+    "waiting": "...",
+    "matched": "想起来了!",
+    "button": "似曾相识",
+    "warmup": "请先记住这个...",
+    "warmup_emoji-flower": "请先记住这朵花...",
+    "warmup_emoji-animal": "请先记住这只动物...",
+    "warmup_emoji-food": "请先记住这个食物...",
+    "warmup_text-zh": "请先记住这个词...",
+    "warmup_text-en": "请先记住这个单词...",
+    "warmup_symbol": "请先记住这个符号...",
+    "warmup_tone": "请先记住这个音调...",
+    "question": "这个之前出现过吗？",
+    "question_emoji-flower": "这朵花之前出现过吗？",
+    "question_emoji-animal": "这只动物之前出现过吗？",
+    "question_emoji-food": "这个食物之前出现过吗？",
+    "question_text-zh": "这个词之前出现过吗？",
+    "question_text-en": "这个单词之前出现过吗？",
+    "question_symbol": "这个符号之前出现过吗？",
+    "question_tone": "这个音调之前出现过吗？",
+    "paused": "花园起雾了，稍作休息...",
+    "resume": "继续散步"
+  },
+  "finished": {
+    "newRecord": "新纪录!",
+    "title": "散步结束啦",
+    "desc": "您今天让花园变得非常美丽。",
+    "awakened": "成功唤醒",
+    "count": "次记忆",
+    "again": "再走一回",
+    "share": "分享",
+    "hits": "命中",
+    "misses": "漏判",
+    "falseAlarms": "误判",
+    "suggestions": "训练建议",
+    "points": "分"
+  },
+  "leaderboard": {
+    "title": "排行榜",
+    "totalGames": "总场次",
+    "bestScore": "最高分",
+    "avgAccuracy": "平均准确率",
+    "modeBest": "各模式最佳",
+    "filter": "筛选",
+    "noData": "还没有记录，去挑战吧！"
+  },
+  "achievements": {
+    "title": "花园勋章",
+    "unlocked": "已解锁",
+    "progress": "解锁进度"
+  },
+  "settings": {
+    "title": "设置",
+    "language": "语言",
+    "sound": "音效"
+  }
+}
