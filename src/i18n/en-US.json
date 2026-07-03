@@ -1,0 +1,112 @@
+{
+  "title": "Memory Garden",
+  "subtitle": "A journey to reclaim forgotten moments",
+  "startBtn": "Enter the Garden",
+  "dedication": "Dedicated to dearest Grandma",
+  "deviceSupport": { "mobile": "Mobile", "pc": "PC", "tablet": "Tablet" },
+  "guide": {
+    "steps": [
+      { "title": "The Garden is Misty", "text": "Grandma, the garden is a bit foggy lately. Some flowers are hard to see, but don't worry, let's take it slow.", "sub": "Relax and breathe..." },
+      { "title": "Watch the Flowers", "text": "Flowers will bloom one by one. Please watch them carefully.", "sub": "Each flower stays for a moment" },
+      { "title": "Find the Echo", "text": "If you see a flower that is the EXACT SAME as the one before...", "sub": "That is a memory returning!" },
+      { "title": "Press the Button", "text": "When you spot a repeating flower, gently press the \"Déjà vu\" button.", "sub": "It's okay if you miss one, we are just strolling." }
+    ],
+    "prev": "Back",
+    "next": "Next",
+    "done": "Got it"
+  },
+  "menu": {
+    "weather": "Lovely weather today",
+    "prompt": "Where shall we go?",
+    "startWalk": "Start Stroll",
+    "levels": [
+      { "label": "Morning (Easy)", "desc": "Same as the PREVIOUS one?" },
+      { "label": "Afternoon (Medium)", "desc": "Same as 2 flowers ago?" },
+      { "label": "Twilight (Hard)", "desc": "Looking for deeper memories" }
+    ],
+    "encounter": "Encounters",
+    "highScore": "Best",
+    "factorLabel": "Memory Type",
+    "viewStats": "View Statistics",
+    "viewLeaderboard": "Leaderboard",
+    "viewAchievements": "Achievements",
+    "ebbinghaus": "The garden misses you",
+    "recommendedN": "Recommended",
+    "streakDays": "day streak",
+    "dailyChallenge": "Daily Challenge",
+    "dailyCompleted": "Completed",
+    "points": "pts"
+  },
+  "stats": {
+    "title": "Garden Diary",
+    "overview": "Overview",
+    "totalGames": "Total Games",
+    "avgAccuracy": "Avg Accuracy",
+    "dPrime": "Sensitivity (d')",
+    "bestStreak": "Best Streak",
+    "totalTime": "Total Training Time",
+    "bestScores": "Best Scores",
+    "history": "Recent History",
+    "noHistory": "No training records yet. Go stroll in the garden!",
+    "accuracy": "Accuracy",
+    "score": "Score"
+  },
+  "game": {
+    "back": "Back",
+    "memoryFragment": "Memory",
+    "waiting": "...",
+    "matched": "I remember!",
+    "button": "Déjà vu",
+    "warmup": "Remember this...",
+    "warmup_emoji-flower": "Remember this flower...",
+    "warmup_emoji-animal": "Remember this animal...",
+    "warmup_emoji-food": "Remember this food...",
+    "warmup_text-zh": "Remember this word...",
+    "warmup_text-en": "Remember this word...",
+    "warmup_symbol": "Remember this symbol...",
+    "warmup_tone": "Remember this tone...",
+    "question": "Have we seen this before?",
+    "question_emoji-flower": "Have we seen this flower before?",
+    "question_emoji-animal": "Have we seen this animal before?",
+    "question_emoji-food": "Have we seen this food before?",
+    "question_text-zh": "Have we seen this word before?",
+    "question_text-en": "Have we seen this word before?",
+    "question_symbol": "Have we seen this symbol before?",
+    "question_tone": "Have we heard this tone before?",
+    "paused": "The garden is misty, take a break...",
+    "resume": "Continue"
+  },
+  "finished": {
+    "newRecord": "New Record!",
+    "title": "Stroll Finished",
+    "desc": "You made the garden beautiful today.",
+    "awakened": "Awakened",
+    "count": "Memories",
+    "again": "Walk Again",
+    "share": "Share",
+    "hits": "Hits",
+    "misses": "Misses",
+    "falseAlarms": "False Alarms",
+    "suggestions": "Training Tips",
+    "points": "pts"
+  },
+  "leaderboard": {
+    "title": "Leaderboard",
+    "totalGames": "Total Games",
+    "bestScore": "Best Score",
+    "avgAccuracy": "Avg Accuracy",
+    "modeBest": "Best by Mode",
+    "filter": "Filter",
+    "noData": "No records yet. Go challenge yourself!"
+  },
+  "achievements": {
+    "title": "Garden Badges",
+    "unlocked": "Unlocked",
+    "progress": "Progress"
+  },
+  "settings": {
+    "title": "Settings",
+    "language": "Language",
+    "sound": "Sound"
+  }
+}

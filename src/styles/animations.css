@@ -1,0 +1,48 @@
+/**
+ * 全局动画 — Memory Garden
+ * 从 App.jsx 提取，遵循 ARCH §7.2：禁止组件内 <style> 标签
+ *
+ * 支持 prefers-reduced-motion（在 accessibility.css 中覆盖）
+ */
+@keyframes bloom {
+  0% { transform: scale(0.5) rotate(-10deg); opacity: 0; }
+  60% { transform: scale(1.1) rotate(5deg); opacity: 1; }
+  100% { transform: scale(1) rotate(0); opacity: 1; }
+}
+.animate-bloom { animation: bloom 0.9s var(--easing-bounce); }
+
+@keyframes breathe-slow {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+}
+.animate-breathe-slow { animation: breathe-slow 5s ease-in-out infinite; }
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+.animate-float { animation: float 6s ease-in-out infinite; }
+
+@keyframes spin-slow {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+.animate-spin-slow { animation: spin-slow 12s linear infinite; }
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.animate-fade-in { animation: fadeIn 0.8s ease-out forwards; }
+
+@keyframes bounce-gentle {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-5px); }
+}
+.animate-bounce-gentle { animation: bounce-gentle 2s ease-in-out infinite; }
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: .5; }
+}
+.animate-pulse-slow { animation: pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite; }

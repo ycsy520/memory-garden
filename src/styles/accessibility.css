@@ -1,0 +1,44 @@
+/**
+ * 无障碍样式 — 满足 WCAG 2.1 AA
+ */
+
+/* 仅在键盘聚焦时显示focus环 (鼠标点击不显示) */
+*:focus-visible {
+  outline: 2px solid var(--color-brand);
+  outline-offset: 2px;
+  border-radius: var(--radius-sm);
+}
+
+/* sr-only: 视觉隐藏但屏幕阅读器可读 */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+/* 减少动画偏好适配 */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* 强制高对比度模式 */
+@media (forced-colors: active) {
+  :root {
+    --color-brand: LinkText;
+    --color-text-primary: CanvasText;
+    --color-bg-primary: Canvas;
+  }
+}
