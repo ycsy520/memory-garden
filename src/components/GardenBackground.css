@@ -1,0 +1,487 @@
+/**
+ * GardenBackground v3 — 精准坐标版
+ *
+ * 骨肉相连：叶片/花头精准锚定茎干坐标
+ * 黄金疏密比：左重右轻、中间留白
+ * 线条粗细韵律：远细近粗，主茎干锥度感
+ * 色彩呼吸深度：渐变 + 混合模式
+ *
+ * @version 3.0
+ */
+
+/* ── 容器 ── */
+.garden-bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  background: radial-gradient(circle at 50% 50%, #fbfbf8 0%, #f4f1ea 100%);
+  pointer-events: none;
+}
+
+/* ── SVG 画布 ── */
+.garden-svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.top-layer {
+  inset: 0 0 auto 0;
+  --top-float-y: 3px;
+  animation: canopy-float 22s ease-in-out infinite;
+  will-change: transform;
+}
+
+.back-layer {
+  --back-float-y: 2px;
+  animation: background-float 28s ease-in-out infinite;
+  will-change: transform;
+}
+
+.main-layer {
+  --main-breath-y: 4px;
+  animation: garden-breath 16s ease-in-out infinite;
+  transform-origin: center bottom;
+  will-change: transform;
+}
+
+.front-layer {
+  --front-breath-y: 2px;
+  --front-breath-scale: 1.01;
+  animation: foreground-breath 18s ease-in-out infinite;
+  transform-origin: center bottom;
+  will-change: transform;
+}
+
+.garden-top-haze,
+.garden-focus-glow {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.garden-top-haze {
+  --haze-x: 8px;
+  --haze-y: -6px;
+  background:
+    radial-gradient(ellipse at 16% 4%, rgba(216, 207, 195, 0.2) 0%, rgba(216, 207, 195, 0) 38%),
+    radial-gradient(ellipse at 84% 6%, rgba(143, 174, 123, 0.12) 0%, rgba(143, 174, 123, 0) 34%);
+  opacity: 0.7;
+  animation: haze-drift 26s ease-in-out infinite;
+  will-change: transform, opacity;
+}
+
+.garden-focus-glow {
+  --focus-scale: 1.015;
+  background:
+    radial-gradient(ellipse at 50% 54%, rgba(255, 255, 255, 0.5) 0%, rgba(255, 255, 255, 0.18) 22%, rgba(255, 255, 255, 0) 52%),
+    radial-gradient(ellipse at 50% 82%, rgba(244, 241, 234, 0.34) 0%, rgba(244, 241, 234, 0) 50%);
+  mix-blend-mode: screen;
+  opacity: 0.72;
+  animation: focus-pulse 12s ease-in-out infinite;
+  transform-origin: center center;
+  will-change: transform, opacity;
+}
+
+/* ── 视差核心控制 ── */
+.parallax-item {
+  transform: translate(
+    calc(var(--garden-mx, 0) * var(--depth, 0) * 100px),
+    calc(var(--garden-my, 0) * var(--depth, 0) * 100px)
+  );
+  will-change: transform;
+}
+
+/* ── 线条基础样式：增加手绘感 ── */
+.stem {
+  fill: none;
+  stroke: #2f3d31;
+  stroke-width: 2.5;
+  stroke-linecap: round;
+  opacity: 0.25;
+}
+
+.stem-thin {
+  fill: none;
+  stroke: #2f3d31;
+  stroke-width: 1.5;
+  opacity: 0.15;
+}
+
+/* ── 叶片：肉感与骨感的融合 ── */
+.leaf {
+  fill: #8fae7b;
+  opacity: 0.15;
+  transition: opacity 0.3s;
+}
+
+.leaf-alt {
+  fill: #d8cfc3;
+  opacity: 0.25;
+}
+
+/* ── 顶部垂落装饰 ── */
+.vine {
+  fill: none;
+  stroke: #6f8768;
+  stroke-width: 1.6;
+  stroke-linecap: round;
+  opacity: 0.18;
+}
+
+.vine-soft {
+  fill: none;
+  stroke: #8da383;
+  stroke-width: 1.05;
+  stroke-linecap: round;
+  opacity: 0.12;
+}
+
+.vine-leaf {
+  fill: #8fae7b;
+  opacity: 0.13;
+}
+
+.vine-leaf-alt {
+  fill: #d8cfc3;
+  opacity: 0.18;
+}
+
+.vine-bloom {
+  fill: #e78aa4;
+  opacity: 0.26;
+}
+
+.vine-bloom-light {
+  fill: #e7b8c5;
+  opacity: 0.18;
+}
+
+.canopy-line {
+  fill: none;
+  stroke: #b9b3aa;
+  stroke-width: 1.2;
+  opacity: 0.16;
+  filter: blur(0.2px);
+}
+
+.canopy-line-soft {
+  stroke-width: 0.95;
+  opacity: 0.12;
+}
+
+.canopy-leaf {
+  fill: #d8cfc3;
+  opacity: 0.1;
+  filter: blur(2px);
+}
+
+.canopy-leaf-soft {
+  fill: #c8d4be;
+  opacity: 0.08;
+}
+
+.hanging-group {
+  transform-origin: top center;
+  animation: sway-subtle 18s ease-in-out infinite;
+}
+
+.hanging-left-soft,
+.hanging-right {
+  animation-duration: 21s;
+}
+
+.hanging-left-soft {
+  animation-delay: -5s;
+}
+
+.hanging-right {
+  animation-delay: -8s;
+}
+
+.dot-memory-soft {
+  opacity: 0.22;
+}
+
+/* ── 花朵：视觉锚点 ── */
+.flower-p {
+  fill: #e78aa4;
+  opacity: 0.6;
+}
+
+.flower-p-light {
+  fill: #e78aa4;
+  opacity: 0.3;
+}
+
+.flower-b {
+  fill: #9bb8d3;
+  opacity: 0.5;
+}
+
+.flower-b-light {
+  fill: #9bb8d3;
+  opacity: 0.25;
+}
+
+.flower-yellow {
+  fill: #f1c96b;
+  opacity: 0.6;
+}
+
+/* ── 植物摆动动画 ── */
+@keyframes sway {
+  0%, 100% {
+    transform: rotate(-1.5deg) skewX(0.5deg);
+  }
+  50% {
+    transform: rotate(2deg) skewX(-0.5deg);
+  }
+}
+
+@keyframes sway-subtle {
+  0%, 100% {
+    transform: rotate(-0.8deg) skewX(0.2deg);
+  }
+  50% {
+    transform: rotate(1.1deg) skewX(-0.2deg);
+  }
+}
+
+@keyframes canopy-float {
+  0%, 100% {
+    transform: translate3d(0, 0, 0);
+  }
+  50% {
+    transform: translate3d(0, var(--top-float-y), 0);
+  }
+}
+
+@keyframes background-float {
+  0%, 100% {
+    transform: translate3d(0, 0, 0);
+    opacity: 1;
+  }
+  50% {
+    transform: translate3d(0, calc(var(--back-float-y) * -1), 0);
+    opacity: 0.96;
+  }
+}
+
+@keyframes garden-breath {
+  0%, 100% {
+    transform: translate3d(0, 0, 0);
+  }
+  50% {
+    transform: translate3d(0, calc(var(--main-breath-y) * -1), 0);
+  }
+}
+
+@keyframes foreground-breath {
+  0%, 100% {
+    transform: translate3d(0, 0, 0) scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: translate3d(0, calc(var(--front-breath-y) * -1), 0) scale(var(--front-breath-scale));
+    opacity: 0.94;
+  }
+}
+
+.plant-group {
+  transform-origin: bottom center;
+  animation: sway 12s ease-in-out infinite;
+}
+
+.plant-2 {
+  animation-delay: -4s;
+  animation-duration: 14s;
+}
+
+/* ── 记忆点：呼吸感 ── */
+.dot-memory {
+  fill: #f1c96b;
+  opacity: 0.4;
+  animation: pulse 4s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 0.2;
+    transform: scale(0.8);
+  }
+  50% {
+    opacity: 0.5;
+    transform: scale(1.1);
+  }
+}
+
+@keyframes haze-drift {
+  0%, 100% {
+    transform: translate3d(0, 0, 0) scale(1);
+    opacity: 0.68;
+  }
+  50% {
+    transform: translate3d(var(--haze-x), var(--haze-y), 0) scale(1.03);
+    opacity: 0.8;
+  }
+}
+
+@keyframes focus-pulse {
+  0%, 100% {
+    transform: scale(0.992);
+    opacity: 0.68;
+  }
+  50% {
+    transform: scale(var(--focus-scale));
+    opacity: 0.82;
+  }
+}
+
+/* ── 蝴蝶：轻盈的随机感 ── */
+.butterfly {
+  fill: #2f3d31;
+  opacity: 0.2;
+  animation: fly 20s linear infinite;
+}
+
+@keyframes fly {
+  0% {
+    transform: translate(100px, 400px) rotate(0deg);
+  }
+  25% {
+    transform: translate(300px, 350px) rotate(10deg);
+  }
+  50% {
+    transform: translate(600px, 420px) rotate(-5deg);
+  }
+  100% {
+    transform: translate(1300px, 380px) rotate(5deg);
+  }
+}
+
+/* ── 前景大色块：增加深度 ── */
+.foreground-blob {
+  fill: #d8cfc3;
+  opacity: 0.075;
+  filter: blur(24px);
+}
+
+/* ── 远景极淡线条 ── */
+.line-soft {
+  fill: none;
+  stroke: #2f3d31;
+  stroke-width: 1;
+  opacity: 0.05;
+}
+
+.blob-soft {
+  fill: #8fae7b;
+  opacity: 0.03;
+  filter: blur(10px);
+}
+
+/* ── 响应式：平板（≤900px） ── */
+@media (max-width: 900px) {
+  .main-layer,
+  .front-layer {
+    width: 135%;
+    left: -18%;
+  }
+}
+
+/* ── 响应式：手机（≤640px） ── */
+@media (max-width: 640px) {
+  .garden-bg--compact .top-layer {
+    width: 118%;
+    left: -9%;
+    top: -2%;
+    --top-float-y: 2px;
+  }
+
+  .garden-bg--compact .garden-top-haze {
+    --haze-x: 6px;
+    --haze-y: -4px;
+    opacity: 0.82;
+  }
+
+  .garden-bg--compact .garden-focus-glow {
+    --focus-scale: 1.01;
+    opacity: 0.84;
+    background:
+      radial-gradient(ellipse at 50% 50%, rgba(255, 255, 255, 0.56) 0%, rgba(255, 255, 255, 0.22) 20%, rgba(255, 255, 255, 0) 48%),
+      radial-gradient(ellipse at 50% 84%, rgba(244, 241, 234, 0.36) 0%, rgba(244, 241, 234, 0) 52%);
+  }
+
+  .garden-bg--compact .back-layer {
+    opacity: 0.55;
+    width: 134%;
+    left: -17%;
+    --back-float-y: 1px;
+  }
+
+  .garden-bg--compact .main-layer,
+  .garden-bg--compact .front-layer {
+    width: 154%;
+    left: -27%;
+  }
+
+  .garden-bg--compact .main-layer {
+    bottom: 0;
+    --main-breath-y: 3px;
+  }
+
+  .garden-bg--compact .front-layer {
+    bottom: -2%;
+    --front-breath-y: 1.5px;
+    --front-breath-scale: 1.008;
+  }
+
+  .garden-bg--compact .plant-2 {
+    display: block;
+    opacity: 0.82;
+  }
+
+  .garden-bg--compact .foreground-blob {
+    opacity: 0.065;
+    filter: blur(18px);
+  }
+
+  .garden-bg--compact .hanging-left {
+    transform: translateX(-16px);
+  }
+
+  .garden-bg--compact .hanging-left-soft {
+    transform: translateX(-8px);
+  }
+
+  .garden-bg--compact .hanging-right {
+    transform: translateX(12px);
+  }
+
+  .garden-bg--compact .butterfly {
+    display: none;
+  }
+}
+
+/* ── 无障碍：减弱动效 → 完全静态 ── */
+@media (prefers-reduced-motion: reduce) {
+  .plant-group,
+  .dot-memory,
+  .butterfly,
+  .top-layer,
+  .back-layer,
+  .main-layer,
+  .front-layer,
+  .garden-top-haze,
+  .garden-focus-glow {
+    animation: none !important;
+  }
+
+  .parallax-item {
+    transform: none !important;
+  }
+}

@@ -1,112 +1,683 @@
 {
   "title": "Memory Garden",
-  "subtitle": "A journey to reclaim forgotten moments",
-  "startBtn": "Enter the Garden",
-  "dedication": "Dedicated to dearest Grandma",
-  "deviceSupport": { "mobile": "Mobile", "pc": "PC", "tablet": "Tablet" },
+  "subtitle": "A journey to rediscover forgotten moments",
+  "startBtn": "Open the Garden Gate",
+  "dedication": "For my dearest grandma",
+  "deviceSupport": { "mobile": "Phone", "pc": "Computer", "tablet": "Tablet" },
+  "installBtn": "Install Memory Garden",
+  "medicalDisclaimer": "Memory Garden is a light practice game for attention and working memory. It is not intended for medical diagnosis and cannot replace a professional assessment.",
   "guide": {
     "steps": [
-      { "title": "The Garden is Misty", "text": "Grandma, the garden is a bit foggy lately. Some flowers are hard to see, but don't worry, let's take it slow.", "sub": "Relax and breathe..." },
-      { "title": "Watch the Flowers", "text": "Flowers will bloom one by one. Please watch them carefully.", "sub": "Each flower stays for a moment" },
-      { "title": "Find the Echo", "text": "If you see a flower that is the EXACT SAME as the one before...", "sub": "That is a memory returning!" },
-      { "title": "Press the Button", "text": "When you spot a repeating flower, gently press the \"Déjà vu\" button.", "sub": "It's okay if you miss one, we are just strolling." }
+      { "title": "A Fog Has Settled", "text": "Grandma, a little fog has drifted into our garden — some flowers are harder to see now. But that's okay, we'll take our time.", "sub": "Relax and take a deep breath..." },
+      { "title": "Remember This Flower", "text": "Flowers will bloom one after another. Please look at each one carefully.", "sub": "Each flower will linger for a moment" },
+      { "title": "Finding the Shadow of Memory", "text": "If you see a flower that looks exactly like one from \"before\"...", "sub": "That means a memory has returned!" },
+      { "title": "Press the Button", "text": "When you notice a flower repeating, gently press the « Déjà vu » button.", "sub": "It's okay if you miss one — we're just taking a stroll." }
     ],
-    "prev": "Back",
+    "prev": "Previous",
     "next": "Next",
     "done": "Got it"
   },
   "menu": {
-    "weather": "Lovely weather today",
-    "prompt": "Where shall we go?",
-    "startWalk": "Start Stroll",
+    "weather": "What a lovely day",
+    "prompt": "Ready to go for a walk?",
+    "startWalk": "Continue Training",
+    "startRun": "Continue Training",
     "levels": [
-      { "label": "Morning (Easy)", "desc": "Same as the PREVIOUS one?" },
-      { "label": "Afternoon (Medium)", "desc": "Same as 2 flowers ago?" },
-      { "label": "Twilight (Hard)", "desc": "Looking for deeper memories" }
+      { "label": "Morning (Easy)", "desc": "Is it the same as the one just now?" },
+      { "label": "Afternoon (Intermediate)", "desc": "Is it the same as two flowers ago?" },
+      { "label": "Twilight (Challenge)", "desc": "Find flowers from much earlier" }
     ],
-    "encounter": "Encounters",
+    "encounter": " encounters",
     "highScore": "Best",
-    "factorLabel": "Memory Type",
-    "viewStats": "View Statistics",
+    "factorLabel": "Memory Material",
+    "viewStats": "View Stats",
     "viewLeaderboard": "Leaderboard",
     "viewAchievements": "Achievements",
     "ebbinghaus": "The garden misses you",
-    "recommendedN": "Recommended",
-    "streakDays": "day streak",
+    "recommendedN": "Recommended Difficulty",
+    "streakDays": " consecutive days",
     "dailyChallenge": "Daily Challenge",
     "dailyCompleted": "Completed",
-    "points": "pts"
+    "points": "pts",
+    "welcomeBack": "Welcome back",
+    "continueWalk": "Take it slow, we'll remember together",
+    "switchMode": "Try a different mode",
+    "gardenDiary": "Garden Diary",
+    "gardenCollection": "Garden Collection",
+    "settings": "Settings",
+    "backToGarden": "<- Back to Garden",
+    "selectMode": "Choose Memory Mode",
+    "selectModeDesc": "Select the type of memory you'd like to practice",
+    "nextStepRhythm": "Next: Choose Pace",
+    "selectRhythm": "Choose Pace",
+    "selectRhythmDesc": "Pick a rhythm that suits you",
+    "prevStep": "Previous",
+    "nextStepDifficulty": "Next: Choose Difficulty",
+    "selectDifficulty": "Choose Difficulty",
+    "selectDifficultyDesc": "A higher N means remembering more flowers",
+    "requirePrev": "Complete Stroll N=1 first",
+    "requirePrevN": "Complete N={{n}} first",
+    "gardenLevel": "Garden · {{level}}",
+    "walkCount": "{{count}} sessions",
+    "quickEntries": "Quick Navigation",
+    "customizeConfig": "Custom Training",
+    "more": "More",
+    "mode": "Mode",
+    "rhythm": "Rhythm"
+  },
+  "modes": {
+    "walk": {
+      "label": "Stroll",
+      "desc": "See & Recognize",
+      "intro": "Flowers appear one by one. Remember the one you just saw, and press the button when it appears again.",
+      "audience": "For everyone, especially those new to memory training"
+    },
+    "standard": {
+      "label": "Stroll",
+      "desc": "See & Recognize",
+      "intro": "Flowers appear one by one. Remember the one you just saw, and press the button when it appears again.",
+      "audience": "For everyone, especially those new to memory training"
+    },
+    "dual": {
+      "label": "Flower & Song",
+      "desc": "See + Listen",
+      "intro": "A flower and a sound appear together. It's a match only when both the flower and sound are the same as before.",
+      "audience": "For those familiar with Stroll who want to challenge dual-channel memory"
+    },
+    "spatial": {
+      "label": "Flower Bed",
+      "desc": "Remember Location",
+      "intro": "Flowers bloom at different spots on the flower bed. Remember both the position and the type of flower, then press the button when you see it again.",
+      "audience": "For those who want to train spatial memory"
+    },
+    "grid": {
+      "label": "Flower Patch",
+      "desc": "Remember Patterns",
+      "intro": "Multiple flowers appear on the flower bed at once. Remember the entire pattern, then press the button when you see it again.",
+      "audience": "For advanced users who want to train both visual and spatial memory"
+    },
+    "run": {
+      "label": "Sprint",
+      "desc": "60-second rush",
+      "intro": "Score as many hits as you can in 60 seconds. Test your speed and memory limits.",
+      "audience": "For those chasing high scores and pushing their limits"
+    }
+  },
+  "rhythms": {
+    "walk": {
+      "label": "Morning",
+      "desc": "Take your time, no rush",
+      "intro": "Flowers appear slowly, with no rush. Perfect for beginners who want to ease in gently.",
+      "audience": "For children, elderly, and first-time users"
+    },
+    "daily": {
+      "label": "Dawn",
+      "desc": "3 seconds per item",
+      "intro": "Each flower appears for 3 seconds. Enough time to think, but you'll need to stay focused.",
+      "audience": "For daily practice to sharpen memory"
+    },
+    "challenge": {
+      "label": "Afternoon",
+      "desc": "2 seconds per item",
+      "intro": "Each flower appears for only 2 seconds. Quick thinking required — test your reflexes and memory.",
+      "audience": "For those who've mastered the basics and want to push further"
+    },
+    "competitive": {
+      "label": "Twilight",
+      "desc": "1.5 seconds per item",
+      "intro": "Each flower appears for only 1.5 seconds. Lightning reflexes required — push your memory to the limit.",
+      "audience": "For experts chasing peak performance"
+    },
+    "timed": {
+      "label": "Sprint",
+      "desc": "60-second timed rush",
+      "intro": "Score as many hits as you can in 60 seconds. Test your speed and memory limits.",
+      "audience": "For those chasing high scores and pushing their limits"
+    }
+  },
+  "difficulties": {
+    "n1": { "title": "Beginner", "desc": "Remember the last flower", "detail": "Only need to remember the previous flower. Great for getting started." },
+    "n2": { "title": "Everyday", "desc": "Remember two flowers back", "detail": "Need to remember the flower from two steps ago. Good for daily practice." },
+    "n3": { "title": "Advanced", "desc": "Remember three flowers back", "detail": "Need to remember the flower from three steps ago. Challenge your working memory." },
+    "n4": { "title": "Expert", "desc": "Remember four flowers back", "detail": "Need to remember the flower from four steps ago. A true memory master's trial." }
   },
   "stats": {
     "title": "Garden Diary",
     "overview": "Overview",
-    "totalGames": "Total Games",
-    "avgAccuracy": "Avg Accuracy",
-    "dPrime": "Sensitivity (d')",
+    "totalGames": "Total Sessions",
+    "avgAccuracy": "Average Accuracy",
+    "dPrime": "Memory Sensitivity",
     "bestStreak": "Best Streak",
     "totalTime": "Total Training Time",
     "bestScores": "Best Scores",
     "history": "Recent History",
-    "noHistory": "No training records yet. Go stroll in the garden!",
+    "noHistory": "No training records yet — go take a stroll in the garden!",
     "accuracy": "Accuracy",
-    "score": "Score"
+    "score": "pts",
+    "gardenProgress": "Growth Progress",
+    "discoveredElements": "Discovered {{count}} garden elements",
+    "keepWalking": "Keep strolling, and the garden will slowly grow.",
+    "gardenSecrets": "Garden Secrets",
+    "secretsHint": "The garden holds some secrets. Perhaps you'll discover them if you keep walking.",
+    "undiscoveredSecrets": "Undiscovered Secrets",
+    "walkCount": "{{count}} strolls",
+    "streakDays": "{{days}} day streak",
+    "gardenLabel": "Garden · {{level}}",
+    "growthProgress": "Growth Progress",
+    "growthPoints": "{{current}} / {{total}} pts",
+    "discoveredCount": "Discovered {{count}} garden elements",
+    "collectionProgress": "{{current}} / {{total}} items",
+    "timed": "Elapsed"
   },
   "game": {
     "back": "Back",
-    "memoryFragment": "Memory",
-    "waiting": "...",
-    "matched": "I remember!",
     "button": "Déjà vu",
-    "warmup": "Remember this...",
-    "warmup_emoji-flower": "Remember this flower...",
-    "warmup_emoji-animal": "Remember this animal...",
-    "warmup_emoji-food": "Remember this food...",
-    "warmup_text-zh": "Remember this word...",
-    "warmup_text-en": "Remember this word...",
-    "warmup_symbol": "Remember this symbol...",
-    "warmup_tone": "Remember this tone...",
-    "question": "Have we seen this before?",
-    "question_emoji-flower": "Have we seen this flower before?",
-    "question_emoji-animal": "Have we seen this animal before?",
-    "question_emoji-food": "Have we seen this food before?",
-    "question_text-zh": "Have we seen this word before?",
-    "question_text-en": "Have we seen this word before?",
-    "question_symbol": "Have we seen this symbol before?",
-    "question_tone": "Have we heard this tone before?",
-    "paused": "The garden is misty, take a break...",
-    "resume": "Continue"
+    "warmupDefault": "Take a look, get familiar",
+    "warmupPosition": "Remember the position",
+    "warmupPattern": "Remember the pattern",
+    "warmupDual": "Watch + Listen",
+    "same": "Same",
+    "different": "Different",
+    "orientationLock": "Please hold your phone upright to continue",
+    "leaveConfirm": "Are you sure you want to leave this stroll? Current progress won't be saved.",
+    "leaveRunConfirm": "Are you sure you want to leave this run? Current progress won't be saved.",
+    "leftForAwhile": "You stepped away for a moment",
+    "continuePrompt": "Would you like to continue this stroll?",
+    "continueRunPrompt": "Would you like to continue this run?",
+    "continueStroll": "Continue Stroll",
+    "continueRun": "Continue Run",
+    "startStroll": "Start Training",
+    "startRun": "Start Training",
+    "timeRemaining": "Time Remaining",
+    "warmupSpatial": "Remember the position and the flower"
+  },
+  "gardenJournal": {
+    "title": "Garden Diary",
+    "growthTitle": "Garden Growth",
+    "empty": "After a stroll, the garden will remember some fragments.",
+    "count": "{{read}}/{{total}} entries",
+    "viewAll": "View all {{count}} entries",
+    "expandFullText": "Read full story",
+    "collapseFullText": "Collapse"
   },
   "finished": {
     "newRecord": "New Record!",
-    "title": "Stroll Finished",
+    "title": "Stroll Complete",
     "desc": "You made the garden beautiful today.",
-    "awakened": "Awakened",
-    "count": "Memories",
-    "again": "Walk Again",
+    "awakened": "Successfully recalled",
+    "count": " memories",
+    "again": "Take Another Stroll",
     "share": "Share",
     "hits": "Hits",
     "misses": "Misses",
     "falseAlarms": "False Alarms",
     "suggestions": "Training Tips",
-    "points": "pts"
+    "points": "pts",
+    "score": "Overall Score",
+    "sensitivity": "Memory Discrimination",
+    "dPrime": "d' (Sensitivity)",
+    "beta": "β (Response Bias)",
+    "avgReaction": "Avg. Reaction Time",
+    "correctRejection": "Correct Rejection",
+    "correctRejectionDesc": "Correctly passed",
+    "hitDesc": "Remembered & matched",
+    "missDesc": "Forgot & missed",
+    "falseAlarmLabel": "Incorrectly matched",
+    "progressTrend": "Progress Trend",
+    "growthProgress": "Growth Progress",
+    "detailedData": "View Detailed Data",
+    "hideDetailedData": "Hide Detailed Data",
+    "continueWalk": "Continue Stroll",
+    "backToGarden": "Back to Garden",
+    "walkAgain": "Walk Again",
+    "accuracyRate": "Memory Accuracy",
+    "accuracyDesc": "Correctly judged {{correct}} out of {{total}} stimuli",
+    "targetRecognition": "Target Recognition",
+    "targetDesc": "Remembered {{hits}} out of {{total}} repeated items",
+    "falseAlarmRate": "False Alarm Rate",
+    "falseAlarmDesc": "Incorrectly marked {{fa}} out of {{total}} non-repeated items",
+    "currentRun": "This Run",
+    "pastRecords": "Past Records",
+    "pastRecordsHint": "Records from different modes and difficulties are for review only — they aren't directly comparable.",
+    "firstRecordTitle": "This is your first recorded session.",
+    "firstRecordBody": "After your next stroll, past footprints will begin to appear here.",
+    "recordAccuracyLabel": "Accuracy",
+    "latestRecord": "Latest",
+    "analysisReading": "Analysis Reading",
+    "timedTag": "Timed",
+    "slowDown": "Try slowing down. Only press when you truly see a flower that has returned.",
+    "takeBreak": "Things have felt a bit tough lately — would you like to take a break?",
+    "recentAccuracy": "Accuracy over last {{count}} rounds",
+    "barTooltip": "Round {{round}}: {{percent}}%",
+    "gardenLevel": "Garden · {{level}}",
+    "gardenReward": "{{reward}} appeared in the garden.",
+    "walkCount": "This is your {{count}} stroll.",
+    "streakCount": "{{days}} day streak.",
+    "progressPoints": "{{current}} / {{total}} pts",
+    "gardenFullBloom": "The garden is in full bloom — keep nurturing it.",
+    "newCollection": "New collection ({{current}}/{{total}})",
+    "expandStory": "Read more",
+    "collapseStory": "Hide story",
+    "saveToJournal": "Save to Garden Diary",
+    "narrativeExcellent": {
+      "title": "The garden is quiet and bright today.",
+      "body": "You recognized a few returning flowers and watched the new ones pass by patiently. A tiny new blossom has opened in the garden.",
+      "reward": "A tiny blossom"
+    },
+    "narrativeGood": {
+      "title": "A new leaf has appeared in the garden today.",
+      "body": "Some flowers you recognized; others slipped by gently. With every stroll, the garden grows a little more familiar with you.",
+      "reward": "A new leaf"
+    },
+    "narrativePoor": {
+      "title": "You completed a stroll today — and that matters.",
+      "body": "A seed has been planted in the garden. Next time, try walking a little slower — it's enough to watch just one flower.",
+      "reward": "A seed"
+    }
   },
   "leaderboard": {
     "title": "Leaderboard",
-    "totalGames": "Total Games",
+    "totalGames": "Total Sessions",
     "bestScore": "Best Score",
-    "avgAccuracy": "Avg Accuracy",
+    "avgAccuracy": "Average Accuracy",
     "modeBest": "Best by Mode",
     "filter": "Filter",
-    "noData": "No records yet. Go challenge yourself!"
+    "allModes": "All Modes",
+    "allDifficulty": "All Difficulties",
+    "noData": "No records yet — go take the challenge!"
   },
   "achievements": {
     "title": "Garden Badges",
     "unlocked": "Unlocked",
-    "progress": "Progress"
+    "progress": "Unlock Progress",
+    "collected": "Collected",
+    "items": "{{count}} items",
+    "currentQuality": "Current Quality: {{tier}}",
+    "discoveredAt": "Discovered on {{date}}",
+    "unread": "Unread",
+    "gardenSecrets": "Garden Secrets",
+    "secretsHint": "The garden holds some secrets. Perhaps you'll discover them if you keep walking.",
+    "undiscoveredSecrets": "Undiscovered Secrets",
+    "hiddenSecret": "Undiscovered Secrets"
   },
   "settings": {
-    "title": "Settings",
+    "title": "Garden Settings",
+    "about": "About",
     "language": "Language",
-    "sound": "Sound"
+    "audio": "Audio",
+    "muted": "Muted",
+    "unmuted": "Sound On",
+    "sound": "Sound Effects",
+    "dataManagement": "Data Management",
+    "exportData": "Export Garden Data",
+    "importData": "Import Garden Backup",
+    "clearData": "Clear All Data",
+    "exportFailed": "Export failed. Please try again later.",
+    "importFailed": "Import failed. Please try again later.",
+    "importInvalidJson": "Import failed. The selected file is not a valid JSON backup.",
+    "importInvalidStructure": "Import failed. The backup file structure is not recognized.",
+    "importConfirm": "Do you want to overwrite current local data with this backup? Your current local garden progress will be replaced.",
+    "imported": "Backup imported. Local garden state has been restored.",
+    "clearConfirm": "Are you sure you want to delete all garden data? This cannot be undone, including stroll history, garden growth, and collections.",
+    "cleared": "Data cleared. The garden will grow anew.",
+    "version": "Memory Garden v5.1.0",
+    "backToMenu": "Back to Menu",
+    "account": "My Garden",
+    "guestMode": "Guest mode (data saved locally only)",
+    "loggedIn": "Logged in",
+    "lastSync": "Last synced",
+    "syncNow": "Sync now",
+    "loginToBackup": "Sign in to back up to cloud",
+    "signOut": "Sign Out",
+    "deleteAccount": "Delete Account",
+    "deleteConfirm": "Please type DELETE to confirm",
+    "disclaimer": "Disclaimer",
+    "disclaimerText": "This product is an attention and working memory training tool. It is not intended for medical diagnosis, treatment, or disease prevention.",
+    "justNow": "Just now",
+    "minutesAgo": "minutes ago",
+    "hoursAgo": "hours ago",
+    "daysAgo": "days ago"
+  },
+  "garden": {
+    "levels": {
+      "seed": "Seed",
+      "sprout": "Sprout",
+      "bud": "Budding",
+      "leaf": "Leaf",
+      "budding": "Flower Bud",
+      "halfBloom": "Half Bloom",
+      "fullBloom": "Full Bloom"
+    },
+    "collections": {
+      "seed": { "name": "Seed", "desc": "First steps into the garden" },
+      "dew": { "name": "Dewdrop", "desc": "A morning gift" },
+      "sprout": { "name": "Sprout", "desc": "Breaking through the earth" },
+      "pebble": { "name": "Pebble", "desc": "A companion on the path" },
+      "ladybug": { "name": "Ladybug", "desc": "A tiny garden visitor" },
+      "butterfly": { "name": "Butterfly", "desc": "Dancing gracefully" },
+      "snail": { "name": "Snail", "desc": "Taking it slow" },
+      "breeze": { "name": "Breeze", "desc": "A gentle whisper of wind" },
+      "clover": { "name": "Four-Leaf Clover", "desc": "A lucky find" },
+      "bird": { "name": "Bird", "desc": "A morning melody" },
+      "mushroom": { "name": "Mushroom", "desc": "A surprise after the rain" },
+      "stonePath": { "name": "Stone Path", "desc": "Footprints left behind" },
+      "dragonfly": { "name": "Dragonfly", "desc": "Skimming the water" },
+      "sunflower": { "name": "Sunflower", "desc": "Facing the sunlight" },
+      "rainbow": { "name": "Rainbow", "desc": "A gift after the rain" },
+      "cottage": { "name": "Garden Cottage", "desc": "A warm home" }
+    },
+    "tiers": {
+      "sprout": "Sprout",
+      "leaf": "Leaf",
+      "bloom": "Bloom",
+      "fullBloom": "Full Bloom"
+    }
+  },
+  "feedback": {
+    "grades": {
+      "excellent": { "label": "Excellent", "desc": "Outstanding memory performance!" },
+      "good": { "label": "Great", "desc": "Very impressive memory skills!" },
+      "fair": { "label": "Good", "desc": "Solid performance — keep going!" },
+      "poor": { "label": "Fair", "desc": "Room to improve — keep practicing!" },
+      "weak": { "label": "Needs Work", "desc": "Don't be discouraged — practice makes progress!" }
+    },
+    "suggestions": {
+      "lowerDifficulty": { "title": "Lower Difficulty", "desc": "The current difficulty may be too high. Try lowering the N value or choosing a slower pace." },
+      "higherDifficulty": { "title": "Try a Higher Difficulty", "desc": "You're doing great! Try increasing the N value or a faster pace." },
+      "improveAccuracy": { "title": "Watch More Closely", "desc": "Hit rate is low — try observing each flower's details more carefully." },
+      "reduceFalseAlarms": { "title": "Reduce False Alarms", "desc": "False alarm rate is high — don't rush to press the button. Confirm before acting." },
+      "stayFocused": { "title": "Stay Focused", "desc": "It's easy to get distracted. Try practicing in a quiet environment." },
+      "keepTraining": { "title": "Keep Training", "desc": "Great training frequency this week — keep up the momentum!" },
+      "buildHabit": { "title": "Build a Habit", "desc": "Try spending 5–10 minutes strolling each day to build a training habit." },
+      "improveStrategy": { "title": "Improve Your Strategy", "desc": "Try silently naming each flower — it can help you remember them better." },
+      "keepGoing": { "title": "Keep Going", "desc": "Stay consistent with your training, and you'll see progress." }
+    }
+    },
+    "stimulusIntro": {
+      "n1": "If it's the same as the one just now, press \"Same\". Otherwise, press \"Different\".",
+      "n2": "If it's the same as two flowers ago, press \"Same\". Take your time and think before choosing.",
+      "n3": "If it's the same as three flowers ago, press \"Same\". Take your time and think before choosing.",
+      "nDefault": "If it's the same as one before, press \"Same\". Otherwise, press \"Different\"."
+    },
+    "signalDetection": {
+      "levelExcellent": "Excellent",
+      "levelGood": "Good",
+      "levelFair": "Fair",
+      "levelWeak": "Weak",
+      "levelNeedsWork": "Needs Work",
+      "descExcellent": "Outstanding memory discrimination",
+      "descGood": "Strong memory discrimination",
+      "descFair": "Average memory discrimination",
+      "descWeak": "Below average memory discrimination",
+      "descNeedsWork": "Memory discrimination needs improvement",
+      "typeConservative": "Conservative",
+      "typeBalanced": "Balanced",
+      "typeAggressive": "Aggressive",
+      "descConservative": "Tends to avoid marking, may miss targets",
+      "descBalanced": "Moderate judgment standard",
+      "descAggressive": "Tends to mark, may have more false alarms"
+    },
+    "mandala": {
+      "loading": "Loading"
+    },
+    "stimulus": {
+    "same": "Same",
+    "different": "Different",
+    "hintN1": "Same as the one that just appeared?",
+    "hintN2": "Same as two flowers ago?",
+    "hintN3": "Same as one from earlier?",
+    "hintNx": "Same as {{n}} flowers ago?",
+    "rememberRecent1": "Remember the one that just appeared",
+    "rememberRecent2": "Remember the last two",
+    "rememberRecent3": "Remember the last three",
+    "rememberRecentN": "Remember them",
+    "warmupCount": "The first {{n}} are warm-ups — just watch, no action needed.",
+    "nowStart1": "Now it begins — remember the one that just appeared",
+    "nowStart2": "Now it begins — remember the last two",
+    "nowStart3": "Now it begins — remember the last three",
+    "nowStartN": "Now it begins — remember what just appeared"
+  },
+  "services": {
+    "factorNames": {
+      "sprite-garden": "Garden",
+      "emoji-flower": "Flower",
+      "emoji-animal": "Animal",
+      "emoji-food": "Food",
+      "tone": "Tone"
+    },
+    "share": {
+      "template": "I completed the {{mode}} challenge in « Memory Garden »! Score: {{score}}, Accuracy: {{accuracy}}%. Try your memory now!"
+    }
+  },
+  "errors": {
+    "gardenProblem": "The garden hit a small snag",
+    "dontWorry": "Don't worry — just re-enter and you'll be fine",
+    "reEnter": "Re-enter Garden",
+    "updateAvailable": "A new version is available. Update now?",
+    "offlineReady": "Memory Garden is ready for offline use"
+  },
+  "narrativeUnlock": {
+    "milestone1": "You've walked here for a long time. Beyond the garden walls, taller mountains await.",
+    "milestone2": "You know this path with your eyes closed. How about opening them to a new one?",
+    "milestone3": "You're starting to see further.",
+    "milestone4": "Some distances grow shorter with every step.",
+    "milestone5": "You remembered something far away. The garden has lit a lantern for you."
+  },
+  "common": {
+    "back": "Back",
+    "next": "Next",
+    "prev": "Previous",
+    "confirm": "Confirm",
+    "cancel": "Cancel",
+    "loading": "Loading...",
+    "error": "Something went wrong",
+    "retry": "Retry",
+    "points": "pts",
+    "times": "times",
+    "days": "days",
+    "modeStandard": "Stroll",
+    "modeDual": "Flower & Song",
+    "modeSpatial": "Flower Bed",
+    "modeGrid": "Flower Patch",
+    "modeWalk": "Stroll"
+  },
+  "about": {
+    "effectiveDate": "Effective Date",
+    "disclaimerTitle": "Disclaimer",
+    "privacyTitle": "Privacy Policy",
+    "termsTitle": "Terms of Service",
+    "nbackTitle": "What is N-back?",
+    "disclaimer": {
+      "s1": {
+        "title": "1. Product Nature",
+        "content": "Memory Garden is a cognitive training entertainment application based on the N-back paradigm. This product aims to help users practice working memory through gamification. It is an educational entertainment product, not a medical device, and is not intended for diagnosing, treating, mitigating, or preventing any disease or medical condition."
+      },
+      "s2": {
+        "title": "2. Scientific Basis",
+        "content": "This product's training methodology is based on the N-back working memory training paradigm from cognitive psychology. Since Wayne Kirchner first proposed it in 1958, this paradigm has been widely used in cognitive psychology research. However, regarding the transfer effects of N-back training to other cognitive abilities, there remains scientific debate:",
+        "li1": "Jaeggi et al. (2008) claimed that dual N-back training could improve fluid intelligence, but subsequent studies have presented different viewpoints.",
+        "li2": "A comprehensive review by Simons et al. (2017) concluded that cognitive training effects are mainly limited to the training task itself, with insufficient evidence for transfer to other cognitive abilities."
+      },
+      "s3": {
+        "title": "3. Not a Substitute for Professional Advice",
+        "content": "This product cannot replace professional assessment, diagnosis, or advice from doctors, therapists, cognitive rehabilitation specialists, or other healthcare professionals. If you have concerns about cognitive health, please consult a qualified healthcare professional."
+      },
+      "s4": {
+        "title": "4. No Guarantee of Results",
+        "content": "The effects of cognitive training vary among individuals. This product does not guarantee any specific training outcomes or cognitive improvement. Training results are influenced by multiple factors, including but not limited to training frequency, baseline cognitive ability, age, and health status."
+      },
+      "s5": {
+        "title": "5. Intended Audience",
+        "content": "This product is recommended for users aged 8 and above. Children under 8 should use this product under the guidance of a parent or guardian. This product does not knowingly collect personal information from children under 8."
+      },
+      "s6": {
+        "title": "6. Use at Your Own Risk",
+        "content": "Users understand and agree that any results arising from the use of this product (including but not limited to training effects, cognitive changes, etc.) are borne solely by the user. The developer shall not be liable for any direct, indirect, incidental, special, or consequential damages arising from the use or inability to use this product."
+      }
+    },
+    "privacy": {
+      "s1": {
+        "title": "1. Introduction and Scope",
+        "content": "This Privacy Policy applies to Memory Garden application, covering Web PWA, iOS, Android, and WeChat Mini Program platforms. We value your privacy. This policy explains in detail how we collect, use, store, and protect your personal information."
+      },
+      "s2": {
+        "title": "2. Information We Collect",
+        "h1": "Information You Provide",
+        "h2": "Automatically Collected Information",
+        "h3": "Locally Stored Data",
+        "li1": "Email address (only collected when you choose email login)",
+        "li2": "Anonymous user ID (automatically generated by Supabase Auth)",
+        "li3": "Training session records (N-back level, accuracy, response time, training duration)",
+        "li4": "Narrative unlock status and garden diary snapshots",
+        "li5": "User preference settings (language, volume, etc.)",
+        "p1": "This product uses browser localStorage to store game statistics, garden state, achievement data, and user settings. This data is stored locally on your device by default and will not be uploaded to the cloud unless you choose to log in to enable cloud sync."
+      },
+      "s3": {
+        "title": "3. How We Use Information",
+        "li1": "Provide training records and statistics display services",
+        "li2": "Implement adaptive difficulty recommendation features",
+        "li3": "Implement cloud sync functionality (only after you log in)",
+        "li4": "Improve product experience and service quality"
+      },
+      "s4": {
+        "title": "4. Information Storage and Security",
+        "li1": "Storage location: Supabase servers (default located in the United States; contact us for other regions)",
+        "li2": "Encrypted transmission: All data transmissions use HTTPS encryption",
+        "li3": "Access control: Uses Row Level Security (RLS) policies to ensure users can only access their own data",
+        "li4": "Retention period: Data is retained during the account's existence and permanently deleted within 30 days of account deletion"
+      },
+      "s5": {
+        "title": "5. Information Sharing and Disclosure",
+        "content": "We do not sell your personal information to third parties. We only share your information in the following circumstances:",
+        "li1": "Third-party service providers: Supabase (backend services), Sentry (error monitoring, if enabled)",
+        "li2": "Legal requirements: As required by laws, regulations, litigation, or government authorities"
+      },
+      "s6": {
+        "title": "6. Your Rights",
+        "li1": "Access and correct your personal data",
+        "li2": "Export training records (JSON format)",
+        "li3": "Delete account and all cloud data",
+        "li4": "Withdraw consent and stop using the service"
+      },
+      "s7": {
+        "title": "7. Children's Privacy Protection",
+        "content": "This product is recommended for users aged 8 and above. We do not knowingly collect personal information from children under 8. Children's mode is a local training mode, and training data is not uploaded to the cloud. If we discover that we have collected personal information from children under 8 without parental consent, we will promptly delete the relevant data."
+      },
+      "s8": {
+        "title": "8. Cookies and Local Storage",
+        "content": "This product does not use tracking cookies. We use browser localStorage to store game data, which is stored locally on your device and is not automatically transmitted to our servers."
+      },
+      "s9": {
+        "title": "9. Privacy Policy Updates",
+        "content": "We may update this Privacy Policy from time to time. Updated policies will be notified within the application. Continued use of this product constitutes acceptance of the updated Privacy Policy."
+      },
+      "s10": {
+        "title": "10. Contact Information",
+        "content": "If you have any questions about this Privacy Policy, please contact us at:"
+      }
+    },
+    "terms": {
+      "s1": {
+        "title": "1. Service Description",
+        "content": "Memory Garden is a cognitive training entertainment application based on the N-back paradigm. This product is currently provided free of charge and may offer premium services in the future. We reserve the right to modify, suspend, or terminate the service at any time."
+      },
+      "s2": {
+        "title": "2. Intellectual Property",
+        "content": "All content of this product (including but not limited to code, design, text, graphics, user interfaces, etc.) is protected by intellectual property laws:",
+        "li1": "Game code, art resources, and narrative content are copyrighted by the developer",
+        "li2": "User-generated data (training records, achievements, etc.) belongs to the user"
+      },
+      "s3": {
+        "title": "3. User Conduct",
+        "content": "When using this product, you agree to the following guidelines:",
+        "li1": "Do not reverse engineer, decompile, or disassemble this product",
+        "li2": "Do not use this product for commercial purposes (unless authorized in writing)",
+        "li3": "Do not interfere with or disrupt the normal operation of this product"
+      },
+      "s4": {
+        "title": "4. Account and Security",
+        "content": "You are responsible for the security of the account created when using this product. If you notice any unusual account activity, please contact us promptly."
+      },
+      "s5": {
+        "title": "5. Service Changes and Termination",
+        "content": "We reserve the right to modify or terminate this product (or any part thereof) at any time, with or without notice. We shall not be liable to you or any third party for any modification, suspension, or termination of the service."
+      },
+      "s6": {
+        "title": "6. Disclaimer",
+        "content": "This product is provided on an 'as is' and 'as available' basis, without warranties of any kind, express or implied. Please refer to the separate Disclaimer page for details."
+      },
+      "s7": {
+        "title": "7. Governing Law and Dispute Resolution",
+        "content": "These Terms of Service shall be governed by the laws of the user's jurisdiction of residence; if the jurisdiction of residence is unclear, the laws of the People's Republic of China shall apply as the governing law. Any disputes arising from these Terms shall first be resolved through friendly negotiation; if negotiation fails, either party may submit the dispute to a court with competent jurisdiction at the developer's location."
+      },
+      "s8": {
+        "title": "8. Terms Updates",
+        "content": "We reserve the right to modify these Terms of Service at any time. Updated terms will be notified within the application. Continued use of this product constitutes acceptance of the updated Terms."
+      }
+    },
+    "nback": {
+      "s1": {
+        "title": "1. What is the N-back Task?",
+        "p1": "N-back is a classic Working Memory (WM) assessment and training paradigm, proposed by Wayne Kirchner in 1958. It belongs to the continuous performance task family.",
+        "p2": "Basic principle: Participants continuously monitor a series of stimuli (such as letters, positions, graphics) and judge whether the current stimulus matches the one presented n steps back. The \"n\" value represents the difficulty level (e.g., 1-back, 2-back, 3-back). A larger n means higher working memory load.",
+        "h1": "Common Variants",
+        "p3": "Single N-back processes only one modality (e.g., visual positions or auditory letters); Dual N-back processes two modalities simultaneously (visual + auditory), making it harder and commonly used in training research.",
+        "h2": "Specific Forms",
+        "li1": "Single N-back: processes only one modality (e.g., visual positions or auditory letters)",
+        "li2": "Dual N-back: processes two modalities simultaneously (visual + auditory); participants must judge both position and letter matches n steps back",
+        "p4": "Tasks are typically adaptive: n value increases when performance is good and decreases when poor, maintaining the challenge."
+      },
+      "s2": {
+        "title": "2. What Problems Does It Solve?",
+        "p1": "Working memory is the ability to store and manipulate information in the short term. It is the core of cognition, closely related to attention, learning, reasoning, and problem-solving. N-back training primarily addresses:",
+        "h1": "Working Memory Capacity Deficits",
+        "p2": "Helps improve information updating, maintenance, and the ability to suppress irrelevant information.",
+        "h2": "Attention and Executive Function",
+        "p3": "Improves cognitive control and conflict resolution (e.g., Stroop task).",
+        "h3": "Specific Population Issues",
+        "li1": "ADHD (Attention Deficit Hyperactivity Disorder): improves verbal working memory",
+        "li2": "Elderly cognitive decline, neurological rehabilitation",
+        "li3": "Healthy adults: enhances daily memory and learning efficiency",
+        "h4": "Potential Far Transfer",
+        "p4": "May improve Fluid Intelligence (Gf) — the ability for abstract reasoning and solving novel problems, as opposed to crystallized intelligence (learned knowledge)."
+      },
+      "s3": {
+        "title": "3. Why Does It Work? Mechanisms and Evidence",
+        "h1": "Theoretical Basis",
+        "li1": "N-back requires continuous updating of working memory content, suppressing old information, and switching attention, training core executive functions",
+        "li2": "Dual N-back involves multiple modalities, potentially simulating more complex cognitive demands and enhancing transfer potential",
+        "h2": "Empirical Evidence",
+        "p1": "Nearly all studies show significant improvement in training task performance itself (near transfer to similar N-back tasks).",
+        "li3": "Near transfer: moderate effect to other working memory tasks (e.g., running memory, digit span)",
+        "li4": "Far transfer: to fluid intelligence, attention, executive function, etc., small effect (Hedges' g ≈ 0.16–0.24)",
+        "li5": "Some studies show superiority over other methods like memory palaces, especially in transfer to untrained tasks",
+        "h3": "Neural Mechanisms",
+        "p2": "May increase prefrontal activity, enhance P300 component, expand attentional focus capacity.",
+        "h4": "Limitations (Scientific Consensus)",
+        "li7": "Far transfer effects are small and inconsistent, influenced by control group type (active vs. passive), training dosage, and individual differences",
+        "li8": "Improvements may partly stem from strategy learning (e.g., chunking) rather than pure capacity increase",
+        "li9": "Not a cure-all: short-term training effects are limited, long-term persistence is more important"
+      },
+      "s4": {
+        "title": "4. Key Papers and References",
+        "h1": "Landmark Study",
+        "ref1": "Jaeggi, S. M., et al. (2008). Improving fluid intelligence with training on working memory. PNAS. First reported that dual N-back training significantly improved fluid intelligence, sparking widespread attention.",
+        "h2": "Meta-analyses",
+        "ref2": "Au et al. (2015): supports small Gf improvement",
+        "ref3": "Soveri et al. (2017): near transfer moderate, far transfer small",
+        "h3": "Chinese-Language & Subsequent Research",
+        "ref4": "Chinese-language studies have explored the potential of mobile-app dual N-back to improve visuospatial working memory and executive functions such as the Stroop task",
+        "ref5": "Related applied studies in adolescents and adults with ADHD",
+        "h4": "More Resources",
+        "p1": "Search PubMed / Google Scholar for \"dual n-back training\" or \"N-back working memory training\". Practice advice: start from 2-back, 15–20 minutes daily for several weeks. Combining feedback and adaptive difficulty yields better results.",
+        "summary": "Summary: N-back is a scientifically validated working memory training tool. Near transfer is reliable, far transfer has potential but with moderate effects. Suitable for daily cognitive maintenance and rehabilitation support. Persistence and personalized adjustment are key. Effects vary by individual, and combining with other cognitive training or lifestyle changes may be even better."
+      }
+    },
+    "contactBlock": {
+      "title": "Feedback & Contact",
+      "content": "If you have any questions, comments, suggestions, bug reports, or collaboration inquiries about the game, please feel free to reach out at:",
+      "email": "ycsy520@gmail.com"
+    },
+    "copyrightLine": "© 2026 Memory Garden · ycsy520@gmail.com · All rights reserved."
   }
 }

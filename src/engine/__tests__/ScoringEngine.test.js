@@ -8,7 +8,6 @@ import {
   computeRates,
   computeScore,
   computeMedianRT,
-  computeRTStability,
   computeValidForAdaptation,
   buildSessionMetrics,
 } from '../ScoringEngine.js';

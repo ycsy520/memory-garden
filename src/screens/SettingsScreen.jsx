@@ -23,7 +23,7 @@ const LANGUAGES = [
 
 export default function SettingsScreen() {
   const navigate = useNavigate();
-  const { t, i18n } = useTranslation();
+  const { i18n } = useTranslation();
 
   const lang = useSettingsStore((s) => s.lang);
   const isMuted = useSettingsStore((s) => s.isMuted);

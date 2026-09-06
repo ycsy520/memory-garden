@@ -121,7 +121,7 @@ export default function GardenJournalPanel() {
       </div>
 
       <div className="space-y-2 max-h-48 overflow-y-auto">
-        {fragments.slice(0, 10).map((fragment, i) => (
+        {fragments.slice(0, 10).map((fragment) => (
           <button
             key={`${fragment.collectibleId}-${fragment.tierId}-${fragment.fragmentIndex}`}
             onClick={() => handleFragmentClick(fragment)}
