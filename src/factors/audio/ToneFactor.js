@@ -9,10 +9,10 @@ import AudioService from '@services/AudioService.js';
 
 /** 音调池: 4个差异明显的音调，使用跳跃八度+不同音色增强辨识度 */
 const TONE_POOL = [
-  { freq: 261.63, name: 'Do', icon: '🔔', waveType: 'sine' },       // C4 - 低音
-  { freq: 392.00, name: 'Sol', icon: '🎵', waveType: 'triangle' },   // G4 - 中音
-  { freq: 523.25, name: 'Do⁺', icon: '🔔', waveType: 'sine' },      // C5 - 高音
-  { freq: 783.99, name: 'Sol⁺', icon: '🎵', waveType: 'triangle' },  // G5 - 超高音
+  { freq: 261.63, name: 'Do', icon: '/img/bell_ico.png', waveType: 'sine' },       // C4 - 低音
+  { freq: 392.00, name: 'Sol', icon: '/img/voice_ico.png', waveType: 'triangle' },   // G4 - 中音
+  { freq: 523.25, name: 'Do⁺', icon: '/img/bell_ico.png', waveType: 'sine' },      // C5 - 高音
+  { freq: 783.99, name: 'Sol⁺', icon: '/img/voice_ico.png', waveType: 'triangle' },  // G5 - 超高音
 ];
 
 /**

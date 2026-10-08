@@ -8,18 +8,16 @@
  * @param {boolean} props.isWarmupPhase - 是否热身阶段
  */
 import React from 'react';
-import WarmupFlowerTimer from '@components/WarmupFlowerTimer';
+import { useTranslation } from 'react-i18next';
+import FactorValue from '@components/FactorValue';
 
 export default function GridLayout({
   stimulus,
   showStimulus,
   isWarmupPhase,
-  showFlowerTimer,
-  flowerCount,
-  visibleDuration,
-  proceedWarmup,
   warmupText,
 }) {
+  const { t } = useTranslation();
   const grid = stimulus?.value;
   const cols = stimulus?.meta?.cols || 2;
   const rows = stimulus?.meta?.rows || 2;
@@ -37,7 +35,7 @@ export default function GridLayout({
         <div
           key={index}
           className={`
-            flex items-center justify-center p-4
+            flex items-center justify-center p-1
             ${!isLastRow ? 'border-b-2 border-stone-200' : ''}
             ${!isLastCol ? 'border-r-2 border-stone-200' : ''}
           `}
@@ -45,28 +43,30 @@ export default function GridLayout({
             aspectRatio: '1',
           }}
         >
-          {showStimulus && (
-            <span className="text-5xl sm:text-6xl filter drop-shadow-md select-none leading-none">
-              {cell.value}
-            </span>
-          )}
+          <div className={`w-[95%] aspect-square bg-[var(--color-sprite-bg)] rounded-[var(--radius-r1)] flex items-center justify-center overflow-hidden transition-opacity duration-300 ease-[cubic-bezier(0.32,0.72,0,1)] ${showStimulus ? 'opacity-100' : 'opacity-0'}`}>
+            <FactorValue
+              value={cell.value}
+              spriteClass="w-full h-full rounded-[var(--radius-r1)]"
+              textClass="text-5xl sm:text-6xl lg:text-7xl select-none leading-none"
+            />
+          </div>
         </div>
       );
     });
   }
 
   return (
-    <div className="flex-1 flex flex-col items-center justify-center relative z-10 px-6">
+    <div className="w-full flex flex-col items-center justify-center relative z-10 px-6">
       {/* 暖身提示 */}
       <div className={`mb-6 text-center ${isWarmupPhase && showStimulus ? '' : 'invisible'}`}>
         <p className="text-sm text-[var(--color-text-muted)] bg-white/60 px-4 py-2 rounded-full">
-          {warmupText || '记住图案'}
+          {warmupText || t('game.warmupPattern')}
         </p>
       </div>
 
-      {/* 栅格容器 */}
-      <div className="w-full max-w-xs sm:max-w-sm">
-        <div className="bg-white/60 rounded-2xl shadow-lg p-3 backdrop-blur-sm">
+      {/* 栅格容器 — 响应式 */}
+      <div className="w-full max-w-[min(85vw,15rem)] sm:max-w-sm lg:max-w-md mb-8 sm:mb-12">
+        <div className="bg-white/60 rounded-2xl shadow-lg p-3 lg:p-4">
           <div
             className="grid bg-white rounded-xl overflow-hidden"
             style={{
@@ -77,16 +77,6 @@ export default function GridLayout({
             {cells}
           </div>
         </div>
-      </div>
-
-      {/* 小花倒计时 */}
-      <div className="mt-6">
-        <WarmupFlowerTimer
-          isActive={showFlowerTimer}
-          flowerCount={flowerCount}
-          durationMs={visibleDuration}
-          onComplete={isWarmupPhase ? proceedWarmup : undefined}
-        />
       </div>
     </div>
   );

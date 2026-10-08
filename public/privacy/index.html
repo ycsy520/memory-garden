@@ -1,0 +1,1052 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Memory Garden Privacy Policy</title>
+    <meta
+      name="description"
+      content="Memory Garden privacy policy for the current local-first release. Available in English, Simplified Chinese, and Traditional Chinese."
+    />
+    <meta name="theme-color" content="#f7f5ef" />
+    <link rel="icon" type="image/png" href="/icon-192.png" />
+    <style>
+      :root {
+        --bg: #f7f5ef;
+        --bg-soft: rgba(255, 255, 255, 0.72);
+        --panel: rgba(255, 255, 255, 0.9);
+        --line: rgba(116, 138, 102, 0.18);
+        --line-strong: rgba(116, 138, 102, 0.28);
+        --text: #2b3428;
+        --text-soft: #5a6556;
+        --brand: #748a66;
+        --brand-strong: #617255;
+        --brand-soft: rgba(116, 138, 102, 0.12);
+        --shadow: 0 20px 60px rgba(70, 83, 63, 0.08);
+        --radius-xl: 28px;
+        --radius-lg: 20px;
+        --radius-md: 14px;
+        --content-width: 1080px;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        margin: 0;
+        font-family: Georgia, "Times New Roman", "Noto Serif SC", "Source Han Serif SC", "Noto Serif TC", serif;
+        color: var(--text);
+        background:
+          radial-gradient(circle at top left, rgba(201, 220, 181, 0.55), transparent 32%),
+          radial-gradient(circle at right 15% top 10%, rgba(255, 214, 179, 0.35), transparent 24%),
+          linear-gradient(180deg, #fbfaf5 0%, #f7f5ef 50%, #f2efe6 100%);
+      }
+
+      body::before {
+        content: "";
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        opacity: 0.25;
+        background-image:
+          linear-gradient(rgba(116, 138, 102, 0.04) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(116, 138, 102, 0.04) 1px, transparent 1px);
+        background-size: 22px 22px;
+        mask-image: radial-gradient(circle at center, black 28%, transparent 82%);
+      }
+
+      a {
+        color: var(--brand-strong);
+      }
+
+      .page-shell {
+        position: relative;
+        width: min(calc(100% - 24px), var(--content-width));
+        margin: 0 auto;
+        padding: 20px 0 48px;
+      }
+
+      .hero {
+        position: relative;
+        overflow: hidden;
+        display: grid;
+        grid-template-columns: minmax(0, 1.35fr) minmax(280px, 0.85fr);
+        gap: 24px;
+        padding: 28px;
+        border: 1px solid var(--line);
+        border-radius: var(--radius-xl);
+        background: linear-gradient(180deg, rgba(255, 255, 255, 0.84), rgba(255, 255, 255, 0.68));
+        box-shadow: var(--shadow);
+        backdrop-filter: blur(16px);
+      }
+
+      .hero::after {
+        content: "";
+        position: absolute;
+        inset: auto -80px -120px auto;
+        width: 260px;
+        height: 260px;
+        border-radius: 50%;
+        background: radial-gradient(circle, rgba(180, 207, 152, 0.36), rgba(180, 207, 152, 0));
+        pointer-events: none;
+      }
+
+      .brand-row {
+        display: inline-flex;
+        align-items: center;
+        gap: 14px;
+        margin-bottom: 20px;
+      }
+
+      .brand-mark {
+        width: 62px;
+        height: 62px;
+        border-radius: 18px;
+        border: 1px solid var(--line);
+        background: linear-gradient(180deg, rgba(219, 232, 198, 0.95), rgba(194, 214, 165, 0.82));
+        display: grid;
+        place-items: center;
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.7);
+      }
+
+      .brand-mark img {
+        width: 40px;
+        height: 40px;
+      }
+
+      .eyebrow {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 7px 12px;
+        border-radius: 999px;
+        background: var(--brand-soft);
+        color: var(--brand-strong);
+        font-size: 12px;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+      }
+
+      .hero h1 {
+        margin: 14px 0 10px;
+        font-size: clamp(2.2rem, 5vw, 4.3rem);
+        line-height: 0.98;
+        letter-spacing: -0.04em;
+        max-width: 10ch;
+      }
+
+      .hero p {
+        margin: 0;
+        max-width: 64ch;
+        font-size: 1rem;
+        line-height: 1.72;
+        color: var(--text-soft);
+      }
+
+      .hero-meta {
+        display: grid;
+        gap: 12px;
+        align-content: start;
+      }
+
+      .meta-card {
+        padding: 18px;
+        border-radius: var(--radius-lg);
+        border: 1px solid var(--line);
+        background: var(--bg-soft);
+      }
+
+      .meta-card h2,
+      .section h2 {
+        margin: 0 0 8px;
+        font-size: 1rem;
+        letter-spacing: -0.02em;
+      }
+
+      .meta-card p,
+      .meta-card li {
+        margin: 0;
+        color: var(--text-soft);
+        line-height: 1.65;
+        font-size: 0.96rem;
+      }
+
+      .meta-card ul,
+      .section ul {
+        margin: 12px 0 0;
+        padding-left: 18px;
+      }
+
+      .language-switcher {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+      }
+
+      .lang-btn {
+        border: 1px solid var(--line);
+        background: rgba(255, 255, 255, 0.78);
+        color: var(--text-soft);
+        padding: 10px 14px;
+        border-radius: 999px;
+        font: inherit;
+        font-size: 0.92rem;
+        cursor: pointer;
+        transition: 180ms ease;
+      }
+
+      .lang-btn:hover,
+      .lang-btn:focus-visible {
+        border-color: var(--line-strong);
+        color: var(--text);
+        outline: none;
+        transform: translateY(-1px);
+      }
+
+      .lang-btn[aria-pressed="true"] {
+        background: var(--brand);
+        color: #fff;
+        border-color: var(--brand);
+        box-shadow: 0 10px 24px rgba(116, 138, 102, 0.24);
+      }
+
+      .content-grid {
+        display: grid;
+        grid-template-columns: 280px minmax(0, 1fr);
+        gap: 24px;
+        margin-top: 24px;
+      }
+
+      .toc,
+      .content-card {
+        border: 1px solid var(--line);
+        border-radius: var(--radius-xl);
+        background: linear-gradient(180deg, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.74));
+        box-shadow: var(--shadow);
+        backdrop-filter: blur(14px);
+      }
+
+      .toc {
+        position: sticky;
+        top: 18px;
+        align-self: start;
+        padding: 18px;
+      }
+
+      .toc-title {
+        margin: 0 0 10px;
+        font-size: 0.88rem;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        color: var(--brand-strong);
+      }
+
+      .toc-list {
+        display: grid;
+        gap: 8px;
+      }
+
+      .toc-list a {
+        padding: 10px 12px;
+        border-radius: 12px;
+        text-decoration: none;
+        color: var(--text-soft);
+        transition: 180ms ease;
+      }
+
+      .toc-list a:hover,
+      .toc-list a:focus-visible {
+        background: var(--brand-soft);
+        color: var(--text);
+        outline: none;
+      }
+
+      .content-card {
+        padding: 22px;
+      }
+
+      .intro-panel {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 14px;
+        margin-bottom: 18px;
+      }
+
+      .intro-item {
+        padding: 16px;
+        border: 1px solid var(--line);
+        border-radius: var(--radius-lg);
+        background: rgba(247, 245, 239, 0.68);
+      }
+
+      .intro-item strong {
+        display: block;
+        margin-bottom: 6px;
+        font-size: 0.88rem;
+        color: var(--brand-strong);
+        letter-spacing: 0.03em;
+      }
+
+      .intro-item span {
+        display: block;
+        font-size: 0.96rem;
+        line-height: 1.6;
+        color: var(--text-soft);
+      }
+
+      .section-list {
+        display: grid;
+        gap: 14px;
+      }
+
+      .section {
+        padding: 18px 18px 16px;
+        border: 1px solid var(--line);
+        border-radius: var(--radius-lg);
+        background: rgba(255, 255, 255, 0.72);
+      }
+
+      .section p,
+      .section li {
+        margin: 0;
+        line-height: 1.72;
+        color: var(--text-soft);
+        font-size: 0.98rem;
+      }
+
+      .section p + p,
+      .section p + ul,
+      .section ul + p {
+        margin-top: 10px;
+      }
+
+      .section ul {
+        display: grid;
+        gap: 8px;
+      }
+
+      .footer-card {
+        margin-top: 22px;
+        display: grid;
+        gap: 8px;
+        padding: 18px;
+        border-radius: var(--radius-lg);
+        border: 1px solid var(--line);
+        background: linear-gradient(180deg, rgba(233, 240, 222, 0.95), rgba(248, 248, 244, 0.84));
+      }
+
+      .footer-card h2 {
+        margin: 0;
+        font-size: 1rem;
+      }
+
+      .footer-card p {
+        margin: 0;
+        line-height: 1.68;
+        color: var(--text-soft);
+      }
+
+      .contact-mail {
+        font-size: 1rem;
+        color: var(--brand-strong);
+        word-break: break-all;
+      }
+
+      .bottom-note {
+        margin-top: 18px;
+        text-align: center;
+        color: var(--text-soft);
+        font-size: 0.86rem;
+      }
+
+      @media (max-width: 920px) {
+        .hero,
+        .content-grid,
+        .intro-panel {
+          grid-template-columns: 1fr;
+        }
+
+        .toc {
+          position: static;
+        }
+      }
+
+      @media (max-width: 640px) {
+        .page-shell {
+          width: min(calc(100% - 16px), var(--content-width));
+          padding-top: 8px;
+        }
+
+        .hero,
+        .content-card,
+        .toc {
+          padding: 16px;
+          border-radius: 20px;
+        }
+
+        .hero h1 {
+          max-width: none;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main class="page-shell">
+      <section class="hero">
+        <div>
+          <span class="eyebrow" id="eyebrow">Privacy Policy</span>
+          <div class="brand-row">
+            <div class="brand-mark" aria-hidden="true">
+              <img src="/icon-192.png" alt="" />
+            </div>
+            <div>
+              <div id="brandName" style="font-size: 1.06rem; font-weight: 600;">Memory Garden</div>
+              <div id="brandSub" style="font-size: 0.92rem; color: var(--text-soft);">Local-first memory training game</div>
+            </div>
+          </div>
+          <h1 id="pageTitle">Privacy Policy</h1>
+          <p id="pageIntro"></p>
+        </div>
+
+        <div class="hero-meta">
+          <div class="meta-card">
+            <h2 id="languageTitle">Language</h2>
+            <div class="language-switcher" id="languageSwitcher" aria-label="Language switcher"></div>
+          </div>
+
+          <div class="meta-card">
+            <h2 id="quickFactsTitle">Quick facts</h2>
+            <ul id="quickFactsList"></ul>
+          </div>
+        </div>
+      </section>
+
+      <section class="content-grid">
+        <aside class="toc">
+          <p class="toc-title" id="tocTitle">Sections</p>
+          <nav class="toc-list" id="tocList" aria-label="Table of contents"></nav>
+        </aside>
+
+        <section class="content-card">
+          <div class="intro-panel">
+            <article class="intro-item">
+              <strong id="effectiveDateLabel">Effective date</strong>
+              <span id="effectiveDateValue">2026-10-04</span>
+            </article>
+            <article class="intro-item">
+              <strong id="coverageLabel">Coverage</strong>
+              <span id="coverageValue"></span>
+            </article>
+          </div>
+
+          <div class="section-list" id="sectionList"></div>
+
+          <div class="footer-card">
+            <h2 id="contactTitle">Contact</h2>
+            <p id="contactBody"></p>
+            <a class="contact-mail" href="mailto:ycsy520@gmail.com">ycsy520@gmail.com</a>
+          </div>
+
+          <p class="bottom-note" id="copyrightLine"></p>
+        </section>
+      </section>
+    </main>
+
+    <script>
+      const CONTACT_EMAIL = 'ycsy520@gmail.com';
+      const EFFECTIVE_DATE = '2026-10-04';
+
+      const translations = {
+        'zh-CN': {
+          htmlLang: 'zh-CN',
+          metaTitle: '记忆小花园隐私政策',
+          metaDescription: '记忆小花园当前本地存储版本的隐私政策，支持简体中文、繁体中文与英文。',
+          eyebrow: '隐私政策',
+          brandName: '记忆小花园',
+          brandSub: '本地优先的记忆训练小游戏',
+          pageTitle: '隐私政策',
+          pageIntro: '本页面用于 Vercel 公网披露，适用于当前 Memory Garden 正在提交 Google Play 的本地存储版本。当前版本不做广告，不要求注册账户，不做云存储。',
+          languageTitle: '语言',
+          quickFactsTitle: '快速说明',
+          quickFacts: [
+            '当前版本不做广告',
+            '当前版本不要求注册或登录',
+            '训练数据默认只保存在设备本地',
+            '不自动上传训练数据到云端',
+          ],
+          tocTitle: '目录',
+          effectiveDateLabel: '生效日期',
+          coverageLabel: '适用范围',
+          coverageValue: 'Web PWA、Android 与当前公开发布版本',
+          contactTitle: '联系方式',
+          contactBody: '如果您对本隐私政策、数据处理方式或备份机制有任何疑问，请通过以下邮箱联系开发者：',
+          copyrightLine: '© 2026 Memory Garden 记忆花园 · All rights reserved.',
+          languages: {
+            'zh-CN': '简体中文',
+            'zh-TW': '繁體中文',
+            'en-US': 'English',
+          },
+          sections: [
+            {
+              id: 'scope',
+              title: '一、引言与适用范围',
+              paragraphs: [
+                '本隐私政策适用于 Memory Garden（记忆小花园）当前公开发布的版本。我们重视您的隐私保护，并尽量以本地优先的方式处理您的训练数据与设置。',
+                '当前版本定位为 9+ 用户使用的记忆训练游戏，不提供广告，不要求注册账户，也不提供自动云同步。'
+              ]
+            },
+            {
+              id: 'collect',
+              title: '二、我们收集的信息',
+              paragraphs: [
+                '当前版本不会要求您提交姓名、邮箱、手机号或其他身份信息。'
+              ],
+              lists: [
+                {
+                  title: '当前版本可能在设备本地保存以下内容：',
+                  items: [
+                    '训练会话记录，例如 N-back 难度、准确率、反应时间、训练时长',
+                    '花园成长进度、叙事解锁状态与成就数据',
+                    '用户设置，例如语言、音量与部分界面偏好',
+                  ],
+                },
+              ],
+            },
+            {
+              id: 'use',
+              title: '三、我们如何使用这些信息',
+              lists: [
+                {
+                  items: [
+                    '展示训练历史、统计结果与成长进度',
+                    '支持本地导出与导入备份',
+                    '维持应用正常运行与用户体验',
+                  ],
+                },
+              ],
+            },
+            {
+              id: 'storage',
+              title: '四、数据的存储与安全',
+              lists: [
+                {
+                  items: [
+                    '训练数据与设置默认保存在您的设备本地存储或应用沙盒空间中',
+                    '除非您主动导出、分享或备份文件，应用不会自动把训练数据发送到开发者服务器',
+                    '数据安全主要由您的设备、系统权限与您自己的备份管理方式共同保障',
+                  ],
+                },
+              ],
+            },
+            {
+              id: 'sharing',
+              title: '五、信息共享与披露',
+              paragraphs: [
+                '我们不会出售您的个人信息。',
+                '当前版本不会自动把训练数据共享给广告平台、第三方分析平台或云存储服务。'
+              ],
+              lists: [
+                {
+                  items: [
+                    '当您主动使用导出或分享功能时，相关文件会发送到您自己选择的目标位置',
+                    '如法律法规、诉讼或主管机关明确要求，可能需要依法配合披露',
+                  ],
+                },
+              ],
+            },
+            {
+              id: 'rights',
+              title: '六、您的权利',
+              lists: [
+                {
+                  items: [
+                    '查看本地训练数据与应用内统计信息',
+                    '导出 JSON 备份文件',
+                    '导入备份、清除本地数据，或直接卸载应用',
+                  ],
+                },
+              ],
+            },
+            {
+              id: 'children',
+              title: '七、儿童隐私保护',
+              paragraphs: [
+                '本产品建议 9 岁及以上用户使用。9 岁以下儿童应在家长或监护人的指导下使用。',
+                '我们不会故意向 9 岁以下儿童收集个人信息。当前版本也不会自动上传训练数据到云端，或自动发送到第三方错误监控与分析服务。'
+              ]
+            },
+            {
+              id: 'cookies',
+              title: '八、Cookie 与本地存储',
+              paragraphs: [
+                '本页面本身不使用广告追踪器。应用产品当前版本也不使用广告追踪 Cookie。',
+                '游戏状态可能使用本地存储技术，以便在您的设备上保存训练记录和设置。'
+              ]
+            },
+            {
+              id: 'updates',
+              title: '九、政策更新',
+              paragraphs: [
+                '如果未来版本的数据处理方式发生重大变化，我们会更新本隐私政策，并在应用内或相关发布页面提示您。'
+              ]
+            },
+          ],
+        },
+        'zh-TW': {
+          htmlLang: 'zh-TW',
+          metaTitle: '記憶小花園隱私政策',
+          metaDescription: '記憶小花園目前本機儲存版本的隱私政策，支援繁體中文、簡體中文與英文。',
+          eyebrow: '隱私政策',
+          brandName: '記憶小花園',
+          brandSub: '本機優先的記憶訓練小遊戲',
+          pageTitle: '隱私政策',
+          pageIntro: '本頁面用於 Vercel 公網揭露，適用於目前 Memory Garden 正在提交 Google Play 的本機儲存版本。當前版本不做廣告，不要求註冊帳戶，也不提供雲端儲存。',
+          languageTitle: '語言',
+          quickFactsTitle: '快速說明',
+          quickFacts: [
+            '當前版本不做廣告',
+            '當前版本不要求註冊或登入',
+            '訓練資料預設只保存在裝置本機',
+            '不會自動將訓練資料上傳到雲端',
+          ],
+          tocTitle: '目錄',
+          effectiveDateLabel: '生效日期',
+          coverageLabel: '適用範圍',
+          coverageValue: 'Web PWA、Android 與目前公開發布版本',
+          contactTitle: '聯絡方式',
+          contactBody: '如果您對本隱私政策、資料處理方式或備份機制有任何疑問，請透過以下電子郵件聯絡開發者：',
+          copyrightLine: '© 2026 Memory Garden 記憶小花園 · All rights reserved.',
+          languages: {
+            'zh-CN': '简体中文',
+            'zh-TW': '繁體中文',
+            'en-US': 'English',
+          },
+          sections: [
+            {
+              id: 'scope',
+              title: '一、引言與適用範圍',
+              paragraphs: [
+                '本隱私政策適用於 Memory Garden（記憶小花園）目前公開發布的版本。我們重視您的隱私保護，並盡量以本機優先的方式處理您的訓練資料與設定。',
+                '目前版本定位為 9+ 使用者可使用的記憶訓練遊戲，不提供廣告，不要求註冊帳戶，也不提供自動雲端同步。'
+              ]
+            },
+            {
+              id: 'collect',
+              title: '二、我們收集的資訊',
+              paragraphs: [
+                '目前版本不會要求您提交姓名、電子郵件、手機號碼或其他身份資訊。'
+              ],
+              lists: [
+                {
+                  title: '目前版本可能在裝置本機保存以下內容：',
+                  items: [
+                    '訓練會話記錄，例如 N-back 難度、準確率、反應時間與訓練時長',
+                    '花園成長進度、敘事解鎖狀態與成就資料',
+                    '使用者設定，例如語言、音量與部分介面偏好',
+                  ],
+                },
+              ],
+            },
+            {
+              id: 'use',
+              title: '三、我們如何使用這些資訊',
+              lists: [
+                {
+                  items: [
+                    '顯示訓練歷史、統計結果與成長進度',
+                    '支援本機匯出與匯入備份',
+                    '維持應用正常運作與使用體驗',
+                  ],
+                },
+              ],
+            },
+            {
+              id: 'storage',
+              title: '四、資料的儲存與安全',
+              lists: [
+                {
+                  items: [
+                    '訓練資料與設定預設保存在您的裝置本機儲存或應用沙盒空間中',
+                    '除非您主動匯出、分享或備份檔案，應用不會自動將訓練資料傳送到開發者伺服器',
+                    '資料安全主要由您的裝置、系統權限與您自己的備份管理方式共同保障',
+                  ],
+                },
+              ],
+            },
+            {
+              id: 'sharing',
+              title: '五、資訊分享與揭露',
+              paragraphs: [
+                '我們不會出售您的個人資訊。',
+                '目前版本不會自動把訓練資料分享給廣告平台、第三方分析平台或雲端儲存服務。'
+              ],
+              lists: [
+                {
+                  items: [
+                    '當您主動使用匯出或分享功能時，相關檔案會傳送到您自己選擇的目標位置',
+                    '如法律法規、訴訟或主管機關明確要求，可能需要依法配合揭露',
+                  ],
+                },
+              ],
+            },
+            {
+              id: 'rights',
+              title: '六、您的權利',
+              lists: [
+                {
+                  items: [
+                    '查看本機訓練資料與應用內統計資訊',
+                    '匯出 JSON 備份檔案',
+                    '匯入備份、清除本機資料，或直接解除安裝應用',
+                  ],
+                },
+              ],
+            },
+            {
+              id: 'children',
+              title: '七、兒童隱私保護',
+              paragraphs: [
+                '本產品建議 9 歲及以上用戶使用。9 歲以下兒童應在家長或監護人的指導下使用。',
+                '我們不會故意向 9 歲以下兒童收集個人資訊。目前版本也不會自動上傳訓練資料到雲端，或自動傳送到第三方錯誤監控與分析服務。'
+              ]
+            },
+            {
+              id: 'cookies',
+              title: '八、Cookie 與本機儲存',
+              paragraphs: [
+                '本頁面本身不使用廣告追蹤器。應用產品目前版本也不使用廣告追蹤 Cookie。',
+                '遊戲狀態可能使用本機儲存技術，以便在您的裝置上保存訓練記錄與設定。'
+              ]
+            },
+            {
+              id: 'updates',
+              title: '九、政策更新',
+              paragraphs: [
+                '如果未來版本的資料處理方式發生重大變化，我們會更新本隱私政策，並在應用內或相關發布頁面提示您。'
+              ]
+            },
+          ],
+        },
+        'en-US': {
+          htmlLang: 'en',
+          metaTitle: 'Memory Garden Privacy Policy',
+          metaDescription: 'Privacy Policy for the current local-first release of Memory Garden. Available in English, Simplified Chinese, and Traditional Chinese.',
+          eyebrow: 'Privacy Policy',
+          brandName: 'Memory Garden',
+          brandSub: 'A local-first memory training game',
+          pageTitle: 'Privacy Policy',
+          pageIntro: 'This public page is intended for the current Google Play submission of Memory Garden. The current release contains no ads, does not require account registration, and does not provide automatic cloud storage.',
+          languageTitle: 'Language',
+          quickFactsTitle: 'Quick facts',
+          quickFacts: [
+            'No ads in the current release',
+            'No sign-up or login required',
+            'Training data is stored locally on your device by default',
+            'No automatic cloud upload of training data',
+          ],
+          tocTitle: 'Sections',
+          effectiveDateLabel: 'Effective date',
+          coverageLabel: 'Coverage',
+          coverageValue: 'Web PWA, Android, and the current public release',
+          contactTitle: 'Contact',
+          contactBody: 'If you have any questions about this Privacy Policy, data handling, or backup behavior, please contact the developer at:',
+          copyrightLine: '© 2026 Memory Garden · All rights reserved.',
+          languages: {
+            'zh-CN': '简体中文',
+            'zh-TW': '繁體中文',
+            'en-US': 'English',
+          },
+          sections: [
+            {
+              id: 'scope',
+              title: '1. Introduction and Scope',
+              paragraphs: [
+                'This Privacy Policy applies to the current public release of Memory Garden. We value privacy and aim to keep your training data and settings handled locally whenever possible.',
+                'The current release is positioned for users aged 9 and above. It does not contain ads, does not require account registration, and does not offer automatic cloud sync.'
+              ]
+            },
+            {
+              id: 'collect',
+              title: '2. Information We Collect',
+              paragraphs: [
+                'The current release does not require your name, email address, phone number, or other direct identity information.'
+              ],
+              lists: [
+                {
+                  title: 'The app may store the following on your device locally:',
+                  items: [
+                    'Training session records, such as N-back difficulty, accuracy, response time, and training duration',
+                    'Garden progress, narrative unlock status, and achievement data',
+                    'User settings such as language, volume, and selected interface preferences',
+                  ],
+                },
+              ],
+            },
+            {
+              id: 'use',
+              title: '3. How We Use Information',
+              lists: [
+                {
+                  items: [
+                    'To display training history, statistics, and progress',
+                    'To support local backup export and import',
+                    'To keep the product functional and improve user experience',
+                  ],
+                },
+              ],
+            },
+            {
+              id: 'storage',
+              title: '4. Data Storage and Security',
+              lists: [
+                {
+                  items: [
+                    'Training data and settings are stored in your device local storage or app sandbox by default',
+                    'Unless you actively export, share, or back up a file, the app does not automatically send training data to developer servers',
+                    'Data safety depends primarily on your device protections, operating system permissions, and how you manage your backups',
+                  ],
+                },
+              ],
+            },
+            {
+              id: 'sharing',
+              title: '5. Information Sharing and Disclosure',
+              paragraphs: [
+                'We do not sell your personal information.',
+                'The current release does not automatically share training data with advertising platforms, third-party analytics platforms, or cloud storage services.'
+              ],
+              lists: [
+                {
+                  items: [
+                    'If you actively use export or share features, the file is sent only to the destination you choose',
+                    'We may disclose information when required by law, regulation, litigation, or a competent authority',
+                  ],
+                },
+              ],
+            },
+            {
+              id: 'rights',
+              title: '6. Your Rights',
+              lists: [
+                {
+                  items: [
+                    'Review local training data and in-app statistics',
+                    'Export JSON backup files',
+                    'Import backups, clear local data, or uninstall the app',
+                  ],
+                },
+              ],
+            },
+            {
+              id: 'children',
+              title: '7. Children’s Privacy',
+              paragraphs: [
+                'This product is recommended for users aged 9 and above. Children under 9 should use it under the guidance of a parent or guardian.',
+                'We do not knowingly collect personal information from children under 9. The current release also does not automatically upload training data to the cloud or automatically send it to third-party analytics or error monitoring services.'
+              ]
+            },
+            {
+              id: 'cookies',
+              title: '8. Cookies and Local Storage',
+              paragraphs: [
+                'This page itself does not use ad trackers. The current app release also does not use ad tracking cookies.',
+                'The product may use local storage technologies to save gameplay records and settings on your device.'
+              ]
+            },
+            {
+              id: 'updates',
+              title: '9. Policy Updates',
+              paragraphs: [
+                'If future releases materially change how data is handled, we will update this Privacy Policy and provide notice in the app or through relevant release channels.'
+              ]
+            },
+          ],
+        },
+      };
+
+      /**
+       * 解析 URL 查询参数里的 lang。
+       * 如果用户显式传入 `?lang=zh-CN` 这类值，就优先使用它。
+       *
+       * @returns {string|null}
+       */
+      function getLangFromQuery() {
+        const params = new URLSearchParams(window.location.search);
+        const lang = params.get('lang');
+        return translations[lang] ? lang : null;
+      }
+
+      /**
+       * 根据浏览器语言推断当前页面语言。
+       * 未命中时默认回退到英文，符合当前 Google Play 口径。
+       *
+       * @returns {string}
+       */
+      function resolveInitialLocale() {
+        const explicitLang = getLangFromQuery();
+        if (explicitLang) {
+          return explicitLang;
+        }
+
+        const browserLang = (navigator.language || 'en-US').toLowerCase();
+        if (browserLang.startsWith('zh-cn') || browserLang.startsWith('zh-sg') || browserLang === 'zh') {
+          return 'zh-CN';
+        }
+
+        if (browserLang.startsWith('zh-tw') || browserLang.startsWith('zh-hk') || browserLang.startsWith('zh-mo')) {
+          return 'zh-TW';
+        }
+
+        return 'en-US';
+      }
+
+      /**
+       * 批量设置元素文本内容。
+       *
+       * @param {string} id - 元素 ID
+       * @param {string} value - 需要写入的文本
+       */
+      function setText(id, value) {
+        const element = document.getElementById(id);
+        if (element) {
+          element.textContent = value;
+        }
+      }
+
+      /**
+       * 构建语言切换按钮。
+       *
+       * @param {string} currentLocale - 当前语言代码
+       */
+      function renderLanguageSwitcher(currentLocale) {
+        const container = document.getElementById('languageSwitcher');
+        container.innerHTML = '';
+
+        Object.keys(translations).forEach((locale) => {
+          const button = document.createElement('button');
+          button.type = 'button';
+          button.className = 'lang-btn';
+          button.setAttribute('aria-pressed', String(locale === currentLocale));
+          button.textContent = translations[currentLocale].languages[locale];
+          button.addEventListener('click', () => {
+            const nextUrl = new URL(window.location.href);
+            nextUrl.searchParams.set('lang', locale);
+            window.history.replaceState({}, '', nextUrl.toString());
+            renderPage(locale);
+          });
+          container.appendChild(button);
+        });
+      }
+
+      /**
+       * 渲染目录导航。
+       *
+       * @param {Array<{id:string,title:string}>} sections - 当前语言的政策章节
+       */
+      function renderToc(sections) {
+        const tocList = document.getElementById('tocList');
+        tocList.innerHTML = '';
+
+        sections.forEach((section) => {
+          const link = document.createElement('a');
+          link.href = `#${section.id}`;
+          link.textContent = section.title;
+          tocList.appendChild(link);
+        });
+      }
+
+      /**
+       * 渲染正文章节列表。
+       *
+       * @param {Array} sections - 当前语言的政策章节
+       */
+      function renderSections(sections) {
+        const sectionList = document.getElementById('sectionList');
+        sectionList.innerHTML = '';
+
+        sections.forEach((section) => {
+          const article = document.createElement('article');
+          article.className = 'section';
+          article.id = section.id;
+
+          const title = document.createElement('h2');
+          title.textContent = section.title;
+          article.appendChild(title);
+
+          (section.paragraphs || []).forEach((paragraphText) => {
+            const paragraph = document.createElement('p');
+            paragraph.textContent = paragraphText;
+            article.appendChild(paragraph);
+          });
+
+          (section.lists || []).forEach((listConfig) => {
+            if (listConfig.title) {
+              const intro = document.createElement('p');
+              intro.textContent = listConfig.title;
+              article.appendChild(intro);
+            }
+
+            const list = document.createElement('ul');
+            listConfig.items.forEach((itemText) => {
+              const item = document.createElement('li');
+              item.textContent = itemText;
+              list.appendChild(item);
+            });
+            article.appendChild(list);
+          });
+
+          sectionList.appendChild(article);
+        });
+      }
+
+      /**
+       * 按语言完整渲染页面内容，并同步 `<html lang>`、meta 与目录。
+       *
+       * @param {string} locale - 目标语言代码
+       */
+      function renderPage(locale) {
+        const t = translations[locale] || translations['en-US'];
+
+        document.documentElement.lang = t.htmlLang;
+        document.title = t.metaTitle;
+        document.querySelector('meta[name="description"]').setAttribute('content', t.metaDescription);
+
+        setText('eyebrow', t.eyebrow);
+        setText('brandName', t.brandName);
+        setText('brandSub', t.brandSub);
+        setText('pageTitle', t.pageTitle);
+        setText('pageIntro', t.pageIntro);
+        setText('languageTitle', t.languageTitle);
+        setText('quickFactsTitle', t.quickFactsTitle);
+        setText('tocTitle', t.tocTitle);
+        setText('effectiveDateLabel', t.effectiveDateLabel);
+        setText('effectiveDateValue', EFFECTIVE_DATE);
+        setText('coverageLabel', t.coverageLabel);
+        setText('coverageValue', t.coverageValue);
+        setText('contactTitle', t.contactTitle);
+        setText('contactBody', t.contactBody);
+        setText('copyrightLine', t.copyrightLine);
+
+        const quickFactsList = document.getElementById('quickFactsList');
+        quickFactsList.innerHTML = '';
+        t.quickFacts.forEach((fact) => {
+          const item = document.createElement('li');
+          item.textContent = fact;
+          quickFactsList.appendChild(item);
+        });
+
+        renderLanguageSwitcher(locale);
+        renderToc(t.sections);
+        renderSections(t.sections);
+      }
+
+      renderPage(resolveInitialLocale());
+      document.querySelector('.contact-mail').setAttribute('href', `mailto:${CONTACT_EMAIL}`);
+    </script>
+  </body>
+</html>

@@ -1,0 +1,64 @@
+{
+  "schema": "memory-garden-backup",
+  "version": "5.2.1",
+  "exportedAt": "2026-07-15T00:00:00.000Z",
+  "stats": {
+    "state": {
+      "bestScores": {
+        "walk-1": 24
+      },
+      "sessions": [
+        {
+          "id": "session-example-001",
+          "modeId": "walk",
+          "difficulty": 1,
+          "score": 24,
+          "startedAt": "2026-07-15T00:00:00.000Z"
+        }
+      ],
+      "perModeCounts": {
+        "walk": 1
+      },
+      "perNCounts": {
+        "1": 1
+      },
+      "warmupSessionsUsed": 1
+    },
+    "version": 0
+  },
+  "settings": {
+    "state": {
+      "lang": "zh-CN",
+      "isMuted": false,
+      "levelIndex": 0,
+      "hasSeenIntro": true
+    },
+    "version": 0
+  },
+  "garden": {
+    "state": {
+      "growthPoints": 24,
+      "totalWalks": 1,
+      "discovered": [
+        "tulip"
+      ],
+      "lastWalkDate": "2026-07-15",
+      "streakDays": 1,
+      "bestAccuracy": 0.75,
+      "newlyUnlocked": []
+    },
+    "version": 0
+  },
+  "achievements": {
+    "state": {
+      "achievementSchemaVersion": 2,
+      "unlockedNarratives": {},
+      "unlockTimestamps": {},
+      "readNarratives": [],
+      "diaryEntries": [],
+      "hasViewedGardenDiary": false,
+      "hiddenAchievements": {}
+    },
+    "version": 2
+  }
+}

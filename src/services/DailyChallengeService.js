@@ -37,7 +37,7 @@ function randomPick(arr, random) {
 const GAME_MODES = ['standard', 'dual', 'spatial', 'grid'];
 
 /** 可选的视觉因子 */
-const VISUAL_FACTORS = ['emoji-flower', 'emoji-animal', 'emoji-food', 'text-zh', 'text-en', 'symbol'];
+const VISUAL_FACTORS = ['sprite-garden'];
 
 /** 每日挑战的难度范围 */
 const DIFFICULTY_LEVELS = [
@@ -212,12 +212,10 @@ export default class DailyChallengeService {
       grid: '栅格模式',
     };
     const factorNames = {
+      'sprite-garden': '花园',
       'emoji-flower': '花朵',
       'emoji-animal': '动物',
       'emoji-food': '食物',
-      'text-zh': '中文词',
-      'text-en': '英文词',
-      'symbol': '符号',
     };
 
     const modeName = modeNames[config.modeId] || config.modeId;

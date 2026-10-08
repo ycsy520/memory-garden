@@ -1,7 +1,7 @@
 # 04 — 软件设计文档 (SDD)
 
-> 版本: v5.0
-> 更新: 2026-07-03
+> 版本: v5.1
+> 更新: 2026-07-04
 > 注: v5.0 重构后目录结构与 v2.0 规划有差异，以下为当前实际结构。
 >     差异对照表见 §1.2。
 
@@ -21,11 +21,10 @@ src/
 │   ├── game/                     # 游戏领域组件
 │   │   └── StimulusStage.jsx    # 主舞台刺激展示 (v5.0)
 │   ├── composite/                # 复合组件 — 待建设
-│   ├── layouts/                  # [遗留] 旧布局组件，逐步迁移到 game/
-│   │   ├── ClassicLayout.jsx    # [已迁移] → game/StimulusStage.jsx
-│   │   ├── DualLayout.jsx       # [遗留, deprecated]
-│   │   ├── SpatialLayout.jsx    # [遗留, deprecated]
-│   │   └── GridLayout.jsx       # [遗留, deprecated]
+│   ├── layouts/                  # 游戏布局组件
+│   │   ├── DualLayout.jsx       # 双通道模式布局
+│   │   ├── SpatialLayout.jsx    # 空间模式布局
+│   │   └── GridLayout.jsx       # 栅格模式布局
 │   ├── StimulusRenderer.jsx     # 刺激分发渲染
 │   ├── GardenJournalPanel.jsx   # 花园日记面板 (v2.0)
 │   ├── MandalaLoader.jsx        # 曼陀罗加载动画
@@ -67,10 +66,7 @@ src/
 │   ├── visual/                  # 视觉因子
 │   │   ├── EmojiFactor.js
 │   │   ├── AnimalEmojiFactor.js
-│   │   ├── FoodEmojiFactor.js
-│   │   ├── TextEnFactor.js
-│   │   ├── TextZhFactor.js
-│   │   └── SymbolFactor.js
+│   │   └── FoodEmojiFactor.js
 │   └── audio/                   # 音频因子
 │       └── ToneFactor.js
 │
@@ -97,7 +93,9 @@ src/
 │   ├── useMatchInput.js         # 匹配输入防抖
 │   ├── usePlatform.js           # 平台检测Hook
 │   ├── usePWAInstall.js         # PWA安装提示
-│   └── useVisibilityChange.js   # 页面可见性监听
+│   ├── useVisibilityChange.js   # 页面可见性监听
+│   ├── useMediaQuery.js         # 媒体查询Hook (v5.1)
+│   └── useOrientationGuard.js   # 手机横屏锁定Hook (v5.1)
 │
 ├── i18n/                         # 国际化资源
 │   ├── index.js                 # 初始化配置

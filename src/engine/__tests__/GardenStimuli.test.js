@@ -1,6 +1,6 @@
 /**
  * GardenStimuli 单元测试
- * 验证素材集的完整性和 lure 支持
+ * 验证精灵图素材集（单一池 31 个）的完整性和 lure 支持
  */
 import { describe, it, expect } from 'vitest';
 import {
@@ -11,18 +11,18 @@ import {
 } from '../stimuli/GardenStimuli.js';
 
 describe('GardenStimuli', () => {
-  it('应包含 12 个 MVP 素材', () => {
+  it('应包含 31 个精灵图素材', () => {
     const stimuli = getAllStimuli();
-    expect(stimuli).toHaveLength(12);
+    expect(stimuli).toHaveLength(31);
   });
 
-  it('每个素材应包含必要字段', () => {
+  it('每个素材应包含必要字段，display 为精灵图格子索引', () => {
     const stimuli = getAllStimuli();
-    stimuli.forEach((s) => {
+    stimuli.forEach((s, index) => {
       expect(s.id).toBeDefined();
       expect(s.label).toBeDefined();
-      expect(s.display).toBeDefined();
-      expect(s.type).toBe('emoji');
+      expect(s.display).toBe(index);
+      expect(s.type).toBe('sprite');
       expect(s.category).toBeDefined();
       expect(s.similarityGroup).toBeDefined();
       expect(typeof s.suitableForChildren).toBe('boolean');
@@ -34,7 +34,7 @@ describe('GardenStimuli', () => {
     const rose = getStimulusById('rose');
     expect(rose).toBeDefined();
     expect(rose.label).toBe('玫瑰');
-    expect(rose.display).toBe('🌹');
+    expect(rose.display).toBe(30);
   });
 
   it('getStimulusById 对不存在的 ID 应返回 undefined', () => {
@@ -46,7 +46,7 @@ describe('GardenStimuli', () => {
     expect(similar.length).toBeGreaterThan(0);
     similar.forEach((s) => {
       expect(s.id).not.toBe('rose');
-      expect(s.similarityGroup).toBe('flower-red');
+      expect(s.similarityGroup).toBe('pink-flower');
     });
   });
 
@@ -57,7 +57,7 @@ describe('GardenStimuli', () => {
   it('getSimilarityGroups 应返回所有相似组', () => {
     const groups = getSimilarityGroups();
     expect(groups.length).toBeGreaterThan(0);
-    expect(groups).toContain('flower-red');
-    expect(groups).toContain('leaf-green');
+    expect(groups).toContain('pink-flower');
+    expect(groups).toContain('green-leaf');
   });
 });

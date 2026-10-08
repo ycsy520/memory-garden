@@ -6,6 +6,7 @@
  * @version 3.3
  * @author Memory Garden Team
  */
+import APP_FEATURES from '../appFeatures';
 
 const STORAGE_KEY = 'mg_analytics';
 const MAX_EVENTS = 500;
@@ -142,6 +143,8 @@ const AnalyticsService = {
    * @param {Object} event
    */
   _sendToUmami(event) {
+    if (!APP_FEATURES.remoteReportingEnabled) return;
+
     const umamiUrl = import.meta.env.VITE_UMAMI_URL;
     const websiteId = import.meta.env.VITE_UMAMI_WEBSITE_ID;
     if (!umamiUrl || !websiteId) return;

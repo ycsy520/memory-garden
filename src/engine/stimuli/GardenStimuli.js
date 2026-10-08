@@ -1,225 +1,107 @@
 /**
- * 花园素材定义 — MVP 高区分度素材集
- * P0-A 阶段使用 Emoji 作为临时展示，数据结构按 SVG 未来形态设计。
- * 替换 SVG 时只需修改 display 或 assetUrl 字段。
+ * 花园刺激素材库 — 精灵图版（单一池）
  *
- * 每个素材包含：
- * - id: 唯一标识（后续替换 SVG 时不变）
- * - label: 中文名称
- * - display: 当前展示内容（Emoji 或 SVG 路径）
- * - type: 'emoji' | 'svg'
- * - category: 素材分类
- * - similarityGroup: 相似组（用于 similarStimulus lure）
- * - visualComplexity: 视觉复杂度
- * - suitableForChildren / suitableForOlderAdults: 适用人群
+ * 素材来源：public/img/g.png（6×6 精灵图，31 个有效格，每格约 299px）
+ * 背景为 rgb(241, 240, 236) 轻微纹理暖纸色，渲染时与 UI 暖白色系协调。
  *
- * @version 5.0
+ * display 字段为精灵图格子索引（0~30），由 FactorSprite 组件裁切渲染，
+ * 不再使用跨平台不稳定的 Emoji。
+ *
+ * similarityGroup 用于 TrialGenerator 的 lure（相似干扰）逻辑，
+ * 按"易混淆的视觉家族"分组（同色系/同类别）。
+ *
+ * @version 6.0
  */
 
 /**
- * @typedef {Object} StimulusDef
- * @property {string} id - 唯一标识
- * @property {string} label - 中文名称
- * @property {string} display - 展示内容（emoji 或 SVG 路径）
- * @property {'emoji'|'svg'} type - 素材类型
- * @property {'flower'|'leaf'|'creature'|'decoration'|'nature'} category - 分类
- * @property {string} similarityGroup - 相似组 ID，同组内素材可用于 lure
- * @property {'low'|'medium'|'high'} visualComplexity - 视觉复杂度
- * @property {boolean} suitableForChildren - 是否适合儿童
- * @property {boolean} suitableForOlderAdults - 是否适合老人
+ * 精灵图元数据表（顺序 = 精灵图格子索引，逐行逐列）
+ * 字段：id / label / category / similarityGroup / visualComplexity
  */
+const SPRITE_DEFS = [
+  { id: 'fern',       label: '蕨叶',   category: 'leaf',      similarityGroup: 'green-leaf',    visualComplexity: 'medium' },
+  { id: 'clover',     label: '四叶草', category: 'leaf',      similarityGroup: 'green-leaf',    visualComplexity: 'low' },
+  { id: 'mint',       label: '薄荷',   category: 'leaf',      similarityGroup: 'green-leaf',    visualComplexity: 'low' },
+  { id: 'lettuce',    label: '生菜',   category: 'vegetable', similarityGroup: 'green-veg',     visualComplexity: 'low' },
+  { id: 'viola',      label: '角堇',   category: 'flower',    similarityGroup: 'purple-flower', visualComplexity: 'medium' },
+  { id: 'peony',      label: '牡丹',   category: 'flower',    similarityGroup: 'pink-flower',   visualComplexity: 'medium' },
 
-/** MVP 花园素材集：12 个高区分度素材 */
-const GARDEN_STIMULI = [
-  // === 花卉 ===
-  {
-    id: 'rose',
-    label: '玫瑰',
-    display: '🌹',
-    type: 'emoji',
-    category: 'flower',
-    similarityGroup: 'flower-red',
-    visualComplexity: 'medium',
-    suitableForChildren: true,
-    suitableForOlderAdults: true,
-  },
-  {
-    id: 'sunflower',
-    label: '向日葵',
-    display: '🌻',
-    type: 'emoji',
-    category: 'flower',
-    similarityGroup: 'flower-yellow',
-    visualComplexity: 'medium',
-    suitableForChildren: true,
-    suitableForOlderAdults: true,
-  },
-  {
-    id: 'tulip',
-    label: '郁金香',
-    display: '🌷',
-    type: 'emoji',
-    category: 'flower',
-    similarityGroup: 'flower-red',
-    visualComplexity: 'medium',
-    suitableForChildren: true,
-    suitableForOlderAdults: true,
-  },
-  {
-    id: 'blossom',
-    label: '樱花',
-    display: '🌸',
-    type: 'emoji',
-    category: 'flower',
-    similarityGroup: 'flower-pink',
-    visualComplexity: 'medium',
-    suitableForChildren: true,
-    suitableForOlderAdults: true,
-  },
-  {
-    id: 'hibiscus',
-    label: '木槿',
-    display: '🌺',
-    type: 'emoji',
-    category: 'flower',
-    similarityGroup: 'flower-red',
-    visualComplexity: 'medium',
-    suitableForChildren: true,
-    suitableForOlderAdults: true,
-  },
+  { id: 'fiveleaf',   label: '五叶草', category: 'leaf',      similarityGroup: 'green-leaf',    visualComplexity: 'low' },
+  { id: 'rosemary',   label: '迷迭香', category: 'leaf',      similarityGroup: 'green-leaf',    visualComplexity: 'medium' },
+  { id: 'blueberry',  label: '蓝莓',   category: 'fruit',     similarityGroup: 'blue',          visualComplexity: 'low' },
+  { id: 'eggplant',   label: '茄子',   category: 'vegetable', similarityGroup: 'purple-veg',    visualComplexity: 'low' },
+  { id: 'gerbera',    label: '非洲菊', category: 'flower',    similarityGroup: 'warm-flower',   visualComplexity: 'medium' },
+  { id: 'lavender',   label: '薰衣草', category: 'flower',    similarityGroup: 'purple-flower', visualComplexity: 'medium' },
 
-  // === 叶子 ===
-  {
-    id: 'clover',
-    label: '三叶草',
-    display: '🍀',
-    type: 'emoji',
-    category: 'leaf',
-    similarityGroup: 'leaf-green',
-    visualComplexity: 'low',
-    suitableForChildren: true,
-    suitableForOlderAdults: true,
-  },
-  {
-    id: 'herb',
-    label: '香草',
-    display: '🌿',
-    type: 'emoji',
-    category: 'leaf',
-    similarityGroup: 'leaf-green',
-    visualComplexity: 'low',
-    suitableForChildren: true,
-    suitableForOlderAdults: true,
-  },
+  { id: 'strawberry', label: '草莓',   category: 'fruit',     similarityGroup: 'red-fruit-veg', visualComplexity: 'low' },
+  { id: 'pumpkin',    label: '南瓜',   category: 'vegetable', similarityGroup: 'orange-veg',    visualComplexity: 'low' },
+  { id: 'carrot',     label: '胡萝卜', category: 'vegetable', similarityGroup: 'orange-veg',    visualComplexity: 'low' },
+  { id: 'pea',        label: '豌豆荚', category: 'vegetable', similarityGroup: 'green-veg',     visualComplexity: 'low' },
+  { id: 'cosmos',     label: '波斯菊', category: 'flower',    similarityGroup: 'pink-flower',   visualComplexity: 'medium' },
+  { id: 'daisy',      label: '雏菊',   category: 'flower',    similarityGroup: 'white-flower',  visualComplexity: 'low' },
 
-  // === 小动物 ===
-  {
-    id: 'butterfly',
-    label: '蝴蝶',
-    display: '🦋',
-    type: 'emoji',
-    category: 'creature',
-    similarityGroup: 'creature-fly',
-    visualComplexity: 'medium',
-    suitableForChildren: true,
-    suitableForOlderAdults: true,
-  },
-  {
-    id: 'ladybug',
-    label: '瓢虫',
-    display: '🐞',
-    type: 'emoji',
-    category: 'creature',
-    similarityGroup: 'creature-small',
-    visualComplexity: 'low',
-    suitableForChildren: true,
-    suitableForOlderAdults: true,
-  },
-  {
-    id: 'bee',
-    label: '蜜蜂',
-    display: '🐝',
-    type: 'emoji',
-    category: 'creature',
-    similarityGroup: 'creature-fly',
-    visualComplexity: 'medium',
-    suitableForChildren: true,
-    suitableForOlderAdults: true,
-  },
+  { id: 'cucumber',   label: '黄瓜',   category: 'vegetable', similarityGroup: 'green-veg',     visualComplexity: 'low' },
+  { id: 'pepper',     label: '红甜椒', category: 'vegetable', similarityGroup: 'red-fruit-veg', visualComplexity: 'low' },
+  { id: 'tomato',     label: '番茄',   category: 'vegetable', similarityGroup: 'red-fruit-veg', visualComplexity: 'low' },
+  { id: 'narcissus',  label: '水仙',   category: 'flower',    similarityGroup: 'white-flower',  visualComplexity: 'medium' },
+  { id: 'violet',     label: '紫罗兰', category: 'flower',    similarityGroup: 'purple-flower', visualComplexity: 'medium' },
+  { id: 'tulip',      label: '郁金香', category: 'flower',    similarityGroup: 'pink-flower',   visualComplexity: 'low' },
 
-  // === 水果 ===
-  {
-    id: 'strawberry',
-    label: '草莓',
-    display: '🍓',
-    type: 'emoji',
-    category: 'decoration',
-    similarityGroup: 'fruit-red',
-    visualComplexity: 'low',
-    suitableForChildren: true,
-    suitableForOlderAdults: true,
-  },
-  {
-    id: 'apple',
-    label: '苹果',
-    display: '🍎',
-    type: 'emoji',
-    category: 'decoration',
-    similarityGroup: 'fruit-red',
-    visualComplexity: 'low',
-    suitableForChildren: true,
-    suitableForOlderAdults: true,
-  },
+  { id: 'lilyvalley', label: '铃兰',   category: 'flower',    similarityGroup: 'white-flower',  visualComplexity: 'medium' },
+  { id: 'lily',       label: '百合',   category: 'flower',    similarityGroup: 'white-flower',  visualComplexity: 'medium' },
+  { id: 'carnation',  label: '康乃馨', category: 'flower',    similarityGroup: 'red-flower',    visualComplexity: 'medium' },
+  { id: 'hydrangea',  label: '绣球花', category: 'flower',    similarityGroup: 'blue',          visualComplexity: 'medium' },
+  { id: 'pansy',      label: '三色堇', category: 'flower',    similarityGroup: 'purple-flower', visualComplexity: 'medium' },
+  { id: 'sunflower',  label: '向日葵', category: 'flower',    similarityGroup: 'warm-flower',   visualComplexity: 'low' },
+
+  { id: 'rose',       label: '玫瑰',   category: 'flower',    similarityGroup: 'pink-flower',   visualComplexity: 'medium' },
 ];
 
 /**
- * 按相似组索引素材
- * @type {Map<string, StimulusDef[]>}
+ * 完整素材定义（display = 精灵图格子索引，type = 'sprite'）
+ * @type {import('../types').StimulusDef[]}
  */
-const similarityGroupIndex = new Map();
-GARDEN_STIMULI.forEach((s) => {
-  if (!similarityGroupIndex.has(s.similarityGroup)) {
-    similarityGroupIndex.set(s.similarityGroup, []);
-  }
-  similarityGroupIndex.get(s.similarityGroup).push(s);
-});
+const GARDEN_STIMULI = SPRITE_DEFS.map((def, index) => ({
+  ...def,
+  display: index,
+  type: 'sprite',
+  suitableForChildren: true,
+  suitableForOlderAdults: true,
+}));
 
 /**
- * 获取所有花园素材
- * @returns {StimulusDef[]}
+ * 获取全部刺激素材
+ * @returns {import('../types').StimulusDef[]}
  */
 export function getAllStimuli() {
   return GARDEN_STIMULI;
 }
 
 /**
- * 根据 ID 获取素材定义
+ * 按ID获取素材
  * @param {string} id
- * @returns {StimulusDef|undefined}
+ * @returns {import('../types').StimulusDef|undefined}
  */
 export function getStimulusById(id) {
   return GARDEN_STIMULI.find((s) => s.id === id);
 }
 
 /**
- * 获取指定素材的相似素材（同 similarityGroup，排除自身）
- * 用于 similarStimulus lure 生成
+ * 获取与指定素材相似的其他素材（同 similarityGroup，用于 lure）
  * @param {string} stimulusId
- * @returns {StimulusDef[]}
+ * @returns {import('../types').StimulusDef[]}
  */
 export function getSimilarStimuli(stimulusId) {
   const target = getStimulusById(stimulusId);
   if (!target) return [];
-  const group = similarityGroupIndex.get(target.similarityGroup) || [];
-  return group.filter((s) => s.id !== stimulusId);
+  return GARDEN_STIMULI.filter(
+    (s) => s.id !== stimulusId && s.similarityGroup === target.similarityGroup
+  );
 }
 
 /**
- * 获取所有相似组 ID
+ * 获取所有相似组ID
  * @returns {string[]}
  */
 export function getSimilarityGroups() {
-  return Array.from(similarityGroupIndex.keys());
+  return [...new Set(GARDEN_STIMULI.map((s) => s.similarityGroup))];
 }
-
-export { GARDEN_STIMULI, similarityGroupIndex };

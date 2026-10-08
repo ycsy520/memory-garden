@@ -8,6 +8,7 @@
  * @version 2.1
  */
 import { NARRATIVE_COLLECTIBLES } from '@engine/narratives';
+import i18n from '@i18n/index';
 
 /**
  * unlockKey → 条件函数映射
@@ -204,27 +205,27 @@ export const HIDDEN_ACHIEVEMENTS = {
   /** 散步模式累计 50 局 — 激励挑战更高 N */
   'walk-50': {
     check: ({ perModeCounts }) => (perModeCounts.walk || 0) >= 50,
-    text: '你在这里走了很久。花园外还有更高的山。',
+    text: () => i18n.t('narrativeUnlock.milestone1'),
   },
   /** 散步模式累计 100 局 — 强激励挑战 */
   'walk-100': {
     check: ({ perModeCounts }) => (perModeCounts.walk || 0) >= 100,
-    text: '这条路你闭着眼都能走。试试睁开眼走一条新的？',
+    text: () => i18n.t('narrativeUnlock.milestone2'),
   },
   /** N=2 累计 10 局 — 激励坚持 */
   'n2-persist': {
     check: ({ perNCounts }) => (perNCounts[2] || 0) >= 10,
-    text: '你开始看得更远了。',
+    text: () => i18n.t('narrativeUnlock.milestone3'),
   },
   /** N=3 累计 10 局 — 激励坚持 */
   'n3-persist': {
     check: ({ perNCounts }) => (perNCounts[3] || 0) >= 10,
-    text: '有些距离，走着走着就短了。',
+    text: () => i18n.t('narrativeUnlock.milestone4'),
   },
   /** N=4 累计 10 局 — 最高难度坚持 */
   'n4-persist': {
     check: ({ perNCounts }) => (perNCounts[4] || 0) >= 10,
-    text: '你记住了很远的事。花园为你亮了一盏灯。',
+    text: () => i18n.t('narrativeUnlock.milestone5'),
   },
 };
 

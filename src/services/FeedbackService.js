@@ -6,6 +6,8 @@
  * @author Memory Garden Team
  */
 
+import i18n from '@i18n/index';
+
 /**
  * 信号检测论 Z 值近似计算
  * 使用 Abramowitz & Stegun 近似公式
@@ -102,18 +104,18 @@ export default class FeedbackService {
     const dPrime = FeedbackService.calculateDPrime(session);
     
     if (accuracy >= 0.95 && dPrime >= 2.0) {
-      return { level: 'S', label: '卓越', color: 'text-purple-500', desc: '记忆表现极其出色！' };
+      return { level: 'S', label: i18n.t('feedback.grades.excellent.label'), color: 'text-purple-500', desc: i18n.t('feedback.grades.excellent.desc') };
     }
     if (accuracy >= 0.85 && dPrime >= 1.5) {
-      return { level: 'A', label: '优秀', color: 'text-green-500', desc: '记忆表现非常优秀！' };
+      return { level: 'A', label: i18n.t('feedback.grades.good.label'), color: 'text-green-500', desc: i18n.t('feedback.grades.good.desc') };
     }
     if (accuracy >= 0.70 && dPrime >= 1.0) {
-      return { level: 'B', label: '良好', color: 'text-blue-500', desc: '记忆表现不错，继续加油！' };
+      return { level: 'B', label: i18n.t('feedback.grades.fair.label'), color: 'text-blue-500', desc: i18n.t('feedback.grades.fair.desc') };
     }
     if (accuracy >= 0.50) {
-      return { level: 'C', label: '一般', color: 'text-amber-500', desc: '还有提升空间，坚持训练！' };
+      return { level: 'C', label: i18n.t('feedback.grades.poor.label'), color: 'text-amber-500', desc: i18n.t('feedback.grades.poor.desc') };
     }
-    return { level: 'D', label: '需努力', color: 'text-red-500', desc: '别灰心，多练习会进步的！' };
+    return { level: 'D', label: i18n.t('feedback.grades.weak.label'), color: 'text-red-500', desc: i18n.t('feedback.grades.weak.desc') };
   }
 
   /**
@@ -171,15 +173,15 @@ export default class FeedbackService {
       suggestions.push({
         type: 'difficulty',
         icon: '🎯',
-        title: '降低难度',
-        desc: '当前难度可能过高，建议从 N=1 开始，逐步提升。',
+        title: i18n.t('feedback.suggestions.lowerDifficulty.title'),
+        desc: i18n.t('feedback.suggestions.lowerDifficulty.desc'),
       });
     } else if (accuracy > 0.90 && session.difficulty < 3) {
       suggestions.push({
         type: 'difficulty',
         icon: '⬆️',
-        title: '挑战更高难度',
-        desc: `您在 N=${session.difficulty} 表现优秀，可以尝试 N=${session.difficulty + 1}！`,
+        title: i18n.t('feedback.suggestions.higherDifficulty.title'),
+        desc: i18n.t('feedback.suggestions.higherDifficulty.desc'),
       });
     }
     
@@ -188,8 +190,8 @@ export default class FeedbackService {
       suggestions.push({
         type: 'strategy',
         icon: '👀',
-        title: '注意观察',
-        desc: '命中率偏低，尝试更专注于当前刺激与记忆的对比。',
+        title: i18n.t('feedback.suggestions.improveAccuracy.title'),
+        desc: i18n.t('feedback.suggestions.improveAccuracy.desc'),
       });
     }
     
@@ -197,8 +199,8 @@ export default class FeedbackService {
       suggestions.push({
         type: 'strategy',
         icon: '🛑',
-        title: '减少误判',
-        desc: '误判率较高，在不确定时可以不按按钮。',
+        title: i18n.t('feedback.suggestions.reduceFalseAlarms.title'),
+        desc: i18n.t('feedback.suggestions.reduceFalseAlarms.desc'),
       });
     }
     
@@ -207,8 +209,8 @@ export default class FeedbackService {
       suggestions.push({
         type: 'positive',
         icon: '🔥',
-        title: '保持专注',
-        desc: `您达到了 ${session.streakBest} 连胜，专注力很棒！`,
+        title: i18n.t('feedback.suggestions.stayFocused.title'),
+        desc: i18n.t('feedback.suggestions.stayFocused.desc'),
       });
     }
     
@@ -222,15 +224,15 @@ export default class FeedbackService {
       suggestions.push({
         type: 'positive',
         icon: '📅',
-        title: '坚持训练',
-        desc: '本周训练频率很好，坚持下去会有明显进步！',
+        title: i18n.t('feedback.suggestions.keepTraining.title'),
+        desc: i18n.t('feedback.suggestions.keepTraining.desc'),
       });
     } else if (recentSessions.length <= 1) {
       suggestions.push({
         type: 'habit',
         icon: '⏰',
-        title: '建立习惯',
-        desc: '建议每天花 5-10 分钟训练，坚持会有明显效果。',
+        title: i18n.t('feedback.suggestions.buildHabit.title'),
+        desc: i18n.t('feedback.suggestions.buildHabit.desc'),
       });
     }
     
@@ -239,8 +241,8 @@ export default class FeedbackService {
       suggestions.push({
         type: 'strategy',
         icon: '🧠',
-        title: '提升记忆策略',
-        desc: '尝试在心里默念刺激内容，帮助强化工作记忆。',
+        title: i18n.t('feedback.suggestions.improveStrategy.title'),
+        desc: i18n.t('feedback.suggestions.improveStrategy.desc'),
       });
     }
     
@@ -249,8 +251,8 @@ export default class FeedbackService {
       suggestions.push({
         type: 'positive',
         icon: '💪',
-        title: '继续加油',
-        desc: '保持训练节奏，您的记忆能力正在稳步提升！',
+        title: i18n.t('feedback.suggestions.keepGoing.title'),
+        desc: i18n.t('feedback.suggestions.keepGoing.desc'),
       });
     }
     

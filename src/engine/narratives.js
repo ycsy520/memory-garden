@@ -1,3 +1,5 @@
+import i18n from '@i18n/index';
+
 /**
  * 叙事数据文件 — 唯一文本来源
  * 锚定文档：docs/08-GARDEN-NARRATIVE.md v2.0
@@ -20,7 +22,7 @@ export const NARRATIVE_COLLECTIBLES = [
   {
     id: 'small-pot',
     name: '小花盆',
-    icon: '🪴',
+    icon: 0,
     theme: '关于开始',
     description: '第一次走进花园。',
     tiers: [
@@ -151,7 +153,7 @@ export const NARRATIVE_COLLECTIBLES = [
   {
     id: 'watering-can',
     name: '浇水壶',
-    icon: '🚿',
+    icon: 2,
     theme: '关于照看',
     description: '每天回来一点点。',
     tiers: [
@@ -276,7 +278,7 @@ export const NARRATIVE_COLLECTIBLES = [
   {
     id: 'dew',
     name: '露珠',
-    icon: '💧',
+    icon: 3,
     theme: '关于看见',
     description: '没抓住，也可以算看见。',
     tiers: [
@@ -404,7 +406,7 @@ export const NARRATIVE_COLLECTIBLES = [
   {
     id: 'petal',
     name: '花瓣',
-    icon: '🌸',
+    icon: 18,
     theme: '关于记得',
     description: '有些东西会变薄，但颜色还在。',
     tiers: [
@@ -533,7 +535,7 @@ export const NARRATIVE_COLLECTIBLES = [
   {
     id: 'small-stone',
     name: '小石头',
-    icon: '🪨',
+    icon: 24,
     theme: '关于积累',
     description: '一步一步，路就出现了。',
     tiers: [
@@ -660,7 +662,7 @@ export const NARRATIVE_COLLECTIBLES = [
   {
     id: 'butterfly',
     name: '蝴蝶',
-    icon: '🦋',
+    icon: 7,
     theme: '关于相遇',
     description: '有些东西不能抓，只能等。',
     tiers: [
@@ -791,7 +793,7 @@ export const NARRATIVE_COLLECTIBLES = [
   {
     id: 'pinwheel',
     name: '风车',
-    icon: '🎡',
+    icon: 4,
     theme: '关于变化',
     description: '风不一样，转法也不一样。',
     tiers: [
@@ -920,7 +922,7 @@ export const NARRATIVE_COLLECTIBLES = [
   {
     id: 'firefly',
     name: '萤火虫',
-    icon: '🪲',
+    icon: 6,
     theme: '关于微光',
     description: '夜里也不全是黑的。',
     tiers: [
@@ -1054,6 +1056,472 @@ export const NARRATIVE_COLLECTIBLES = [
   }
 ];
 
+/**
+ * 英文叙事覆盖数据
+ * 说明：
+ * - 中文仍以 NARRATIVE_COLLECTIBLES 为唯一原始源；
+ * - 英文界面通过本覆盖层替换展示字段，避免收藏页 / 日记 / 结算页继续显示中文正文；
+ * - 仅覆盖展示相关字段：name / description / shortText / story。
+ */
+const EN_NARRATIVE_OVERRIDES = {
+  'small-pot': {
+    name: 'Small Pot',
+    description: 'A first step into the garden.',
+    tiers: {
+      sprout: {
+        shortText: 'The soil under the pot was still damp, as if someone had just watered it.',
+        story: `The first flower she ever tried to raise did not wither from thirst. She watered it to death.
+
+The clay pot had a small chip on the rim. Her mother set it in front of her and said, "This one is yours to care for now."
+
+She was delighted. She watered it in the morning, again at noon when no one was looking, and once more at dusk when the soil no longer looked dark enough. By the fifth day the leaves had gone soft, and she crouched in the yard refusing to eat.
+
+Her mother did not scold her. She only lifted the pot and said, "It doesn't dislike you. It simply can't drink that much."
+
+The next day her mother brought home an empty pot. It turned out that an empty pot could be more important than a blooming one. When nothing is inside yet, everything can begin again.`,
+      },
+      leaf: {
+        shortText: 'The cutting on the windowsill did not survive the spring. The weeds did, vividly.',
+        story: `The first time she left home, she tucked a cutting with roots into her schoolbag.
+
+Other people packed clothes, needles, and dried food. She carried a piece of green. Someone laughed and said it could not be eaten. She answered, "No, but it can be a window."
+
+The branch did not live through the cold season. She buried it carefully behind the house and marked the spot with a small stone.
+
+When spring returned, a patch of wild grass came up there instead. It was not the same flower, and she knew that. But it was green with such certainty that the lonely room no longer felt completely unfamiliar.`,
+      },
+      bloom: {
+        shortText: 'A crooked cactus survived, and so did the care that raised it.',
+        story: `One day a child came home from the school gate with a cactus and declared it the easiest plant in the world to keep alive.
+
+They still fussed over it together. Water was added too early, then too late, then a little too much again. The cactus never became beautiful in the neat, postcard way. It leaned, thickened unevenly, and carried small scars.
+
+Yet it lived.
+
+She looked at it for a long time and thought that perhaps care did not have to be flawless to count. Sometimes being looked after imperfectly was still another way of being loved.`,
+      },
+      fullBloom: {
+        shortText: 'The empty pot she chose was not missing something. It was still waiting.',
+        story: `When a little girl first came to the garden, she counted the pots with grave attention, as if every one of them were part of an exam.
+
+There were blooming pots, leafy pots, and one chipped empty pot near the wall. That was the one she chose. She said it looked like it still had room for something important.
+
+The child asked why anyone would keep an empty pot. She smiled and said that empty things are not always lacking. Sometimes they are only making space.
+
+The girl nodded as if she understood completely. Then she placed the empty pot in a brighter corner, carefully, like a promise.`,
+      },
+    },
+  },
+  'watering-can': {
+    name: 'Watering Can',
+    description: 'A little care, day by day.',
+    tiers: {
+      sprout: {
+        shortText: 'The can leaked a little, but she still remembered to water what mattered.',
+        story: `When she was little, there was a small watering can at home with a duck-shaped spout.
+
+Strictly speaking, it was a tool her mother used for flowers. But to a child, anything shaped like a duck quickly stopped being only a tool.
+
+The can leaked if it was tilted wrong. Water often went where it was not meant to go. Even so, she liked carrying it from pot to pot, as if tending things were a kind of game.
+
+Later she remembered that the first lesson in care was not precision. It was simply returning, again and again, with the intention to tend.`,
+      },
+      leaf: {
+        shortText: 'The enamel mug was chipped, but the small ritual held the days together.',
+        story: `For several years she watered flowers with an old enamel mug whose rim had lost its shine.
+
+Those were hard days, full of memorising, repeating, and trying again. Sometimes she stepped outside before dawn with the mug in her hand simply to breathe for a moment.
+
+She would water one pot, then another, listening to the soft sound of water entering the soil. The gesture was small, almost pointless, and yet it steadied her.
+
+The mug was not elegant. The routine was. It reminded her that attention does not have to be grand to be faithful.`,
+      },
+      bloom: {
+        shortText: 'A narrow-spout can taught her that care also needs measure.',
+        story: `Her husband once brought home a narrow-spout watering can from far away.
+
+It poured in a clean, careful line. Not too much, not too fast, never wasting water on the edge of the pot. She liked it immediately, though she did not say so aloud.
+
+Over time she realised the can had given her more than convenience. It had given her a different rhythm. Care could be generous, yes, but it also needed proportion.
+
+Not every plant needed the same amount. Not every day asked for the same tenderness. Love, like watering, was sometimes a matter of knowing where to stop.`,
+      },
+      fullBloom: {
+        shortText: 'In the end, every watering can taught a slightly different way to care.',
+        story: `Later there were many watering cans in the garden.
+
+Some had wide mouths, some fine spouts, some handles that pinched the fingers, some that poured like a whisper. None of them worked in exactly the same way.
+
+She kept using them anyway. One for seedlings. One for heavy summer days. One only because she liked how familiar it felt in her hand.
+
+Looking across the shed, she began to think that care was like that too. The feeling may be the same, but the way it is given changes with time, season, and the thing being cared for.`,
+      },
+    },
+  },
+  dew: {
+    name: 'Dewdrop',
+    description: 'Even what slips away can still be seen.',
+    tiers: {
+      sprout: {
+        shortText: 'She remembered how dew looked just before it disappeared.',
+        story: `As a child she once discovered, with great seriousness, that dew was perfectly round.
+
+She crouched beside a leaf for a long time, staring at the tiny bright bead as if it were a secret. It looked like a glass marble, only more timid. She touched it with a fingertip, and it broke apart at once.
+
+Her mother said, "Some things are like that. They leave whether you touch them or not."
+
+She came away with wet cuffs and empty hands. But she kept the image of the dew just before it vanished, and that stayed with her much longer than the drop itself.`,
+      },
+      leaf: {
+        shortText: 'The dew went quickly. Still, she felt she had remembered a little more.',
+        story: `In the years when she spent mornings bent over old books, some days began badly and refused to improve.
+
+Once, before sunrise, she carried her enamel mug outside because the words on the page would not stay in place. The grass by the field ridge was full of dew, each drop holding a little of the night.
+
+The dew disappeared quickly that morning, faster than she expected. Yet when she went back inside, the page felt less empty.
+
+It was not because dew had taught her a lesson. It had said nothing at all. But its brief presence reminded her that not everything has to remain in order to matter.`,
+      },
+      bloom: {
+        shortText: 'What stayed was not the dew, but the certainty that someone was already awake.',
+        story: `On the morning of an important exam, she did not cook anything special and did not stand at the door repeating instructions.
+
+Instead she rose early and watered the flowers while the sky was still grey-blue. Dew clung to the leaves. Water entered the soil with a quiet sound that seemed much louder in the stillness.
+
+By the time the child stepped into the yard, the dew was already nearly gone.
+
+What remained was something gentler: the feeling of waking up and realising that someone had been there before you, preparing the morning without needing to say much.`,
+      },
+      fullBloom: {
+        shortText: 'The perfect moment vanished, but not everything meaningful vanished with it.',
+        story: `A little girl once came to the garden with a camera and declared that her assignment was called "The Perfect Moment."
+
+She spent a long time photographing dew, never satisfied. One drop was too small, another not round enough, a third not bright enough. By the time she put the camera down, the dew had already dried.
+
+There was a bean fiber still clinging to her hand from the plants she had been helping with, like a thread from an unfinished story.
+
+She looked at the child and suddenly understood that perfection has poor timing. What matters is not always what stays long enough to be captured.`,
+      },
+    },
+  },
+  petal: {
+    name: 'Petal',
+    description: 'Some things grow thinner, but their color remains.',
+    tiers: {
+      sprout: {
+        shortText: 'The petals dried flat, but the color refused to leave.',
+        story: `When she was young, the last page of her exercise book was never really for homework.
+
+It was where she kept petals. She pressed them there carefully, smoothing the paper over them as if sealing away a piece of weather.
+
+By the time she opened the notebook again, the petals had turned thin and fragile. Their softness was gone, but their color remained.
+
+That was one of the first times she understood that change does not always erase beauty. Sometimes it only makes beauty quieter.`,
+      },
+      leaf: {
+        shortText: 'A single leaf inside an old book could still carry a whole season.',
+        story: `Years later she found a ginkgo leaf tucked inside a library book that no one seemed to have borrowed in a long time.
+
+The leaf had gone thin as silk and pale with age. It could have been swept away and lost with no one noticing.
+
+Instead it lay there holding a season inside it, as if autumn had been pressed between the pages and forgotten on purpose.
+
+She slipped it back where she found it. Some things do not need to belong to you before they can stay with you.`,
+      },
+      bloom: {
+        shortText: 'When petals covered the yard, even falling looked almost festive.',
+        story: `One spring the flowers dropped so heavily that the whole yard looked as though it had been covered with carelessly scattered paper.
+
+At first she meant to sweep at once. Then she stood still and watched the colors gather in the corners, bright even in their falling.
+
+Loss can be untidy, she thought, but not always ugly.
+
+She left the petals there for the afternoon, letting the yard keep its temporary softness a little longer.`,
+      },
+      fullBloom: {
+        shortText: 'Her garden diaries kept dried petals the way memory keeps seasons.',
+        story: `By then her garden diaries filled half a cabinet.
+
+Between the pages were pressed petals from different years, each one thin and nearly weightless. Looking at them, she no longer tried to remember exact dates. She remembered weather, voices, a particular afternoon light.
+
+The petals had lost their scent long ago. Some had lost part of their shape. But each still held enough color to reopen a moment.
+
+Memory, she thought, is not always a complete flower. Sometimes a petal is enough.`,
+      },
+    },
+  },
+  'small-stone': {
+    name: 'Small Stone',
+    description: 'A road appears one step at a time.',
+    tiers: {
+      sprout: {
+        shortText: 'She liked stones because they were the kind of companion that did not run away.',
+        story: `As a child, her pockets were always full of stones.
+
+She liked their weight. She liked that they stayed where they were placed. In a world where insects flew off, petals blew away, and adults were often busy, stones felt reliable.
+
+She lined them on windowsills, along steps, and beside flowerpots, turning them into small maps only she understood.
+
+Perhaps that was the beginning of it: learning that steadiness can be a kind of comfort.`,
+      },
+      leaf: {
+        shortText: 'Roads are not found all at once. They are laid down by repeated steps.',
+        story: `In the years when she first lived away from home, she helped repair a stretch of road.
+
+It was tiring work. Stone after stone, the path changed so slowly that from one hour to the next it barely seemed different at all.
+
+But when she turned back and looked from farther away, a line had appeared where before there had only been mud and uncertainty.
+
+That stayed with her. Some roads are not discovered. They are made, patiently, underfoot.`,
+      },
+      bloom: {
+        shortText: 'In her own yard, she laid a path the same way she had learned to live: one piece at a time.',
+        story: `When she finally had a yard of her own, she decided to pave a little stone path through it.
+
+She did not begin with a grand design. She set one stone, then another, adjusting distances, kneeling, standing, changing her mind. The work was slower than she had imagined and more satisfying too.
+
+The path looked modest when it was finished. Yet every visitor used it at once, as if it had always belonged there.
+
+She smiled at that. The things built slowly often seem the most natural in the end.`,
+      },
+      fullBloom: {
+        shortText: 'After many years, the path kept the shape of every life that had crossed it.',
+        story: `That stone path lasted for years.
+
+Rain darkened it. Sun bleached it. Feet polished some stones smooth and left others rough. Children ran across it; older people crossed it more carefully. Everyone left a slightly different trace.
+
+Eventually the path no longer looked newly made. It looked lived in.
+
+She came to think that memory is like that too: not a single shining monument, but a route worn into being by return.`,
+      },
+    },
+  },
+  butterfly: {
+    name: 'Butterfly',
+    description: 'Some things cannot be caught. They can only be awaited.',
+    tiers: {
+      sprout: {
+        shortText: 'She learned early that waiting often sees more than chasing.',
+        story: `When she was little, she wanted badly to catch a butterfly.
+
+She ran after one through the yard until she was breathless, arms out, absolutely certain that effort alone should be enough. It never was. The butterfly always rose just ahead of her hand.
+
+At last she stopped from sheer exhaustion. And once she stopped, the butterfly returned to the flowers and became visible again.
+
+That may have been the first time she understood that some beautiful things come closer only after you stop trying to seize them.`,
+      },
+      leaf: {
+        shortText: 'The butterfly in the graduation photo mattered more because no one could stage it.',
+        story: `On the day she left school, everyone gathered for a photograph.
+
+People fixed collars, rearranged shoulders, and tried to look composed. But when the picture came back, the first thing everyone noticed was not a face. It was the butterfly paused near the edge of the frame.
+
+Someone laughed and said the photo would have been ordinary without it.
+
+She secretly agreed. Some moments become unforgettable for reasons no one can arrange.`,
+      },
+      bloom: {
+        shortText: 'Fear softened the day a butterfly rested on a sleeve and stayed.',
+        story: `The child had always been afraid of bugs.
+
+Then one afternoon in the garden, a butterfly landed on a sleeve and stayed there longer than expected. No sudden flutter, no panic, no sharp little collision of wings. Just a quiet pause.
+
+The child froze first, then slowly relaxed.
+
+She watched the fear loosen in real time and thought: sometimes courage is not loud at all. Sometimes it is simply staying still long enough for gentleness to be believed.`,
+      },
+      fullBloom: {
+        shortText: 'Nothing in the garden belonged to her, yet some things kept returning.',
+        story: `Now there were butterflies everywhere in the garden.
+
+None of them belonged to her. She could not name where each one came from or where each one went. Still, some returned often enough to feel familiar.
+
+She liked that kind of closeness—the kind that does not require ownership.
+
+Not everything dear must be held. Some things are dear precisely because they remain free and come back anyway.`,
+      },
+    },
+  },
+  pinwheel: {
+    name: 'Pinwheel',
+    description: 'The same wind turns things in different ways.',
+    tiers: {
+      sprout: {
+        shortText: 'The first pinwheels fell apart quickly, but she remembered how eagerly they turned.',
+        story: `Her father used to make pinwheels from old paper.
+
+One sheet, a few folds, a thin bamboo stick, a tiny nail—and in ten minutes it was done. She would run with the finished pinwheel through the yard until the wind could no longer keep up.
+
+The first one broke almost immediately. Then another. Then another.
+
+Her father laughed, and still kept making them. In the end, the last pinwheel she saved did not go outside at all. She hung it by her bed and let it turn only in the small indoor drafts.`,
+      },
+      leaf: {
+        shortText: 'A great windmill at the crossroads taught her that turning can also be patient.',
+        story: `At the place she first lived away from home, there was a large windmill by the road.
+
+When the wind came, it turned slowly and pulled the millstone with it. It creaked once per rotation, then once again, as if the whole structure were speaking in measured breaths.
+
+It was nothing like a toy pinwheel. It felt more like an old craftsperson who did not waste words.
+
+Later, when the old blades were removed, she kept a small broken piece in the crack of the toolshed wall. A reminder that change can be slow and still be real.`,
+      },
+      bloom: {
+        shortText: 'The crooked handmade pinwheel turned slowly, but it turned with conviction.',
+        story: `One year a child wanted a bright pinwheel from the street market.
+
+It spun beautifully for one afternoon, then came home with a bent blade and no will to turn. The next day they decided to make one themselves with cardboard, glue, and wire.
+
+The red paper went on backward. The green paper was cut unevenly. They had meant to make six blades and ended with four usable ones.
+
+When it was finished, the pinwheel stood crooked with remarkable confidence. It spun slowly and made a soft flapping sound, as if to say: I can turn. I simply refuse to rush.`,
+      },
+      fullBloom: {
+        shortText: 'The same wind passed through them all, and every pinwheel answered differently.',
+        story: `Later a whole row of pinwheels hung from the garden fence.
+
+One afternoon a little girl leaned close and blew at the nearest one. The first spun twice, the second shivered, and the third only moved after a thoughtful pause. It looked as though the wind were passing a half-finished sentence from one to the next.
+
+She stood beside the fence watching them and suddenly understood something simple.
+
+Change is not always dramatic. Sometimes it is only this: the same wind arrives, and each pinwheel turns in its own way.`,
+      },
+    },
+  },
+  firefly: {
+    name: 'Firefly',
+    description: 'Night is not only darkness.',
+    tiers: {
+      sprout: {
+        shortText: 'She once thought a firefly was a star that had fallen low enough to greet her.',
+        story: `The first time she saw a firefly, she thought a star had fallen from the sky.
+
+It blinked in the dark grass once, then again, never staying long enough to be certain of. She reached toward it, but it did not land. It only lit up briefly, as if saying that a single flash could be enough.
+
+That was all.
+
+Yet she remembered it for years, proof that even a very small light can arrive with the force of revelation.`,
+      },
+      leaf: {
+        shortText: 'The fireflies did not teach her anything. They simply stayed near while she remembered.',
+        story: `There was a period when she often studied late at night.
+
+Outside the yard, a few fireflies moved slowly through the dark. Their light was nowhere near strong enough to illuminate a page, but it was enough to remind her that the world had not gone entirely still.
+
+She whispered the lines she had been trying to memorise, and when she said them wrong, the fireflies offered no correction.
+
+Later she thought that perhaps they had not helped her remember at all. They had only kept her company while remembering remained difficult.`,
+      },
+      bloom: {
+        shortText: 'The child watched the lights come and go and learned that darkness can still be shared.',
+        story: `One evening she brought a child into the garden to watch for fireflies.
+
+The wind was light, the flowers were shadowed, and the blinking lights kept appearing and vanishing near the grass. The child followed one, lost it, found another, then stood still in the middle of the garden trying to take in all of them at once.
+
+No one spoke much.
+
+What stayed with her was not brightness, but companionship—the feeling that even in the dark, two people could be quietly present to the same small wonder.`,
+      },
+      fullBloom: {
+        shortText: 'A trapped light dies quickly. A free one can visit, glow, and leave with grace.',
+        story: `The first night the little girl saw fireflies, she ran to the toolshed for a glass jar and announced that she would catch two and keep them by her bed as a night-light.
+
+She stopped her gently. Light inside a jar, she said, does not stay light for long.
+
+So the girl sat on the grass instead. One firefly landed on the back of her hand, glowed three times, and flew away again—as politely as if it had come only to say, I was here. Goodbye.
+
+The next morning they found a dead firefly in the grass. In daylight it looked small and dark, nothing like the night before. The girl understood then that some brightness can only survive while free.`,
+      },
+    },
+  },
+};
+
+/**
+ * 英文解锁条件覆盖
+ * 只在 en-US 下启用；中文继续以 narratives.js 原文为准。
+ */
+const EN_UNLOCK_TEXT = {
+  first_practice_walk: 'Complete your first practice session.',
+  first_daily_training: 'Complete your first daily session.',
+  try_higher_n: 'Try a higher memory distance.',
+  seven_walks: 'Complete 7 training sessions.',
+  streak_2: 'Return for 2 days in a row.',
+  streak_5: 'Return for 5 days in a row.',
+  stable_session: 'Complete one steady session.',
+  streak_15: 'Return for 15 days in a row.',
+  no_false_alarms: 'Finish a session with no false alarms.',
+  no_response_lte_1: 'Finish with at most 1 missed response.',
+  stable_higher_n: 'Complete a steady higher-N session.',
+  self_chosen_challenge: 'Complete a self-chosen challenge.',
+  correct_30: 'Make 30 correct responses.',
+  correct_60: 'Make 60 correct responses.',
+  stable_streak: 'Maintain a stable streak.',
+  view_diary: 'Open Garden Diary.',
+  walks_10: 'Complete 10 training sessions.',
+  walks_30: 'Complete 30 training sessions.',
+  walks_50: 'Complete 50 training sessions.',
+  walks_100: 'Complete 100 training sessions.',
+  streak_3: 'Return for 3 days in a row.',
+  streak_5_answer: 'Answer on 5 consecutive days.',
+  try_different_modes: 'Try different training modes.',
+  multi_mode_stable: 'Stay consistent across multiple modes.',
+  use_1_mode: 'Use 1 training mode.',
+  use_2_modes: 'Use 2 training modes.',
+  use_3_modes: 'Use 3 training modes.',
+  custom_rhythm: 'Use a custom training setup.',
+  evening_or_quiet: 'Complete an evening or quiet session.',
+  streak_7: 'Return for 7 days in a row.',
+  hard_then_complete: 'Finish a hard session.',
+  streak_30: 'Return for 30 days in a row.',
+};
+
+/**
+ * 按语言返回某个收藏品的展示覆盖
+ * @param {string} collectibleId
+ * @param {string} lang
+ * @returns {Object|null}
+ */
+function getNarrativeOverride(collectibleId, lang) {
+  if (lang !== 'en-US') return null;
+  return EN_NARRATIVE_OVERRIDES[collectibleId] || null;
+}
+
+/**
+ * 本地化单个收藏品对象
+ * 只覆盖展示字段，不影响解锁结构或图标等业务字段。
+ * @param {Object} collectible
+ * @param {string} [lang]
+ * @returns {Object}
+ */
+function localizeCollectible(collectible, lang = i18n.language) {
+  const override = getNarrativeOverride(collectible.id, lang);
+  if (!override) return collectible;
+
+  return {
+    ...collectible,
+    name: override.name || collectible.name,
+    description: override.description || collectible.description,
+    tiers: collectible.tiers.map((tier) => {
+      const tierOverride = override.tiers?.[tier.tierId] || {};
+      return {
+        ...tier,
+        unlockConditionText: EN_UNLOCK_TEXT[tier.unlockKey] || tier.unlockConditionText,
+        shortText: tierOverride.shortText || tier.shortText,
+        story: tierOverride.story || tier.story,
+      };
+    }),
+  };
+}
+
+/**
+ * 获取按当前语言本地化后的收藏品列表
+ * @param {string} [lang]
+ * @returns {Array}
+ */
+export function getLocalizedNarrativeCollectibles(lang = i18n.language) {
+  return NARRATIVE_COLLECTIBLES.map((collectible) => localizeCollectible(collectible, lang));
+}
+
 // ═══════════════════════════════════════
 // 工具函数
 // ═══════════════════════════════════════
@@ -1061,10 +1529,12 @@ export const NARRATIVE_COLLECTIBLES = [
 /**
  * 根据 ID 获取收藏品定义
  * @param {string} id - 收藏品 ID
+ * @param {string} [lang] - 语言代码，默认当前 i18n 语言
  * @returns {Object|undefined}
  */
-export function getCollectibleById(id) {
-  return NARRATIVE_COLLECTIBLES.find((c) => c.id === id);
+export function getCollectibleById(id, lang = i18n.language) {
+  const collectible = NARRATIVE_COLLECTIBLES.find((c) => c.id === id);
+  return collectible ? localizeCollectible(collectible, lang) : undefined;
 }
 
 /**
@@ -1073,19 +1543,44 @@ export function getCollectibleById(id) {
  * @param {string} tierId - 品质 ID (sprout/leaf/bloom/fullBloom)
  * @returns {Object|undefined}
  */
-export function getNarrativeTier(collectibleId, tierId) {
-  const collectible = getCollectibleById(collectibleId);
-  if (!collectible) return undefined;
-  return collectible.tiers.find((t) => t.tierId === tierId);
+/**
+ * 降级对象：当 ID 不存在时返回，避免调用方因 undefined 崩溃（R9）
+ * @type {{ tier: string, tierId: string, tierName: string, shortText: string, story: string, diaryFragments: string[], unlockKey: string, unlockConditionText: string }}
+ */
+const FALLBACK_TIER = {
+  tier: 'legacy',
+  tierId: 'legacy',
+  tierName: '???',
+  shortText: '（内容已更新）',
+  story: '',
+  diaryFragments: [],
+  unlockKey: '',
+  unlockConditionText: '',
+};
+
+/**
+ * 根据收藏品 ID 和品质 ID 获取品质详情
+ * R9: ID 不存在时返回降级对象，不抛出异常
+ *
+ * @param {string} collectibleId - 收藏品 ID
+ * @param {string} tierId - 品质 ID (sprout/leaf/bloom/fullBloom)
+ * @param {string} [lang] - 语言代码，默认当前 i18n 语言
+ * @returns {Object} 品质详情或降级对象
+ */
+export function getNarrativeTier(collectibleId, tierId, lang = i18n.language) {
+  const collectible = getCollectibleById(collectibleId, lang);
+  if (!collectible) return FALLBACK_TIER;
+  return collectible.tiers.find((t) => t.tierId === tierId) || FALLBACK_TIER;
 }
 
 /**
  * 获取所有品质的扁平列表
+ * @param {string} [lang] - 语言代码，默认当前 i18n 语言
  * @returns {Array<{collectibleId, collectibleName, collectibleIcon, ...tier}>}
  */
-export function getAllNarrativeTiers() {
+export function getAllNarrativeTiers(lang = i18n.language) {
   const result = [];
-  NARRATIVE_COLLECTIBLES.forEach((c) => {
+  getLocalizedNarrativeCollectibles(lang).forEach((c) => {
     c.tiers.forEach((t) => {
       result.push({
         collectibleId: c.id,
@@ -1101,10 +1596,11 @@ export function getAllNarrativeTiers() {
 /**
  * 根据 unlockKey 查找品质详情
  * @param {string} unlockKey - 解锁键
+ * @param {string} [lang] - 语言代码，默认当前 i18n 语言
  * @returns {Object|undefined}
  */
-export function getTierByUnlockKey(unlockKey) {
-  for (const c of NARRATIVE_COLLECTIBLES) {
+export function getTierByUnlockKey(unlockKey, lang = i18n.language) {
+  for (const c of getLocalizedNarrativeCollectibles(lang)) {
     for (const t of c.tiers) {
       if (t.unlockKey === unlockKey) {
         return { collectibleId: c.id, collectibleName: c.name, collectibleIcon: c.icon, ...t };
@@ -1118,10 +1614,11 @@ export function getTierByUnlockKey(unlockKey) {
  * 获取指定品质的日记碎片列表
  * @param {string} collectibleId - 收藏品 ID
  * @param {string} tierId - 品质 ID
+ * @param {string} [lang] - 语言代码，默认当前 i18n 语言
  * @returns {string[]}
  */
-export function getDiaryFragments(collectibleId, tierId) {
-  const tier = getNarrativeTier(collectibleId, tierId);
+export function getDiaryFragments(collectibleId, tierId, lang = i18n.language) {
+  const tier = getNarrativeTier(collectibleId, tierId, lang);
   return tier ? tier.diaryFragments : [];
 }
 

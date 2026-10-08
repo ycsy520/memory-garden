@@ -4,7 +4,7 @@
  *
  * 核心特性（文档 §16.3）：
  * - requestAnimationFrame 驱动
- * - delta clamp（> 1000ms 自动暂停，> 100ms 截断）
+ * - delta 透传（> 3000ms 帧间隔自动暂停）
  * - timeScale 控制（0 = 暂停，1 = 正常）
  * - phase 时长管理
  * - 暂停/恢复事件通知
@@ -71,7 +71,7 @@ export default class GameLoop {
    * @param {string} reason - 暂停原因
    */
   pause(reason) {
-    if (!this.running) return;
+    if (!this.running || this.timeScale === 0) return;
     this.timeScale = 0;
     this.pauseReason = reason;
     this.onPause(reason);
@@ -112,8 +112,9 @@ export default class GameLoop {
       return;
     }
 
-    // delta clamp：最大 100ms，乘以 timeScale
-    const delta = Math.min(rawDelta, 100) * this.timeScale;
+    // 不使用固定上限截断：短暂卡顿（100ms~3s）按真实流逝时间推进，
+    // 避免回合计时被静默拉长；>3000ms 已由上方自动暂停兜底
+    const delta = rawDelta * this.timeScale;
 
     // 调用上层回调
     this.onTick(delta, rawDelta);

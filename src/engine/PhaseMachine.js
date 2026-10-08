@@ -24,11 +24,19 @@ export default class PhaseMachine {
    * @param {PhaseConfig} config
    */
   constructor(config) {
+    /** @type {boolean} 用户是否开启减少动画（R3: reduced-motion JS 适配） */
+    this._prefersReducedMotion = typeof window !== 'undefined'
+      && window.matchMedia
+      && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    // R3: reduced-motion 模式下淡入/淡出清零，gap 保留最小 600ms 作为反馈可见窗口
+    const rm = this._prefersReducedMotion;
+
     this.config = {
-      fadeIn: config.fadeIn || 300,
+      fadeIn: rm ? 0 : (config.fadeIn || 300),
       visible: config.visible || 2500,
-      fadeOut: config.fadeOut || 300,
-      gap: config.gap || 1000,
+      fadeOut: rm ? 0 : (config.fadeOut || 300),
+      gap: rm ? 600 : (config.gap || 1000),
     };
 
     /** @type {number} 原始可见时长（散步模式可能为 999000，不可直接用于自动推进） */
@@ -48,6 +56,7 @@ export default class PhaseMachine {
 
     /** @type {number|null} 自动推进定时器 ID */
     this._autoAdvanceTimer = null;
+    this._pendingProceed = false;
 
     /** @type {function(string, string)} 阶段切换回调 (oldPhase, newPhase) */
     this.onPhaseChange = null;
@@ -84,6 +93,7 @@ export default class PhaseMachine {
    * 开始一个新 trial 的淡入阶段
    */
   startTrial() {
+    this._pendingProceed = false;
     this.setPhase('fadeIn');
   }
 
@@ -105,6 +115,8 @@ export default class PhaseMachine {
 
   /**
    * 推进时间
+   * 时间裁剪由 GameLoop 统一处理，这里只负责按收到的 delta 推进阶段。
+   *
    * @param {number} delta - 帧间隔 (ms)
    */
   advance(delta) {
@@ -112,6 +124,10 @@ export default class PhaseMachine {
 
     // 等待输入模式：visible 阶段不自动推进，等待用户手动调用 proceed()
     if (this.waitingForInput && this.phase === 'visible') {
+      if (this._pendingProceed) {
+        this._pendingProceed = false;
+        this.nextPhase();
+      }
       return;
     }
 
@@ -128,7 +144,13 @@ export default class PhaseMachine {
    * 仅在 waitingForInput 模式的 visible 阶段有效
    */
   proceed() {
-    if (this.waitingForInput && this.phase === 'visible') {
+    if (this.phase === 'fadeIn') {
+      this._pendingProceed = true;
+      return;
+    }
+    if (!this.waitingForInput) return;
+    if (this.phase === 'visible') {
+      this._pendingProceed = false;
       this.nextPhase();
     }
   }
@@ -199,6 +221,7 @@ export default class PhaseMachine {
     this.phaseAge = 0;
     this.phaseDuration = 0;
     this.waitingForInput = false;
+    this._pendingProceed = false;
     if (this._autoAdvanceTimer) {
       clearTimeout(this._autoAdvanceTimer);
       this._autoAdvanceTimer = null;

@@ -9,7 +9,7 @@
  * @version 5.0
  */
 import BaseMode from './BaseMode.js';
-import { generateTrials, pickNonRepeating } from '../TrialGenerator.js';
+import { generateTrials, pickExcluding } from '../TrialGenerator.js';
 import { classifyTrial } from '../ScoringEngine.js';
 import { getAllStimuli } from '../stimuli/GardenStimuli.js';
 
@@ -45,7 +45,7 @@ export default class WalkMode extends BaseMode {
         mode: 'walk',
         n: config.n,
         totalTrials: config.totalTurns,
-        warmupTrials: config.warmupTrials || config.n + 1,
+        warmupTrials: config.warmupTrials ?? config.n,
         targetRate: config.targetRate || 0.38,
         lureRate: config.lureRate || 0.15,
         maxSameStimulusRepeat: 1, // 避免同一素材连续出现
@@ -155,7 +155,7 @@ export default class WalkMode extends BaseMode {
         mode: 'walk',
         n: this.config.n,
         totalTurns: this.config.totalTurns,
-        warmupTrials: this.config.warmupTrials || this.config.n + 1,
+        warmupTrials: this.config.warmupTrials ?? this.config.n,
         targetRate: this.config.targetRate || 0.38,
         lureRate: this.config.lureRate || 0.15,
       });
@@ -200,6 +200,21 @@ export default class WalkMode extends BaseMode {
   }
 
   /**
+   * 限时模式实时生成时选取非目标刺激。
+   * 同时排除上一个素材与 N 步前素材，避免"视觉上与 N 步前相同却按 isTarget=false 判误判"。
+   * @returns {import('../stimuli/GardenStimuli.js').StimulusDef}
+   */
+  _pickNonTargetStimulus() {
+    const n = this.config.n;
+    const excludeIds = [this._lastStimulusId];
+    const nBackTrial = this.turnIndex >= n ? this.trials[this.turnIndex - n] : null;
+    if (nBackTrial) {
+      excludeIds.push(nBackTrial.stimulusId);
+    }
+    return pickExcluding(this._allStimuli, excludeIds);
+  }
+
+  /**
    * 限时模式实时生成刺激项
    * 不预生成序列，每回合实时决定：
    * - 是否为目标回合（复用 N 步前的刺激）
@@ -209,7 +224,7 @@ export default class WalkMode extends BaseMode {
    */
   _generateRealtimeTurn() {
     const n = this.config.n;
-    const warmupTrials = this.config.warmupTrials || n + 1;
+    const warmupTrials = this.config.warmupTrials ?? n;
     const isWarmup = this.turnIndex < warmupTrials;
 
     // 判断是否为目标回合
@@ -232,15 +247,15 @@ export default class WalkMode extends BaseMode {
         stimulusDisplay = targetTrial.stimulusDisplay;
         this._lastTargetIndex = this.turnIndex;
       } else {
-        // 降级：随机生成
-        const stimulus = pickNonRepeating(this._allStimuli, this._lastStimulusId);
+        // 降级：随机生成（排除上一个与 N 步前素材，避免偶然重合造成假目标）
+        const stimulus = this._pickNonTargetStimulus();
         stimulusId = stimulus.id;
         stimulusDisplay = stimulus.display;
         isTarget = false;
       }
     } else {
-      // 非目标回合：随机生成新刺激
-      const stimulus = pickNonRepeating(this._allStimuli, this._lastStimulusId);
+      // 非目标回合：随机生成新刺激（排除上一个与 N 步前素材）
+      const stimulus = this._pickNonTargetStimulus();
       stimulusId = stimulus.id;
       stimulusDisplay = stimulus.display;
     }
@@ -299,16 +314,19 @@ export default class WalkMode extends BaseMode {
 
     // 暖身回合不计分
     if (trial.isWarmup) {
+      const responded = isMatch;
+      const now = Date.now();
       this.trialResults.push({
         trialIndex: trial.trialIndex,
-        responded: true,
-        responseTimeMs: Date.now() - this._trialStartTime,
-        result: 'hit',
+        responded,
+        responseTimeMs: now - this._trialStartTime,
+        result: responded ? 'hit' : 'correctRejection',
         wasWarmup: true,
         wasPaused: false,
         wasHedged: false,
+        isLure: false,
         phaseStartedAt: this._trialStartTime,
-        phaseEndedAt: Date.now(),
+        phaseEndedAt: now,
       });
       this.history.push(trial);
       return { isCorrect: true, scoreDelta: 0, feedback: 'warmup', channel: 'visual' };
@@ -325,12 +343,13 @@ export default class WalkMode extends BaseMode {
 
     this.trialResults.push({
       trialIndex: trial.trialIndex,
-      responded: true,
+      responded,
       responseTimeMs,
       result,
       wasWarmup: false,
       wasPaused: false,
       wasHedged: false,
+      isLure: trial.isLure || false,
       phaseStartedAt: this._trialStartTime,
       phaseEndedAt: now,
     });
@@ -368,6 +387,7 @@ export default class WalkMode extends BaseMode {
         wasWarmup: true,
         wasPaused: false,
         wasHedged: false,
+        isLure: false,
         phaseStartedAt: this._trialStartTime,
         phaseEndedAt: now,
       });
@@ -376,7 +396,7 @@ export default class WalkMode extends BaseMode {
     }
 
     const result = classifyTrial(false, trial.isTarget);
-    const isCorrect = result === 'miss' || result === 'correctRejection';
+    const isCorrect = result === 'correctRejection';
     const scoreDelta = 0;
 
     this.trialResults.push({
@@ -387,6 +407,7 @@ export default class WalkMode extends BaseMode {
       wasWarmup: false,
       wasPaused: false,
       wasHedged: false,
+      isLure: trial.isLure || false,
       phaseStartedAt: this._trialStartTime,
       phaseEndedAt: now,
     });

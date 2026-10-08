@@ -3,13 +3,8 @@
  * 在应用启动时导入此文件，确保所有因子都已注册到 FactorRegistry
  */
 
-// 视觉因子
-import './visual/EmojiFactor.js';
-import './visual/TextZhFactor.js';
-import './visual/TextEnFactor.js';
-import './visual/SymbolFactor.js';
-import './visual/FoodEmojiFactor.js';
-import './visual/AnimalEmojiFactor.js';
+// 视觉因子（精灵图单一池，替代原 Emoji 三池）
+import './visual/SpriteGardenFactor.js';
 
 // 音频因子
 import './audio/ToneFactor.js';

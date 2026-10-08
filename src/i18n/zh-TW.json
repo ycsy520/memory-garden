@@ -4,6 +4,8 @@
   "startBtn": "推開花園的門",
   "dedication": "獻給最親愛的奶奶",
   "deviceSupport": { "mobile": "手機", "pc": "電腦", "tablet": "平板" },
+  "installBtn": "下載記憶小花園",
+  "medicalDisclaimer": "記憶花園是注意力和工作記憶練習小遊戲，不能用於醫療診斷，也不能替代專業評估。",
   "guide": {
     "steps": [
       { "title": "花園起了霧", "text": "奶奶，我們的花園裡最近起了一些霧，有些花兒看不清了。不過沒關係，我們慢慢來。", "sub": "放鬆心情，深呼吸..." },
@@ -18,7 +20,8 @@
   "menu": {
     "weather": "今天天氣真好",
     "prompt": "準備好去哪裡了嗎？",
-    "startWalk": "開始散步",
+    "startWalk": "繼續訓練",
+    "startRun": "繼續訓練",
     "levels": [
       { "label": "初晨 (簡單)", "desc": "和 剛剛那朵 一樣嗎？" },
       { "label": "午後 (進階)", "desc": "和 上上朵 一樣嗎？" },
@@ -35,7 +38,108 @@
     "streakDays": "天連續訓練",
     "dailyChallenge": "每日挑戰",
     "dailyCompleted": "已完成",
-    "points": "分"
+    "points": "分",
+    "welcomeBack": "歡迎回來",
+    "continueWalk": "慢慢來，一起想起來",
+    "switchMode": "換一種模式",
+    "gardenDiary": "花園日記",
+    "gardenCollection": "花園收藏",
+    "settings": "設定",
+    "backToGarden": "回到花園",
+    "selectMode": "選記憶模式",
+    "selectModeDesc": "選擇你想練習的記憶方式",
+    "nextStepRhythm": "下一步：選時間節奏",
+    "selectRhythm": "選時間節奏",
+    "selectRhythmDesc": "選擇適合你的練習節奏",
+    "prevStep": "上一步",
+    "nextStepDifficulty": "下一步：選難度",
+    "selectDifficulty": "選記憶難度",
+    "selectDifficultyDesc": "N 值越大，需要記住的花越多",
+    "requirePrev": "需先完成散步N=1",
+    "requirePrevN": "需先完成N={{n}}",
+    "gardenLevel": "花園 · {{level}}",
+    "walkCount": "{{count}} 次訓練",
+    "quickEntries": "快捷入口",
+    "customizeConfig": "自訂訓練",
+    "more": "更多",
+    "mode": "記憶模式",
+    "rhythm": "節奏"
+  },
+  "modes": {
+    "walk": {
+      "label": "散步",
+      "desc": "看花認花",
+      "intro": "花兒一朵接一朵出現。記住剛見過的花，再次看到時按下按鈕。",
+      "audience": "適合所有人，尤其是初次接觸記憶訓練的使用者"
+    },
+    "standard": {
+      "label": "散步",
+      "desc": "看花認花",
+      "intro": "花兒一朵接一朵出現。記住剛見過的花，再次看到時按下按鈕。",
+      "audience": "適合所有人，尤其是初次接觸記憶訓練的使用者"
+    },
+    "dual": {
+      "label": "花與歌",
+      "desc": "看花+聽聲",
+      "intro": "同時出現一朵花和一個聲音。只有花和聲音都與之前一樣時，才算匹配。",
+      "audience": "適合已熟悉散步模式、想挑戰雙通道記憶的使用者"
+    },
+    "spatial": {
+      "label": "花壇",
+      "desc": "記位置",
+      "intro": "花會開在花壇的某個位置。記住花的位置和種類，再次出現時按下按鈕。",
+      "audience": "適合想鍛鍊空間記憶的使用者"
+    },
+    "grid": {
+      "label": "花圃",
+      "desc": "記圖案",
+      "intro": "花壇上同時出現多朵花。記住整個圖案，再次出現時按下按鈕。",
+      "audience": "適合進階使用者，想同時鍛鍊視覺和空間記憶"
+    },
+    "run": {
+      "label": "晨跑",
+      "desc": "60秒衝刺",
+      "intro": "60 秒內盡可能多命中。測試你的速度和記憶極限。",
+      "audience": "適合想測試極限、追求高分的使用者"
+    }
+  },
+  "rhythms": {
+    "walk": {
+      "label": "初晨",
+      "desc": "慢慢看，不趕時間",
+      "intro": "花兒慢慢出現，不趕時間。適合剛開始練習、想慢慢感受的你。",
+      "audience": "適合兒童、老人、初次使用者"
+    },
+    "daily": {
+      "label": "晨曦",
+      "desc": "每項限時 3 秒",
+      "intro": "每朵花出現 3 秒。有足夠時間思考，但也需要集中注意力。",
+      "audience": "適合日常練習，鞏固記憶能力"
+    },
+    "challenge": {
+      "label": "午後",
+      "desc": "每項限時 2 秒",
+      "intro": "每朵花只出現 2 秒。需要快速判斷，挑戰你的反應和記憶。",
+      "audience": "適合已熟練掌握、想突破自己的使用者"
+    },
+    "competitive": {
+      "label": "暮色",
+      "desc": "每項限時 1.5 秒",
+      "intro": "每朵花只出現 1.5 秒。需要極快反應，挑戰記憶極限。",
+      "audience": "適合追求極限、想要突破自我的高手"
+    },
+    "timed": {
+      "label": "晨跑",
+      "desc": "60 秒限時衝刺",
+      "intro": "60 秒內盡可能多命中。測試你的速度和記憶極限。",
+      "audience": "適合想測試極限、追求高分的使用者"
+    }
+  },
+  "difficulties": {
+    "n1": { "title": "入門", "desc": "記住剛見過的花", "detail": "只需要記住上一朵花。適合剛開始練習的你。" },
+    "n2": { "title": "日常", "desc": "記住兩步前的花", "detail": "需要記住兩步前的花。適合日常練習。" },
+    "n3": { "title": "進階", "desc": "記住三步前的花", "detail": "需要記住三步前的花。挑戰你的工作記憶。" },
+    "n4": { "title": "挑戰", "desc": "記住四步前的花", "detail": "需要記住四步前的花。記憶高手的試煉。" }
   },
   "stats": {
     "title": "記憶花園日記",
@@ -49,35 +153,55 @@
     "history": "最近記錄",
     "noHistory": "還沒有訓練記錄，去花園散步吧！",
     "accuracy": "準確率",
-    "score": "分"
+    "score": "分",
+    "gardenProgress": "成長進度",
+    "discoveredElements": "已發現 {{count}} 個花園元素",
+    "keepWalking": "完成散步，花園會慢慢生長。",
+    "gardenSecrets": "花園秘密",
+    "secretsHint": "花園裡藏著一些秘密。也許多走走就會發現。",
+    "undiscoveredSecrets": "尚未發現的秘密",
+    "walkCount": "{{count}} 次散步",
+    "streakDays": "連續 {{days}} 天",
+    "gardenLabel": "花園 · {{level}}",
+    "growthProgress": "成長進度",
+    "growthPoints": "{{current}} / {{total}} 點",
+    "discoveredCount": "已發現 {{count}} 個花園元素",
+    "collectionProgress": "{{current}} / {{total}} 件",
+    "timed": "本局耗時"
   },
   "game": {
     "back": "返回",
-    "memoryFragment": "記憶碎片",
-    "waiting": "...",
-    "matched": "想起來了!",
     "button": "似曾相識",
-    "warmup": "請先記住這個...",
-    "warmup_emoji-flower": "請先記住這朵花...",
-    "warmup_emoji-animal": "請先記住這隻動物...",
-    "warmup_emoji-food": "請先記住這個食物...",
-    "warmup_text-zh": "請先記住這個詞...",
-    "warmup_text-en": "請先記住這個單詞...",
-    "warmup_symbol": "請先記住這個符號...",
-    "warmup_tone": "請先記住這個音調...",
-    "question": "這個之前出現過嗎？",
-    "question_emoji-flower": "這朵花之前出現過嗎？",
-    "question_emoji-animal": "這隻動物之前出現過嗎？",
-    "question_emoji-food": "這個食物之前出現過嗎？",
-    "question_text-zh": "這個詞之前出現過嗎？",
-    "question_text-en": "這個單詞之前出現過嗎？",
-    "question_symbol": "這個符號之前出現過嗎？",
-    "question_tone": "這個音調之前出現過嗎？",
-    "paused": "花園起霧了，稍作休息...",
-    "resume": "繼續散步"
+    "warmupDefault": "先看看，熟悉一下",
+    "warmupPosition": "記住位置",
+    "warmupPattern": "記住圖案",
+    "warmupDual": "看看+聽聽",
+    "same": "一樣",
+    "different": "不一樣",
+    "orientationLock": "請豎起手機繼續散步",
+    "leaveConfirm": "確定要離開這次散步嗎？當前進度不會保留。",
+    "leaveRunConfirm": "確定要離開這次晨跑嗎？當前進度不會保留。",
+    "leftForAwhile": "剛剛離開了一會兒",
+    "continuePrompt": "要繼續這次散步嗎？",
+    "continueRunPrompt": "要繼續這次晨跑嗎？",
+    "continueStroll": "繼續散步",
+    "continueRun": "繼續晨跑",
+    "startStroll": "開始訓練",
+    "startRun": "開始訓練",
+    "timeRemaining": "剩餘時間",
+    "warmupSpatial": "記住位置和花朵"
+  },
+  "gardenJournal": {
+    "title": "花園日記",
+    "growthTitle": "花園成長",
+    "empty": "完成散步後，花園會記住一些碎片。",
+    "count": "{{read}}/{{total}} 條",
+    "viewAll": "查看全部 {{count}} 條",
+    "expandFullText": "展開閱讀",
+    "collapseFullText": "收起"
   },
   "finished": {
-    "newRecord": "新紀錄!",
+    "newRecord": "新紀錄！",
     "title": "散步結束啦",
     "desc": "您今天讓花園變得非常美麗。",
     "awakened": "成功喚醒",
@@ -88,7 +212,68 @@
     "misses": "漏判",
     "falseAlarms": "誤判",
     "suggestions": "訓練建議",
-    "points": "分"
+    "points": "分",
+    "score": "綜合評分",
+    "sensitivity": "記憶辨別力",
+    "dPrime": "d'（靈敏度）",
+    "beta": "β（反應偏向）",
+    "avgReaction": "平均反應時間",
+    "correctRejection": "正確排除",
+    "correctRejectionDesc": "正確不標記",
+    "hitDesc": "記住並標對",
+    "missDesc": "沒記住漏掉",
+    "falseAlarmLabel": "記錯多標了",
+    "progressTrend": "進步趨勢",
+    "growthProgress": "成長進度",
+    "detailedData": "查看詳細資料",
+    "hideDetailedData": "收起詳細資料",
+    "continueWalk": "繼續散步",
+    "backToGarden": "回到花園",
+    "walkAgain": "再走一次",
+    "accuracyRate": "記憶準確率",
+    "accuracyDesc": "{{total}} 個刺激項中正確判斷 {{correct}} 個",
+    "targetRecognition": "目標識別率",
+    "targetDesc": "{{total}} 個重複項中記住 {{hits}} 個",
+    "falseAlarmRate": "誤判率",
+    "falseAlarmDesc": "{{total}} 個非重複項中誤標 {{fa}} 個",
+    "currentRun": "本局表現",
+    "pastRecords": "過往記錄",
+    "pastRecordsHint": "不同模式和難度的記錄只作回看，不直接比較高低。",
+    "firstRecordTitle": "這是你的第一局記錄。",
+    "firstRecordBody": "下一次散步後，這裡會開始留下過往足跡。",
+    "recordAccuracyLabel": "準確率",
+    "latestRecord": "最近一局",
+    "analysisReading": "分析讀數",
+    "timedTag": "限時",
+    "slowDown": "可以慢一點。只要看到真的回來過的花，再按就好。",
+    "takeBreak": "最近幾次有些吃力，要不要先休息一下？",
+    "recentAccuracy": "最近 {{count}} 輪準確率",
+    "barTooltip": "第{{round}}輪: {{percent}}%",
+    "gardenLevel": "花園 · {{level}}",
+    "gardenReward": "花園裡多了{{reward}}。",
+    "walkCount": "這是你第 {{count}} 次來散步。",
+    "streakCount": "已連續 {{days}} 天。",
+    "progressPoints": "{{current}} / {{total}} 點",
+    "gardenFullBloom": "花園已盛開，繼續守護它吧。",
+    "newCollection": "新收藏（{{current}}/{{total}}）",
+    "expandStory": "展開看看",
+    "collapseStory": "收起故事",
+    "saveToJournal": "收進花園日記",
+    "narrativeExcellent": {
+      "title": "花園今天很安靜，也很明亮。",
+      "body": "你認出了幾朵回來的花，也耐心看著新花走過。花園多開了一朵小花。",
+      "reward": "一朵小花"
+    },
+    "narrativeGood": {
+      "title": "今天的花園多了一片新葉。",
+      "body": "有些花你認出來了，有些花走得很輕。每一次散步，花園都會更熟悉你一點。",
+      "reward": "一片新葉"
+    },
+    "narrativePoor": {
+      "title": "今天你還是完成了一次散步。",
+      "body": "花園裡多了一顆種子。下一次可以走慢一點，只看一朵花就好。",
+      "reward": "一顆種子"
+    }
   },
   "leaderboard": {
     "title": "排行榜",
@@ -97,16 +282,410 @@
     "avgAccuracy": "平均準確率",
     "modeBest": "各模式最佳",
     "filter": "篩選",
+    "allModes": "全部模式",
+    "allDifficulty": "全部難度",
     "noData": "還沒有記錄，去挑戰吧！"
   },
   "achievements": {
     "title": "花園勳章",
     "unlocked": "已解鎖",
-    "progress": "解鎖進度"
+    "progress": "解鎖進度",
+    "collected": "已收集",
+    "items": "{{count}} 件",
+    "currentQuality": "當前品質：{{tier}}",
+    "discoveredAt": "發現於 {{date}}",
+    "unread": "未讀",
+    "gardenSecrets": "花園秘密",
+    "secretsHint": "花園裡藏著一些秘密。也許多走走就會發現。",
+    "undiscoveredSecrets": "尚未發現的秘密",
+    "hiddenSecret": "尚未發現的秘密"
   },
   "settings": {
-    "title": "設定",
+    "title": "花園設定",
+    "about": "關於",
     "language": "語言",
-    "sound": "音效"
+    "audio": "音訊",
+    "muted": "已靜音",
+    "unmuted": "聲音已開啟",
+    "sound": "音效",
+    "dataManagement": "資料管理",
+    "exportData": "匯出花園資料",
+    "importData": "匯入花園備份",
+    "clearData": "清除所有資料",
+    "exportFailed": "匯出失敗，請稍後重試。",
+    "exportStarted": "備份下載已開始。",
+    "exportReady": "備份已生成，請在系統分享面板中儲存或傳送。",
+    "exportDialogTitle": "匯出花園備份",
+    "importFailed": "匯入失敗，請稍後重試。",
+    "importUnsupportedFile": "匯入失敗，請選擇 .json 備份檔。",
+    "importFileTooLarge": "匯入失敗，備份檔案過大。",
+    "importInvalidJson": "匯入失敗，所選檔案不是有效的 JSON 備份。",
+    "importInvalidStructure": "匯入失敗，備份檔案結構無法辨識。",
+    "importConfirm": "確定要用這份備份覆蓋目前本地資料嗎？目前本地花園進度會被替換。",
+    "imported": "備份已匯入。本地花園狀態已恢復。",
+    "clearConfirm": "確定要刪除所有花園資料嗎？此操作不可撤銷，包括散步記錄、花園成長和收藏。",
+    "cleared": "資料已清除。花園會重新生長。",
+    "version": "{{appName}} v{{version}}",
+    "backToMenu": "返回選單",
+    "account": "我的花園",
+    "guestMode": "遊客模式（資料僅保存在本機）",
+    "storageModeTitle": "儲存方式",
+    "storageModeBody": "目前版本僅在本機保存資料，不提供雲端登入或跨裝置同步。",
+    "storageModeHint": "建議定期匯出花園備份；卸載應用或清除系統儲存後，本機資料將無法恢復。",
+    "loggedIn": "已登入",
+    "lastSync": "最後同步",
+    "syncNow": "立即同步",
+    "loginToBackup": "登入以備份到雲端",
+    "signOut": "登出",
+    "deleteAccount": "註銷帳戶",
+    "deleteConfirm": "請輸入 DELETE 確認註銷",
+    "disclaimer": "免責聲明",
+    "disclaimerText": "本產品為注意力與工作記憶練習工具，不用于醫療診斷、治療或任何疾病預防。",
+    "justNow": "剛剛",
+    "minutesAgo": "分鐘前",
+    "hoursAgo": "小時前",
+    "daysAgo": "天前"
+  },
+  "garden": {
+    "levels": {
+      "seed": "種子",
+      "sprout": "破土",
+      "bud": "發芽",
+      "leaf": "長葉",
+      "budding": "花苞",
+      "halfBloom": "半開",
+      "fullBloom": "盛開"
+    },
+    "collections": {
+      "seed": { "name": "種子", "desc": "第一次走進花園" },
+      "dew": { "name": "露珠", "desc": "清晨的禮物" },
+      "sprout": { "name": "嫩芽", "desc": "破土而出" },
+      "pebble": { "name": "小石子", "desc": "路邊的陪伴" },
+      "ladybug": { "name": "瓢蟲", "desc": "花園的小訪客" },
+      "butterfly": { "name": "蝴蝶", "desc": "翩翩起舞" },
+      "snail": { "name": "蝸牛", "desc": "慢慢來" },
+      "breeze": { "name": "微風", "desc": "輕輕吹過" },
+      "clover": { "name": "四葉草", "desc": "幸運的發現" },
+      "bird": { "name": "小鳥", "desc": "清晨的歌聲" },
+      "mushroom": { "name": "蘑菇", "desc": "雨後的驚喜" },
+      "stonePath": { "name": "石頭路", "desc": "走過的痕跡" },
+      "dragonfly": { "name": "蜻蜓", "desc": "點水而過" },
+      "sunflower": { "name": "向日葵", "desc": "向著陽光" },
+      "rainbow": { "name": "彩虹", "desc": "雨後的禮物" },
+      "cottage": { "name": "花園小屋", "desc": "溫暖的歸宿" }
+    },
+    "tiers": {
+      "sprout": "初芽",
+      "leaf": "翠葉",
+      "bloom": "繁花",
+      "fullBloom": "盛放"
+    }
+  },
+  "feedback": {
+    "grades": {
+      "excellent": { "label": "卓越", "desc": "記憶表現極其出色！" },
+      "good": { "label": "優秀", "desc": "記憶表現非常優秀！" },
+      "fair": { "label": "良好", "desc": "記憶表現不錯，繼續加油！" },
+      "poor": { "label": "一般", "desc": "還有提升空間，堅持訓練！" },
+      "weak": { "label": "需努力", "desc": "別灰心，多練習會進步的！" }
+    },
+    "suggestions": {
+      "lowerDifficulty": { "title": "降低難度", "desc": "當前難度可能過高，建議降低 N 值或選擇更慢的節奏。" },
+      "higherDifficulty": { "title": "挑戰更高難度", "desc": "你的表現很棒！可以嘗試提高 N 值或更快的節奏。" },
+      "improveAccuracy": { "title": "注意觀察", "desc": "命中率偏低，試著更仔細地觀察每一朵花的細節。" },
+      "reduceFalseAlarms": { "title": "減少誤判", "desc": "誤判率較高，不要著急按下按鈕，確認後再行動。" },
+      "stayFocused": { "title": "保持專注", "desc": "訓練時容易分心，試試在安靜的環境中練習。" },
+      "keepTraining": { "title": "堅持訓練", "desc": "本週訓練頻率很好，保持這個節奏！" },
+      "buildHabit": { "title": "建立習慣", "desc": "建議每天花 5-10 分鐘散步，養成訓練習慣。" },
+      "improveStrategy": { "title": "提升記憶策略", "desc": "嘗試在心裡默念花的名字，這會幫助你更好地記住它們。" },
+      "keepGoing": { "title": "繼續加油", "desc": "保持訓練節奏，你會看到進步的。" }
+    }
+    },
+    "stimulusIntro": {
+      "n1": "如果看到和剛才一樣的，就按\"一樣\"。不一樣就按\"不一樣\"。",
+      "n2": "如果看到和兩個之前那個一樣的，就按\"一樣\"。慢慢看，想好了再選。",
+      "n3": "如果看到和三個之前那個一樣的，就按\"一樣\"。慢慢看，想好了再選。",
+      "nDefault": "如果看到和之前一樣的，就按\"一樣\"。不一樣就按\"不一樣\"。"
+    },
+    "signalDetection": {
+      "levelExcellent": "優秀",
+      "levelGood": "良好",
+      "levelFair": "中等",
+      "levelWeak": "較弱",
+      "levelNeedsWork": "需提升",
+      "descExcellent": "記憶辨別力極強",
+      "descGood": "記憶辨別力較強",
+      "descFair": "記憶辨別力一般",
+      "descWeak": "記憶辨別力較弱",
+      "descNeedsWork": "記憶辨別力不足",
+      "typeConservative": "保守型",
+      "typeBalanced": "均衡型",
+      "typeAggressive": "激進型",
+      "descConservative": "傾向於不標記，可能遺漏目標",
+      "descBalanced": "判斷標準適中",
+      "descAggressive": "傾向於標記，可能誤判較多"
+    },
+    "mandala": {
+      "loading": "過渡中"
+    },
+    "stimulus": {
+    "same": "一樣",
+    "different": "不一樣",
+    "hintN1": "和剛出現的一樣嗎？",
+    "hintN2": "和上上朵一樣嗎？",
+    "hintN3": "和更早前的一樣嗎？",
+    "hintNx": "和 {{n}} 次前的一樣嗎？",
+    "rememberRecent1": "記住剛出現的",
+    "rememberRecent2": "記住最近兩個",
+    "rememberRecent3": "記住最近三個",
+    "rememberRecentN": "記住它們",
+    "warmupCount": "前 {{n}} 個是暖身，你只需要看看，不需要操作。",
+    "nowStart1": "現在開始，記住剛才出現的",
+    "nowStart2": "現在開始，記住最近兩個",
+    "nowStart3": "現在開始，記住最近三個",
+    "nowStartN": "現在開始，記住剛出現的"
+  },
+  "services": {
+    "factorNames": {
+      "sprite-garden": "花園",
+      "emoji-flower": "花朵",
+      "emoji-animal": "動物",
+      "emoji-food": "食物",
+      "tone": "音調"
+    },
+    "share": {
+      "template": "我在「記憶小花園」完成了 {{mode}} 挑戰！得分: {{score}}，準確率: {{accuracy}}%。來試試你的記憶力吧！"
+    }
+  },
+  "errors": {
+    "gardenProblem": "花園遇到了一點小問題",
+    "dontWorry": "別擔心，重新進入就好啦",
+    "reEnter": "重新進入花園",
+    "updateAvailable": "有新版本可用，是否立即更新？",
+    "offlineReady": "記憶小花園已可離線使用"
+  },
+  "narrativeUnlock": {
+    "milestone1": "你在這裡走了很久。花園外還有更高的山。",
+    "milestone2": "這條路你閉著眼都能走。試試睜開眼走一條新的？",
+    "milestone3": "你開始看得更遠了。",
+    "milestone4": "有些距離，走著走著就短了。",
+    "milestone5": "你記住了很遠的事。花園為你亮了一盞燈。"
+  },
+  "common": {
+    "back": "返回",
+    "next": "下一步",
+    "prev": "上一步",
+    "confirm": "確定",
+    "cancel": "取消",
+    "loading": "載入中...",
+    "error": "出錯了",
+    "retry": "重試",
+    "points": "分",
+    "times": "次",
+    "days": "天",
+    "modeStandard": "散步",
+    "modeDual": "花與歌",
+    "modeSpatial": "花壇",
+    "modeGrid": "花圃",
+    "modeWalk": "散步"
+  },
+  "about": {
+    "effectiveDate": "生效日期",
+    "disclaimerTitle": "免責聲明",
+    "privacyTitle": "隱私政策",
+    "termsTitle": "使用條款",
+    "nbackTitle": "什麼是 N-back？",
+    "disclaimer": {
+      "s1": {
+        "title": "一、產品性質聲明",
+        "content": "記憶花園（Memory Garden）是一款基於 N-back 範式的認知訓練娛樂軟體。本產品旨在通過遊戲化的方式幫助用戶進行工作記憶練習，屬於教育娛樂類產品，不屬於醫療器械，不用於診斷、治療、緩解或預防任何疾病或醫療狀況。"
+      },
+      "s2": {
+        "title": "二、科學依據說明",
+        "content": "本產品的訓練方法基於認知心理學中的 N-back 工作記憶訓練範式。該範式自 1958 年由 Wayne Kirchner 提出以來，已被廣泛應用於認知心理學研究。然而，關於 N-back 訓練對其他認知能力的遷移效果（transfer effect），學術界仍存在爭議：",
+        "li1": "Jaeggi 等人（2008）的研究聲稱雙 N-back 訓練可以提升流體智力，但後續研究對此結論存在不同觀點。",
+        "li2": "Simons 等人（2017）的大規模綜述認為，認知訓練的效果主要局限於訓練任務本身，對其他認知能力的遷移效果證據不足。"
+      },
+      "s3": {
+        "title": "三、不替代專業建議",
+        "content": "本產品不能替代醫生、心理治療師、認知康復師或其他醫療專業人員的專業評估、診斷或建議。如果您有認知健康方面的擔憂，請諮詢合格的醫療專業人員。"
+      },
+      "s4": {
+        "title": "四、結果不保證",
+        "content": "認知訓練的效果因個體差異而不同。本產品不保證任何特定的訓練效果或認知能力提升。訓練結果受多種因素影響，包括但不限於訓練頻率、個人基礎認知能力、年齡、健康狀況等。"
+      },
+      "s5": {
+        "title": "五、適用人群",
+        "content": "本產品建議 9 歲及以上用戶使用。9 歲以下兒童應在家長或監護人的指導下使用。本產品不會故意向 9 歲以下兒童收集個人資訊。"
+      },
+      "s6": {
+        "title": "六、使用風險自擔",
+        "content": "用戶理解並同意，使用本產品所產生的任何結果（包括但不限於訓練效果、認知變化等）均由用戶自行承擔。開發者不對因使用或無法使用本產品而產生的任何直接、間接、偶然、特殊或後果性損害承擔責任。"
+      }
+    },
+    "privacy": {
+      "s1": {
+        "title": "一、引言與適用範圍",
+        "content": "本隱私政策適用於記憶花園（Memory Garden）應用，涵蓋 Web PWA、iOS、Android 及微信小程序等平台。我們重視您的隱私保護。目前版本預設採用本機儲存模式，訓練資料與設定主要保存在您的裝置上。"
+      },
+      "s2": {
+        "title": "二、我們收集的資訊",
+        "h1": "用戶主動提供的資訊",
+        "h2": "自動蒐集的資訊",
+        "h3": "本機儲存的資料",
+        "li1": "目前版本不要求您註冊帳戶或提交電子郵件地址",
+        "li2": "目前版本不會為您建立雲端帳戶或匿名身份識別",
+        "li3": "訓練會話記錄（N-back 等級、準確率、反應時間、訓練時長）",
+        "li4": "敘事解鎖狀態和花園日記快照",
+        "li5": "用戶設定偏好（語言、音量等）",
+        "p1": "本產品使用瀏覽器的 localStorage 或應用沙盒儲存保存遊戲統計資料、花園狀態、成就資料和用戶設定。這些資料預設僅保存在您的裝置上，不會自動上傳到雲端。若您需要遷移或備份，請使用應用內提供的匯出功能手動保存備份檔案。"
+      },
+      "s3": {
+        "title": "三、我們如何使用資訊",
+        "li1": "提供訓練記錄和統計展示服務",
+        "li2": "實現自適應難度推薦功能",
+        "li3": "支援本地匯出與匯入備份",
+        "li4": "改善產品體驗和服務品質"
+      },
+      "s4": {
+        "title": "四、資訊的儲存與安全",
+        "li1": "儲存位置：預設保存在您的裝置本地儲存空間中",
+        "li2": "傳輸方式：除您主動匯出、分享或備份檔案外，訓練資料不會被自動傳輸",
+        "li3": "存取控制：資料由您的裝置與作業系統權限機制進行保護",
+        "li4": "保留期限：資料會持續保留在本機，直到您主動清除應用資料、刪除備份檔案或解除安裝應用"
+      },
+      "s5": {
+        "title": "五、資訊的分享與揭露",
+        "content": "我們不會將您的個人資訊出售給第三方。我們僅在以下情況下分享您的資訊：",
+        "li1": "當您主動執行匯出、備份或分享操作時，相關檔案會依照您的指令傳送到您選擇的目標位置",
+        "li2": "法律要求：根據法律法規、訴訟或政府主管機關的要求"
+      },
+      "s6": {
+        "title": "六、用戶權利",
+        "li1": "存取與查看您裝置上的本地訓練資料",
+        "li2": "匯出訓練記錄（JSON 格式）",
+        "li3": "匯入備份或清除本地訓練資料",
+        "li4": "撤回同意並停止使用服務"
+      },
+      "s7": {
+        "title": "七、兒童隱私保護",
+        "content": "本產品建議 9 歲及以上用戶使用。我們不會故意向 9 歲以下兒童收集個人資訊。目前版本預設採用本機儲存模式，訓練資料不會自動上傳到雲端，也不會自動傳送到第三方分析或錯誤監控服務。如發現我們在未獲得家長同意的情況下收集了 9 歲以下兒童的個人資訊，我們將及時刪除相關資料。"
+      },
+      "s8": {
+        "title": "八、Cookie 與本機儲存",
+        "content": "本產品不使用追蹤 Cookie。我們使用瀏覽器的 localStorage 儲存遊戲資料，這些資料僅儲存在您的裝置上，不會自動傳輸到我們的伺服器。"
+      },
+      "s9": {
+        "title": "九、隱私政策的更新",
+        "content": "我們可能會不時更新本隱私政策。更新後的政策將在應用內通知您。繼續使用本產品即視為同意更新後的隱私政策。"
+      },
+      "s10": {
+        "title": "十、聯絡方式",
+        "content": "如您對本隱私政策有任何疑問，請透過以下方式聯絡我們："
+      }
+    },
+    "terms": {
+      "s1": {
+        "title": "一、服務說明",
+        "content": "記憶花園（Memory Garden）是一款基於 N-back 範式的認知訓練娛樂軟體。本產品目前免費提供，未來可能提供加值服務。我們保留隨時修改、暫停或終止服務的權利。"
+      },
+      "s2": {
+        "title": "二、智慧財產權",
+        "content": "本產品的所有內容（包括但不限於程式碼、設計、文字、圖形、使用者介面等）均受智慧財產權法律保護：",
+        "li1": "遊戲程式碼、美術資源、敘事內容的版權歸開發者所有",
+        "li2": "使用者產生的資料（訓練記錄、成就等）歸使用者所有"
+      },
+      "s3": {
+        "title": "三、使用者行為規範",
+        "content": "使用本產品時，您同意遵守以下規範：",
+        "li1": "不得對本產品進行反向工程、反編譯或反組譯",
+        "li2": "不得將本產品用於商業用途（除非獲得書面授權）",
+        "li3": "不得干擾或破壞本產品的正常運作"
+      },
+      "s4": {
+        "title": "四、本地資料與裝置安全",
+        "content": "目前版本預設不提供帳戶系統。您應自行保管裝置存取權限，並妥善保存匯出的備份檔案。因裝置遺失、誤刪應用、清除系統儲存或備份檔案外洩造成的資料損失或暴露，需由用戶自行承擔相應後果。"
+      },
+      "s5": {
+        "title": "五、服務變更與終止",
+        "content": "我們保留隨時修改或終止本產品（或其任何部分）的權利，無論是否事先通知。我們不對您或任何第三方承擔因服務修改、暫停或終止而產生的任何責任。"
+      },
+      "s6": {
+        "title": "六、免責聲明",
+        "content": "本產品按「現狀」及「可用」狀態提供，不作任何明示或暗示的保證。請參閱獨立的免責聲明頁面了解詳細資訊。"
+      },
+      "s7": {
+        "title": "七、管轄法律與爭議解決",
+        "content": "本使用條款受中華民國法律管轄（適用臺灣地區使用者）；其他地區使用者適用其住所地法律，住所地不明時以中華人民共和國法律為準據法。因本使用條款引起的任何爭議，雙方應首先透過友好協商解決；協商不成時，任何一方均可向開發者所在地有管轄權的法院提起訴訟。"
+      },
+      "s8": {
+        "title": "八、條款更新",
+        "content": "我們保留隨時修改本使用條款的權利。更新後的條款將在應用內通知您。繼續使用本產品即視為同意更新後的使用條款。"
+      }
+    },
+    "nback": {
+      "s1": {
+        "title": "一、什麼是 N-back 任務？",
+        "p1": "N-back 是一種經典的工作記憶（Working Memory, WM）評估和訓練範式，由 Wayne Kirchner 於 1958 年提出。它屬於連續表現任務（continuous performance task）。",
+        "p2": "基本原理：參與者需要持續監測一系列刺激（如字母、位置、圖形等），並判斷目前刺激是否與序列中往前第 n 個刺激相同。「n」值代表難度等級（如 1-back、2-back、3-back）。n 值越大，工作記憶負荷越高。",
+        "h1": "常見變體",
+        "p3": "單 N-back 僅處理一種模態（如視覺位置或聽覺字母）；雙 N-back（Dual N-back）同時處理兩種模態（視覺 + 聽覺），難度更高，常用於訓練研究。",
+        "h2": "具體形式",
+        "li1": "單 N-back：僅處理一種模態（如視覺位置或聽覺字母）",
+        "li2": "雙 N-back（Dual N-back）：同時處理兩種模態（視覺 + 聽覺），參與者需同時判斷視覺位置和聽覺字母是否匹配 n 步前",
+        "p4": "任務通常自適應：表現好時自動增加 n 值，表現差時降低，以保持挑戰性。"
+      },
+      "s2": {
+        "title": "二、它解決什麼問題？",
+        "p1": "工作記憶是短期儲存和操縱資訊的能力，是認知核心，與注意力、學習、推理、問題解決等密切相關。N-back 訓練主要針對以下問題：",
+        "h1": "工作記憶容量不足",
+        "p2": "幫助提升資訊更新、維持和抑制無關資訊的能力。",
+        "h2": "注意力與執行功能",
+        "p3": "改善認知控制、衝突解決（如 Stroop 任務）。",
+        "h3": "特定族群問題",
+        "li1": "ADHD（注意力不足過動症）：改善語言工作記憶",
+        "li2": "老年人認知衰退、神經復健",
+        "li3": "健康成人：提升日常記憶、學習效率",
+        "h4": "潛在遠遷移",
+        "p4": "有望提高流體智力（Fluid Intelligence, Gf），即抽象推理和解決新問題的能力，而非晶體智力（已學知識）。"
+      },
+      "s3": {
+        "title": "三、為什麼有效？機制與證據",
+        "h1": "理論基礎",
+        "li1": "N-back 要求持續更新工作記憶內容、抑制舊資訊、切換注意，訓練核心執行功能",
+        "li2": "雙 N-back 同時涉及多模態，可能模擬更複雜的認知需求，增強轉移潛力",
+        "h2": "實證證據",
+        "p1": "幾乎所有研究都顯示訓練任務本身表現顯著提升（近遷移到類似 N-back 任務）。",
+        "li3": "近遷移：中等效果，到其他工作記憶任務（如運行記憶、數字廣度）",
+        "li4": "遠遷移：到流體智力、注意力、執行功能等，小效果（Hedges' g ≈ 0.16–0.24）",
+        "li5": "一些研究顯示優於記憶宮殿法等其他方法，在轉移到未訓練任務上更突出",
+        "h3": "神經機制",
+        "p2": "可能增加前額葉活動、P300 成分增強，擴大注意焦點容量。",
+        "h4": "局限性（科學共識）",
+        "li7": "遠遷移效果小且不一致，受對照組類型（主動 vs 被動）、訓練劑量、個體差異影響",
+        "li8": "改善可能部分來自策略學習（如組塊化）而非純容量增加",
+        "li9": "並非萬能：短期訓練效果有限，長期堅持更重要"
+      },
+      "s4": {
+        "title": "四、關鍵論文與文獻",
+        "h1": "開創性研究",
+        "ref1": "Jaeggi, S. M., et al. (2008). Improving fluid intelligence with training on working memory. PNAS. 首次報導雙 N-back 訓練顯著提升流體智力，引發廣泛關注。",
+        "h2": "統合分析",
+        "ref2": "Au et al. (2015)：支持小幅 Gf 提升",
+        "ref3": "Soveri et al. (2017)：近遷移中等，遠遷移小",
+        "h3": "中文/後續研究",
+        "ref4": "已有中文研究探索手機 APP 雙維 N-back 對視覺空間工作記憶、Stroop 等執行功能的改善潛力",
+        "ref5": "針對 ADHD 青少年及成人的相關應用研究",
+        "h4": "更多資源",
+        "p1": "PubMed / Google Scholar 搜尋 \"dual n-back training\" 或 \"N-back 工作記憶訓練\"。實務建議：從 2-back 開始，每天 15–20 分鐘，持續數週。結合回饋和自適應難度效果更好。",
+        "summary": "總結：N-back 是科學驗證的工作記憶訓練工具，對近遷移可靠，遠遷移有潛力但效果溫和。適合作為日常認知維護或輔助復健手段，堅持與個人化調整是關鍵。效果因人而異，結合其他認知訓練或生活方式可能更佳。"
+      }
+    },
+    "contactBlock": {
+      "title": "問題回報與聯絡方式",
+      "content": "如果您對遊戲有任何問題、意見、建議、Bug 回報或合作意願，歡迎隨時透過以下電子郵件聯絡：",
+      "email": "ycsy520@gmail.com"
+    },
+    "copyrightLine": "© 2026 Memory Garden 記憶花園 · ycsy520@gmail.com · All rights reserved."
   }
 }

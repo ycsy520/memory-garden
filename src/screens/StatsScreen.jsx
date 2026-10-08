@@ -5,22 +5,17 @@
 import React, { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
-import { ArrowLeft, Trophy, Target, Zap, Clock, TrendingUp, Calendar, Flower2, Leaf } from 'lucide-react';
+import { Trophy, Target, Zap, Clock, TrendingUp, Calendar, Flower2, Leaf } from 'lucide-react';
+import PageHeader from '@components/PageHeader';
 import useStatsStore from '@stores/useStatsStore';
 import useGardenStore from '@stores/useGardenStore';
-import useAchievementStore, { COLLECTION_DEFS, TIERS } from '@stores/useAchievementStore';
+import useAchievementStore from '@stores/useAchievementStore';
 import { calculateSDT } from '@engine/SignalDetection';
+import { getLocalizedNarrativeCollectibles } from '@engine/narratives';
 import GardenJournalPanel from '@components/GardenJournalPanel';
+import StoreIcon from '@components/StoreIcon';
 import { HIDDEN_ACHIEVEMENTS } from '@engine/narrativeUnlockEngine';
-
-/** 模式 ID 到中文名的映射 */
-const MODE_NAMES = {
-  standard: '散步',
-  walk: '散步',
-  dual: '花与歌',
-  spatial: '花坛',
-  grid: '花圃',
-};
+import MODE_I18N_KEYS from '@i18n/modeKeys';
 
 /** 格式化秒数为 分:秒 */
 function formatDuration(seconds) {
@@ -35,16 +30,43 @@ function formatDate(isoString) {
   return `${d.getMonth() + 1}/${d.getDate()} ${d.getHours()}:${String(d.getMinutes()).padStart(2, '0')}`;
 }
 
+/**
+ * 统计页组件
+ * 统一展示成长摘要、收藏进度、历史记录与关键统计
+ * @returns {JSX.Element}
+ */
 export default function StatsScreen() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const navigate = useNavigate();
   const sessions = useStatsStore((s) => s.sessions);
   const bestScores = useStatsStore((s) => s.bestScores);
+  const perModeCounts = useStatsStore((s) => s.perModeCounts);
   const hiddenAchievements = useAchievementStore((s) => s.hiddenAchievements);
+  const unlockedNarratives = useAchievementStore((s) => s.unlockedNarratives);
+  const totalWalks = useGardenStore((s) => s.totalWalks);
+  const streakDays = useGardenStore((s) => s.streakDays);
+  const discovered = useGardenStore((s) => s.discovered);
+  const growthPoints = useGardenStore((s) => s.growthPoints);
+  const gardenLevel = useMemo(
+    // 避免在 selector 中返回新对象，防止 React 19 下进入快照循环更新。
+    () => {
+      void growthPoints;
+      return useGardenStore.getState().getGardenLevel();
+    },
+    [growthPoints]
+  );
+  const localizedCollectibles = useMemo(
+    () => getLocalizedNarrativeCollectibles(i18n.language),
+    [i18n.language]
+  );
 
   /** 总体统计 */
   const overallStats = useMemo(() => {
-    if (sessions.length === 0) {
+    // R8: 防御性过滤旧 session，丢弃缺少关键字段的数据防止统计页崩溃
+    const validSessions = sessions.filter(
+      (s) => s && typeof s.score === 'number' && s.startedAt
+    );
+    if (validSessions.length === 0) {
       return { totalGames: 0, avgAccuracy: 0, avgDPrime: 0, bestStreak: 0, totalDuration: 0 };
     }
 
@@ -55,7 +77,7 @@ export default function StatsScreen() {
     let bestStreak = 0;
     let totalDuration = 0;
 
-    sessions.forEach((s) => {
+    validSessions.forEach((s) => {
       totalHits += s.hits || 0;
       totalMisses += s.misses || 0;
       totalFA += s.falseAlarms || 0;
@@ -65,7 +87,7 @@ export default function StatsScreen() {
     });
 
     return {
-      totalGames: sessions.length,
+      totalGames: validSessions.length,
       avgAccuracy: (totalHits + totalMisses + totalFA + totalCR) > 0 ? (totalHits + totalCR) / (totalHits + totalMisses + totalFA + totalCR) : 0,
       avgDPrime: calculateSDT({ hits: totalHits, misses: totalMisses, falseAlarms: totalFA, correctRejections: totalCR }).dPrime,
       bestStreak,
@@ -75,127 +97,155 @@ export default function StatsScreen() {
 
   /** 最近10场记录 (倒序) */
   const recentSessions = useMemo(() => {
-    return [...sessions].reverse().slice(0, 10);
+    // R8: 防御性过滤旧 session，丢弃缺少关键字段的数据
+    return [...sessions]
+      .filter((s) => s && typeof s.score === 'number' && s.startedAt)
+      .reverse()
+      .slice(0, 10);
   }, [sessions]);
 
   return (
-    <div className="flex flex-col h-full animate-fade-in">
-      {/* 顶部导航 */}
-      <div className="flex items-center gap-3 p-6 pb-4">
-        <button
-          onClick={() => navigate('/menu')}
-          className="p-2 rounded-full bg-white/50 hover:bg-white transition-colors"
-          style={{ minHeight: 'var(--touch-min-size)', minWidth: 'var(--touch-min-size)' }}
-        >
-          <ArrowLeft size={20} className="text-[var(--color-text-secondary)]" />
-        </button>
-        <h1 className="text-2xl text-[var(--color-text-primary)]" style={{ fontFamily: 'var(--font-family-serif)' }}>
-          {t('stats.title')}
-        </h1>
-      </div>
+    <div className="ui-page-shell animate-fade-in">
+      <div className="ui-page-frame ui-section-stack">
+        <PageHeader
+          onBack={() => navigate('/menu')}
+          backLabel={t('common.back')}
+          eyebrow={t('stats.overview')}
+          title={t('stats.title')}
+        />
 
-      <div className="flex-1 overflow-y-auto px-6 pb-6 space-y-6">
-        {/* 花园日记卡片 */}
-        {(() => {
-          const gardenLevel = useGardenStore.getState().getGardenLevel();
-          const totalWalks = useGardenStore.getState().totalWalks;
-          const streakDays = useGardenStore.getState().streakDays;
-          const discovered = useGardenStore.getState().discovered;
-          return (
-            <div className="bg-gradient-to-br from-green-50 to-emerald-50 rounded-2xl shadow-md p-5">
-              <div className="flex items-center gap-2 mb-3">
-                <Flower2 size={18} className="text-green-600" />
-                <span className="font-bold text-green-800">花园日记</span>
-              </div>
-              <div className="flex items-center gap-3 mb-3">
-                <span className="text-3xl">{gardenLevel.icon}</span>
-                <div>
-                  <div className="text-lg font-bold text-green-800">花园 · {gardenLevel.name}</div>
-                  <div className="text-sm text-green-600">
-                    {totalWalks} 次散步
-                    {streakDays > 1 && <span> · 连续 {streakDays} 天</span>}
-                  </div>
-                </div>
-              </div>
-              {/* 成长进度 */}
-              {gardenLevel.level < 6 && (
-                <div className="mb-3">
-                  <div className="flex justify-between text-xs text-green-600 mb-1">
-                    <span>成长进度</span>
-                    <span>{useGardenStore.getState().growthPoints} / {gardenLevel.nextThreshold} 点</span>
-                  </div>
-                  <div className="w-full h-2 bg-green-100 rounded-full overflow-hidden">
-                    <div
-                      className="h-full bg-green-400 rounded-full transition-all duration-500"
-                      style={{ width: `${Math.round(gardenLevel.progress * 100)}%` }}
-                    />
-                  </div>
-                </div>
-              )}
-              {/* 已发现元素 */}
-              {discovered.length > 0 && (
-                <div className="flex items-center gap-1 text-xs text-green-500">
-                  <Leaf size={12} />
-                  <span>已发现 {discovered.length} 个花园元素</span>
-                </div>
-              )}
-              {discovered.length === 0 && (
-                <p className="text-xs text-green-400">完成散步，花园会慢慢生长。</p>
-              )}
+        <div className="grid gap-4 lg:grid-cols-[minmax(0,1.1fr)_minmax(0,0.9fr)]">
+          {/* 花园成长摘要 — 方案2：改名"花园成长"，删大花图避免重复，纯文字排版 */}
+          <section className="ui-card-primary border border-green-200/60 bg-gradient-to-br from-green-50 via-white to-emerald-50 p-5 shadow-[0_16px_32px_rgba(125,150,131,0.10)] sm:p-6">
+            <div className="mb-3 flex items-center gap-2 text-green-800">
+              <Leaf size={18} />
+              <span className="font-medium">{t('gardenJournal.growthTitle')}</span>
             </div>
-          );
-        })()}
+            <div className="min-w-0 mb-4">
+              <div className="text-lg font-semibold text-green-900 sm:text-xl">
+                {t('stats.gardenLabel', { level: gardenLevel.name })}
+              </div>
+              <div className="text-sm text-green-700">
+                {t('stats.walkCount', { count: totalWalks })}
+                {streakDays > 1 && <span> · {t('stats.streakDays', { days: streakDays })}</span>}
+              </div>
+            </div>
+            {gardenLevel.level < 6 && (
+              <div className="ui-card-secondary mb-4 border border-green-100/80 bg-white/70 p-4">
+                <div className="mb-2 flex items-center justify-between gap-3 text-sm text-green-700">
+                  <span>{t('stats.growthProgress')}</span>
+                  <span className="tabular-nums">
+                    {t('stats.growthPoints', { current: growthPoints, total: gardenLevel.nextThreshold })}
+                  </span>
+                </div>
+                <div className="ui-progress-track h-2 bg-green-100">
+                  <div
+                    className="ui-progress-fill bg-green-400"
+                    style={{ width: `${Math.round(gardenLevel.progress * 100)}%` }}
+                  />
+                </div>
+              </div>
+            )}
+            {discovered.length > 0 ? (
+              <div className="flex items-center gap-2 text-sm text-green-700">
+                <Leaf size={14} />
+                <span>{t('stats.discoveredCount', { count: discovered.length })}</span>
+              </div>
+            ) : (
+              <p className="text-sm text-green-600">{t('stats.keepWalking')}</p>
+            )}
+          </section>
 
-        {/* 花园收藏 */}
-        <div className="bg-white rounded-2xl shadow-md p-5">
-          <div className="flex items-center justify-between mb-4">
+          {/* 总体统计概览 */}
+          <section className="ui-card-primary border border-stone-200/70 bg-white/72 p-5 shadow-[0_16px_32px_rgba(120,113,108,0.08)] backdrop-blur-sm sm:p-6">
+            <div className="mb-4 flex items-center gap-2">
+              <TrendingUp size={18} className="text-[var(--color-brand)]" />
+              <span className="font-medium text-[var(--color-text-primary)]">{t('stats.overview')}</span>
+            </div>
+            <div className="grid grid-cols-2 gap-3">
+              <div className="ui-card-secondary bg-stone-50 px-3 py-4 text-center">
+                <Calendar size={18} className="mx-auto mb-2 text-[var(--color-text-muted)]" />
+                <div className="tabular-nums text-2xl font-semibold text-[var(--color-text-primary)]">{overallStats.totalGames}</div>
+                <div className="mt-1 text-sm text-[var(--color-text-muted)]">{t('stats.totalGames')}</div>
+              </div>
+              <div className="ui-card-secondary bg-stone-50 px-3 py-4 text-center">
+                <Target size={18} className="mx-auto mb-2 text-[var(--color-text-muted)]" />
+                <div className="tabular-nums text-2xl font-semibold text-[var(--color-text-primary)]">
+                  {Math.round(overallStats.avgAccuracy * 100)}%
+                </div>
+                <div className="mt-1 text-sm text-[var(--color-text-muted)]">{t('stats.avgAccuracy')}</div>
+              </div>
+              <div className="ui-card-secondary bg-stone-50 px-3 py-4 text-center">
+                <Zap size={18} className="mx-auto mb-2 text-[var(--color-text-muted)]" />
+                <div className="tabular-nums text-2xl font-semibold text-[var(--color-text-primary)]">
+                  {overallStats.avgDPrime.toFixed(1)}
+                </div>
+                <div className="mt-1 text-sm text-[var(--color-text-muted)]">{t('stats.dPrime')}</div>
+              </div>
+              <div className="ui-card-secondary bg-stone-50 px-3 py-4 text-center">
+                <Trophy size={18} className="mx-auto mb-2 text-[var(--color-text-muted)]" />
+                <div className="tabular-nums text-2xl font-semibold text-[var(--color-text-primary)]">{overallStats.bestStreak}</div>
+                <div className="mt-1 text-sm text-[var(--color-text-muted)]">{t('stats.bestStreak')}</div>
+              </div>
+            </div>
+            <div className="ui-card-secondary mt-4 flex items-center justify-between gap-3 bg-stone-50 px-4 py-3">
+              <div className="flex items-center gap-2">
+                <Clock size={16} className="text-[var(--color-text-muted)]" />
+                <span className="text-sm text-[var(--color-text-secondary)]">{t('stats.totalTime')}</span>
+              </div>
+              <span className="tabular-nums text-lg font-semibold text-[var(--color-text-primary)]">
+                {formatDuration(overallStats.totalDuration)}
+              </span>
+            </div>
+          </section>
+        </div>
+
+        {/* 花园收藏 — 方案2：统一白底，已解锁白/未解锁石灰；删底部档位图例冗余 */}
+        <section className="ui-card-primary border border-stone-200/70 bg-white/72 p-5 shadow-[0_16px_32px_rgba(120,113,108,0.08)] backdrop-blur-sm sm:p-6">
+          <div className="mb-4 flex items-center justify-between gap-3">
             <div className="flex items-center gap-2">
               <Leaf size={18} className="text-[var(--color-brand)]" />
-              <span className="font-bold text-[var(--color-text-primary)]">花园收藏</span>
+              <span className="font-medium text-[var(--color-text-primary)]">{t('menu.gardenCollection')}</span>
             </div>
-            <span className="text-xs text-[var(--color-text-muted)]">
-              {Object.keys(useAchievementStore.getState().unlockedNarratives).length} / {COLLECTION_DEFS.length} 件
+            <span className="text-sm text-[var(--color-text-muted)]">
+              {t('stats.collectionProgress', { current: Object.keys(unlockedNarratives).length, total: localizedCollectibles.length })}
             </span>
           </div>
-          <div className="grid grid-cols-4 gap-3">
-            {COLLECTION_DEFS.map((def) => {
-              const currentTierId = useAchievementStore.getState().unlockedNarratives[def.id];
+          <div className="grid grid-cols-4 gap-3 sm:grid-cols-6 lg:grid-cols-8">
+            {localizedCollectibles.map((def) => {
+              const currentTierId = unlockedNarratives[def.id];
               const currentTier = currentTierId
-                ? def.tiers.find((t) => t.tier === currentTierId)
+                ? def.tiers.find((tier) => tier.tierId === currentTierId)
                 : null;
-              const tierName = currentTierId
-                ? TIERS.find((t) => t.id === currentTierId)?.name || ''
-                : '';
+              const tierName = currentTierId ? t(`garden.tiers.${currentTierId}`) : '';
+
               return (
                 <div
                   key={def.id}
-                  className={`flex flex-col items-center gap-1 p-2 rounded-xl transition-all ${
-                    currentTier ? 'bg-green-50' : 'bg-stone-50 opacity-50'
+                  className={`ui-card-secondary flex flex-col items-center gap-1 border px-2 py-3 text-center transition-all ${
+                    currentTier
+                      ? 'border-stone-200/60 bg-white shadow-sm'
+                      : 'border-stone-200/70 bg-stone-50/60 opacity-60'
                   }`}
-                  title={currentTier ? `${def.name} · ${tierName}` : `${def.name} · 未解锁`}
+                  title={currentTier ? `${def.name} · ${tierName}` : `${def.name} · ${t('achievements.hiddenSecret')}`}
                 >
-                  <span className={`text-2xl ${currentTier ? '' : 'grayscale'}`}>
-                    {currentTier ? currentTier.icon : '❓'}
+                  <span className={`flex w-full items-center justify-center ${currentTier ? '' : 'grayscale'}`}>
+                    <StoreIcon
+                      value={currentTier ? currentTier.icon : '❓'}
+                      className="text-2xl"
+                      spriteClass="sprite-frame w-full"
+                      backgroundSize="500% 500%"
+                    />
                   </span>
-                  <span className={`text-[10px] leading-tight text-center ${currentTier ? 'text-green-700' : 'text-stone-400'}`}>
-                    {currentTier ? `${def.name}` : '???'}
+                  <span className={`break-words text-sm leading-tight ${currentTier ? 'text-[var(--color-text-primary)]' : 'text-stone-400'}`}>
+                    {currentTier ? def.name : '???'}
                   </span>
-                  {currentTier && (
-                    <span className="text-[9px] text-green-500">{tierName}</span>
-                  )}
+                  {currentTier && <span className="text-sm text-[var(--color-text-muted)]">{tierName}</span>}
                 </div>
               );
             })}
           </div>
-          {/* 品质档位说明 */}
-          <div className="flex justify-center gap-3 mt-3 pt-3 border-t border-stone-100">
-            {TIERS.map((tier) => (
-              <span key={tier.id} className="text-[10px] text-[var(--color-text-muted)]">
-                {tier.name}
-              </span>
-            ))}
-          </div>
-        </div>
+        </section>
 
         {/* 花园日记 */}
         <GardenJournalPanel />
@@ -204,21 +254,23 @@ export default function StatsScreen() {
         {(() => {
           const hiddenIds = Object.keys(HIDDEN_ACHIEVEMENTS);
           const unlockedIds = hiddenIds.filter((id) => hiddenAchievements[id]);
-          if (unlockedIds.length === 0 && Object.keys(useStatsStore.getState().perModeCounts).length === 0) return null;
+
+          if (unlockedIds.length === 0 && Object.keys(perModeCounts).length === 0) return null;
+
           return (
-            <div className="bg-white rounded-2xl shadow-md p-5">
-              <div className="flex items-center gap-2 mb-3">
+            <section className="ui-card-primary border border-stone-200/70 bg-white/72 p-5 shadow-[0_16px_32px_rgba(120,113,108,0.08)] backdrop-blur-sm sm:p-6">
+              <div className="mb-4 flex items-center gap-2">
                 <span className="text-lg">🤫</span>
-                <span className="font-bold text-[var(--color-text-primary)]">花园秘密</span>
+                <span className="font-medium text-[var(--color-text-primary)]">{t('achievements.gardenSecrets')}</span>
                 {unlockedIds.length > 0 && (
-                  <span className="text-xs text-[var(--color-text-muted)] ml-auto">
+                  <span className="ml-auto text-sm text-[var(--color-text-muted)]">
                     {unlockedIds.length}/{hiddenIds.length}
                   </span>
                 )}
               </div>
               {unlockedIds.length === 0 ? (
-                <p className="text-sm text-[var(--color-text-muted)] text-center py-2">
-                  花园里藏着一些秘密。也许多走走就会发现。
+                <p className="py-4 text-center text-sm text-[var(--color-text-muted)]">
+                  {t('achievements.secretsHint')}
                 </p>
               ) : (
                 <div className="space-y-2">
@@ -226,13 +278,14 @@ export default function StatsScreen() {
                     const achievement = HIDDEN_ACHIEVEMENTS[id];
                     const unlockedAt = hiddenAchievements[id];
                     const date = unlockedAt ? new Date(unlockedAt) : null;
+
                     return (
-                      <div key={id} className="flex items-start gap-2 p-2 bg-amber-50 rounded-lg">
+                      <div key={id} className="ui-card-secondary flex items-start gap-3 border border-amber-100/80 bg-amber-50/80 p-3">
                         <span className="text-sm">❤️</span>
                         <div className="flex-1">
-                          <p className="text-xs text-amber-700 leading-relaxed">{achievement.text}</p>
+                          <p className="text-sm leading-relaxed text-amber-700">{achievement.text()}</p>
                           {date && (
-                            <span className="text-[10px] text-amber-400 mt-0.5 inline-block">
+                            <span className="mt-1 inline-block text-sm text-amber-500">
                               {date.getFullYear()}.{String(date.getMonth() + 1).padStart(2, '0')}.{String(date.getDate()).padStart(2, '0')}
                             </span>
                           )}
@@ -240,132 +293,73 @@ export default function StatsScreen() {
                       </div>
                     );
                   })}
-                  {/* 未解锁的显示占位 */}
                   {hiddenIds.filter((id) => !hiddenAchievements[id]).map((id) => (
-                    <div key={id} className="flex items-center gap-2 p-2 bg-stone-50 rounded-lg opacity-40">
+                    <div key={id} className="ui-card-secondary flex items-center gap-3 border border-stone-200/70 bg-stone-50/70 p-3 opacity-50">
                       <span className="text-sm">❓</span>
-                      <span className="text-xs text-stone-400">尚未发现的秘密</span>
+                      <span className="text-sm text-stone-400">{t('achievements.undiscoveredSecrets')}</span>
                     </div>
                   ))}
                 </div>
               )}
-            </div>
+            </section>
           );
         })()}
 
-        {/* 总体统计卡片 */}
-        <div className="bg-white rounded-2xl shadow-md p-5 space-y-4">
-          <div className="flex items-center gap-2 mb-2">
-            <TrendingUp size={18} className="text-[var(--color-brand)]" />
-            <span className="font-bold text-[var(--color-text-primary)]">{t('stats.overview')}</span>
-          </div>
-
-          <div className="grid grid-cols-2 gap-4">
-            {/* 总场次 */}
-            <div className="bg-stone-50 rounded-xl p-3 text-center">
-              <Calendar size={18} className="mx-auto text-[var(--color-text-muted)] mb-1" />
-              <div className="text-2xl font-bold text-[var(--color-text-primary)]">{overallStats.totalGames}</div>
-              <div className="text-xs text-[var(--color-text-muted)]">{t('stats.totalGames')}</div>
-            </div>
-
-            {/* 平均准确率 */}
-            <div className="bg-stone-50 rounded-xl p-3 text-center">
-              <Target size={18} className="mx-auto text-[var(--color-text-muted)] mb-1" />
-              <div className="text-2xl font-bold text-[var(--color-text-primary)]">
-                {Math.round(overallStats.avgAccuracy * 100)}%
-              </div>
-              <div className="text-xs text-[var(--color-text-muted)]">{t('stats.avgAccuracy')}</div>
-            </div>
-
-            {/* d-prime */}
-            <div className="bg-stone-50 rounded-xl p-3 text-center">
-              <Zap size={18} className="mx-auto text-[var(--color-text-muted)] mb-1" />
-              <div className="text-2xl font-bold text-[var(--color-text-primary)]">
-                {overallStats.avgDPrime.toFixed(1)}
-              </div>
-              <div className="text-xs text-[var(--color-text-muted)]">{t('stats.dPrime')}</div>
-            </div>
-
-            {/* 最佳连胜 */}
-            <div className="bg-stone-50 rounded-xl p-3 text-center">
-              <Trophy size={18} className="mx-auto text-[var(--color-text-muted)] mb-1" />
-              <div className="text-2xl font-bold text-[var(--color-text-primary)]">{overallStats.bestStreak}</div>
-              <div className="text-xs text-[var(--color-text-muted)]">{t('stats.bestStreak')}</div>
-            </div>
-          </div>
-
-          {/* 总训练时长 */}
-          <div className="flex items-center justify-between bg-stone-50 rounded-xl p-3">
-            <div className="flex items-center gap-2">
-              <Clock size={16} className="text-[var(--color-text-muted)]" />
-              <span className="text-sm text-[var(--color-text-secondary)]">{t('stats.totalTime')}</span>
-            </div>
-            <span className="font-bold text-[var(--color-text-primary)]">
-              {formatDuration(overallStats.totalDuration)}
-            </span>
-          </div>
-        </div>
-
         {/* 最高分面板 */}
         {Object.keys(bestScores).length > 0 && (
-          <div className="bg-white rounded-2xl shadow-md p-5">
-            <div className="flex items-center gap-2 mb-3">
+          <section className="ui-card-primary border border-stone-200/70 bg-white/72 p-5 shadow-[0_16px_32px_rgba(120,113,108,0.08)] backdrop-blur-sm sm:p-6">
+            <div className="mb-4 flex items-center gap-2">
               <Trophy size={18} className="text-amber-500" />
-              <span className="font-bold text-[var(--color-text-primary)]">{t('stats.bestScores')}</span>
+              <span className="font-medium text-[var(--color-text-primary)]">{t('stats.bestScores')}</span>
             </div>
-            <div className="space-y-2">
+            <div className="grid gap-2 sm:grid-cols-2">
               {Object.entries(bestScores).map(([modeId, score]) => (
-                <div key={modeId} className="flex justify-between items-center bg-stone-50 rounded-lg px-3 py-2">
-                  <span className="text-sm text-[var(--color-text-secondary)]">{MODE_NAMES[modeId] || modeId}</span>
-                  <span className="font-bold text-amber-600">{score}</span>
+                <div key={modeId} className="ui-card-secondary flex items-center justify-between bg-stone-50 px-4 py-3">
+                  <span className="text-sm text-[var(--color-text-secondary)]">
+                    {MODE_I18N_KEYS[modeId] ? t(MODE_I18N_KEYS[modeId]) : modeId}
+                  </span>
+                  <span className="tabular-nums text-lg font-semibold text-amber-600">{score}</span>
                 </div>
               ))}
             </div>
-          </div>
+          </section>
         )}
 
         {/* 历史记录 */}
-        <div className="bg-white rounded-2xl shadow-md p-5">
-          <div className="flex items-center gap-2 mb-3">
+        <section className="ui-card-primary border border-stone-200/70 bg-white/72 p-5 shadow-[0_16px_32px_rgba(120,113,108,0.08)] backdrop-blur-sm sm:p-6">
+          <div className="mb-4 flex items-center gap-2">
             <Clock size={18} className="text-[var(--color-text-secondary)]" />
-            <span className="font-bold text-[var(--color-text-primary)]">{t('stats.history')}</span>
+            <span className="font-medium text-[var(--color-text-primary)]">{t('stats.history')}</span>
           </div>
-
           {recentSessions.length === 0 ? (
-            <p className="text-[var(--color-text-muted)] text-center py-8">
-              {t('stats.noHistory')}
-            </p>
+            <p className="py-10 text-center text-[var(--color-text-muted)]">{t('stats.noHistory')}</p>
           ) : (
             <div className="space-y-2">
               {recentSessions.map((session) => (
-                <div key={session.id} className="flex items-center justify-between bg-stone-50 rounded-lg px-3 py-2.5">
-                  <div className="flex-1">
-                    <div className="flex items-center gap-2">
+                <div key={session.id} className="ui-card-secondary flex items-center justify-between gap-3 bg-stone-50 px-4 py-3">
+                  <div className="min-w-0 flex-1">
+                    <div className="flex flex-wrap items-center gap-x-2 gap-y-1">
                       <span className="text-sm font-medium text-[var(--color-text-primary)]">
-                        {MODE_NAMES[session.modeId] || session.modeId || `N${session.difficulty}`}
+                        {MODE_I18N_KEYS[session.modeId] ? t(MODE_I18N_KEYS[session.modeId]) : (session.modeId || `N${session.difficulty}`)}
                       </span>
-                      <span className="text-xs text-[var(--color-text-muted)]">
-                        {formatDate(session.startedAt)}
-                      </span>
+                      <span className="text-sm text-[var(--color-text-muted)]">{formatDate(session.startedAt)}</span>
                     </div>
-                    <div className="flex items-center gap-3 mt-0.5">
-                      <span className="text-xs text-[var(--color-text-muted)]">
+                    <div className="mt-1 flex flex-wrap items-center gap-x-3 gap-y-1 text-sm text-[var(--color-text-muted)]">
+                      <span className="tabular-nums">
                         {t('stats.accuracy')}: {Math.round((session.accuracy || 0) * 100)}%
                       </span>
-                      <span className="text-xs text-[var(--color-text-muted)]">
-                        {formatDuration(session.duration || 0)}
-                      </span>
+                      <span className="tabular-nums">{formatDuration(session.duration || 0)}</span>
                     </div>
                   </div>
                   <div className="text-right">
-                    <div className="text-lg font-bold text-[var(--color-text-primary)]">{session.score}</div>
-                    <div className="text-xs text-[var(--color-text-muted)]">{t('stats.score')}</div>
+                    <div className="tabular-nums text-lg font-semibold text-[var(--color-text-primary)]">{session.score}</div>
+                    <div className="text-sm text-[var(--color-text-muted)]">{t('stats.score')}</div>
                   </div>
                 </div>
               ))}
             </div>
           )}
-        </div>
+        </section>
       </div>
     </div>
   );

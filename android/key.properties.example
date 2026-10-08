@@ -1,0 +1,4 @@
+storeFile=release.keystore
+storePassword=replace-with-your-store-password
+keyAlias=memorygarden
+keyPassword=replace-with-your-key-password

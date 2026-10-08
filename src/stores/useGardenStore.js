@@ -6,58 +6,87 @@
  * 成长阶段（文档 §10.2）：
  * 种子 → 破土 → 发芽 → 长叶 → 花苞 → 半开 → 盛开
  *
- * @version 1.0
+ * @version 2.0 - 国际化支持
  */
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
+import i18n from '@i18n/index';
 
-/** 花园收集元素注册表 */
+/** 花园收集元素注册表（存储翻译 key，运行时通过 i18n.t() 获取文案）
+ *  icon: store.png 精灵图格子索引（0~24），由 StoreIcon 组件裁切渲染 */
 const COLLECTION_ITEMS = [
-  { id: 'seed', icon: '🌱', name: '种子', desc: '第一次走进花园', condition: (s) => s.totalWalks >= 1 },
-  { id: 'dew', icon: '💧', name: '露珠', desc: '清晨的礼物', condition: (s) => s.totalWalks >= 3 },
-  { id: 'sprout', icon: '🌿', name: '嫩芽', desc: '花园开始生长', condition: (s) => s.growthPoints >= 3 },
-  { id: 'pebble', icon: '🪨', name: '小石子', desc: '铺一条小路', condition: (s) => s.totalWalks >= 10 },
-  { id: 'ladybug', icon: '🐞', name: '瓢虫', desc: '记忆越来越准', condition: (s) => s.bestAccuracy >= 0.70 },
-  { id: 'butterfly', icon: '🦋', name: '蝴蝶', desc: '花间飞舞', condition: (s) => s.bestAccuracy >= 0.85 },
-  { id: 'snail', icon: '🐌', name: '蜗牛', desc: '每天都来', condition: (s) => s.streakDays >= 3 },
-  { id: 'breeze', icon: '🍃', name: '微风', desc: '花园长大了', condition: (s) => s.growthPoints >= 8 },
-  { id: 'clover', icon: '☘️', name: '四叶草', desc: '好运降临', condition: (s) => s.bestAccuracy >= 0.90 },
-  { id: 'bird', icon: '🐦', name: '小鸟', desc: '坚持一周', condition: (s) => s.streakDays >= 5 },
-  { id: 'mushroom', icon: '🍄', name: '蘑菇', desc: '雨后生长', condition: (s) => s.totalWalks >= 30 },
-  { id: 'stone-path', icon: '🪵', name: '石头路', desc: '花园长叶了', condition: (s) => s.growthPoints >= 16 },
-  { id: 'dragonfly', icon: '🪻', name: '蜻蜓', desc: '连续一周', condition: (s) => s.streakDays >= 7 },
-  { id: 'sunflower', icon: '🌻', name: '向日葵', desc: '花园半开', condition: (s) => s.growthPoints >= 45 },
-  { id: 'rainbow', icon: '🌈', name: '彩虹', desc: '50 次散步', condition: (s) => s.totalWalks >= 50 },
-  { id: 'garden-house', icon: '🏡', name: '花园小屋', desc: '花园盛开', condition: (s) => s.growthPoints >= 70 },
-];
-
-/** 花园成长阶段定义 */
-const GARDEN_LEVELS = [
-  { level: 0, name: '种子', icon: '🌱', threshold: 0 },
-  { level: 1, name: '破土', icon: '🌿', threshold: 3 },
-  { level: 2, name: '发芽', icon: '☘️', threshold: 8 },
-  { level: 3, name: '长叶', icon: '🍀', threshold: 16 },
-  { level: 4, name: '花苞', icon: '🌸', threshold: 28 },
-  { level: 5, name: '半开', icon: '🌺', threshold: 45 },
-  { level: 6, name: '盛开', icon: '🌻', threshold: 70 },
+  { id: 'seed', icon: 10, nameKey: 'garden.collections.seed.name', descKey: 'garden.collections.seed.desc', condition: (s) => s.totalWalks >= 1 },
+  { id: 'dew', icon: 3, nameKey: 'garden.collections.dew.name', descKey: 'garden.collections.dew.desc', condition: (s) => s.totalWalks >= 3 },
+  { id: 'sprout', icon: 11, nameKey: 'garden.collections.sprout.name', descKey: 'garden.collections.sprout.desc', condition: (s) => s.growthPoints >= 3 },
+  { id: 'pebble', icon: 24, nameKey: 'garden.collections.pebble.name', descKey: 'garden.collections.pebble.desc', condition: (s) => s.totalWalks >= 10 },
+  { id: 'ladybug', icon: 5, nameKey: 'garden.collections.ladybug.name', descKey: 'garden.collections.ladybug.desc', condition: (s) => s.bestAccuracy >= 0.70 },
+  { id: 'butterfly', icon: 7, nameKey: 'garden.collections.butterfly.name', descKey: 'garden.collections.butterfly.desc', condition: (s) => s.bestAccuracy >= 0.85 },
+  { id: 'snail', icon: 8, nameKey: 'garden.collections.snail.name', descKey: 'garden.collections.snail.desc', condition: (s) => s.streakDays >= 3 },
+  { id: 'breeze', icon: 13, nameKey: 'garden.collections.breeze.name', descKey: 'garden.collections.breeze.desc', condition: (s) => s.growthPoints >= 8 },
+  { id: 'clover', icon: 14, nameKey: 'garden.collections.clover.name', descKey: 'garden.collections.clover.desc', condition: (s) => s.bestAccuracy >= 0.90 },
+  { id: 'bird', icon: 9, nameKey: 'garden.collections.bird.name', descKey: 'garden.collections.bird.desc', condition: (s) => s.streakDays >= 5 },
+  { id: 'mushroom', icon: 23, nameKey: 'garden.collections.mushroom.name', descKey: 'garden.collections.mushroom.desc', condition: (s) => s.totalWalks >= 30 },
+  { id: 'stone-path', icon: 24, nameKey: 'garden.collections.stonePath.name', descKey: 'garden.collections.stonePath.desc', condition: (s) => s.growthPoints >= 16 },
+  { id: 'dragonfly', icon: 6, nameKey: 'garden.collections.dragonfly.name', descKey: 'garden.collections.dragonfly.desc', condition: (s) => s.streakDays >= 7 },
+  { id: 'sunflower', icon: 15, nameKey: 'garden.collections.sunflower.name', descKey: 'garden.collections.sunflower.desc', condition: (s) => s.growthPoints >= 45 },
+  { id: 'rainbow', icon: 21, nameKey: 'garden.collections.rainbow.name', descKey: 'garden.collections.rainbow.desc', condition: (s) => s.totalWalks >= 50 },
+  { id: 'garden-house', icon: 22, nameKey: 'garden.collections.cottage.name', descKey: 'garden.collections.cottage.desc', condition: (s) => s.growthPoints >= 70 },
 ];
 
 /**
- * 根据成长点数计算当前等级
+ * 获取花园收集元素列表（带翻译）
+ * @param {Function} t - i18n 翻译函数
+ * @returns {Array} 翻译后的收集元素列表
+ */
+export function getCollectionItems(t) {
+  return COLLECTION_ITEMS.map((item) => ({
+    ...item,
+    name: t(item.nameKey),
+    desc: t(item.descKey),
+  }));
+}
+
+/** 花园成长阶段定义（存储翻译 key）
+ *  icon: store.png 精灵图格子索引（0~24） */
+const GARDEN_LEVELS = [
+  { level: 0, nameKey: 'garden.levels.seed', icon: 10, threshold: 0 },
+  { level: 1, nameKey: 'garden.levels.sprout', icon: 11, threshold: 3 },
+  { level: 2, nameKey: 'garden.levels.bud', icon: 12, threshold: 8 },
+  { level: 3, nameKey: 'garden.levels.leaf', icon: 13, threshold: 16 },
+  { level: 4, nameKey: 'garden.levels.budding', icon: 17, threshold: 28 },
+  { level: 5, nameKey: 'garden.levels.halfBloom', icon: 16, threshold: 45 },
+  { level: 6, nameKey: 'garden.levels.fullBloom', icon: 15, threshold: 70 },
+];
+
+/**
+ * 获取花园等级列表（带翻译）
+ * @param {Function} t - i18n 翻译函数
+ * @returns {Array} 翻译后的等级列表
+ */
+export function getGardenLevels(t) {
+  return GARDEN_LEVELS.map((level) => ({
+    ...level,
+    name: t(level.nameKey),
+  }));
+}
+
+/**
+ * 根据成长点数计算当前等级（使用翻译后的等级列表）
  * @param {number} points - 成长点数
  * @returns {{ level: number, name: string, icon: string, threshold: number, nextThreshold: number, progress: number }}
  */
 function computeLevel(points) {
-  let current = GARDEN_LEVELS[0];
-  for (let i = GARDEN_LEVELS.length - 1; i >= 0; i--) {
-    if (points >= GARDEN_LEVELS[i].threshold) {
-      current = GARDEN_LEVELS[i];
+  const levels = getGardenLevels(i18n.t.bind(i18n));
+  let current = levels[0];
+  for (let i = levels.length - 1; i >= 0; i--) {
+    if (points >= levels[i].threshold) {
+      current = levels[i];
       break;
     }
   }
 
-  const nextIndex = Math.min(current.level + 1, GARDEN_LEVELS.length - 1);
-  const nextThreshold = GARDEN_LEVELS[nextIndex].threshold;
+  const nextIndex = Math.min(current.level + 1, levels.length - 1);
+  const nextThreshold = levels[nextIndex].threshold;
   const prevThreshold = current.threshold;
   const progress = nextThreshold > prevThreshold
     ? Math.min(1, (points - prevThreshold) / (nextThreshold - prevThreshold))
@@ -121,23 +150,28 @@ const useGardenStore = create(
       },
 
       /**
-       * 检查并解锁收集元素
-       * @returns {string[]} 本次新解锁的元素 ID 列表
+       * 获取当前满足条件但未解锁的收集元素候选列表
+       * @returns {string[]} 候选元素 ID 列表
        */
-      checkAndUnlock: () => {
+      getUnlockCandidates: () => {
         const state = get();
-        const newDiscovered = [...state.discovered];
-        const newItems = [];
-        COLLECTION_ITEMS.forEach((item) => {
-          if (!newDiscovered.includes(item.id) && item.condition(state)) {
-            newDiscovered.push(item.id);
-            newItems.push(item.id);
-          }
+        return COLLECTION_ITEMS
+          .filter((item) => !state.discovered.includes(item.id) && item.condition(state))
+          .map((item) => item.id);
+      },
+
+      /**
+       * 解锁单个收集元素
+       * @param {string} itemId - 元素 ID
+       */
+      unlockSingle: (itemId) => {
+        set((state) => {
+          if (state.discovered.includes(itemId)) return {};
+          return {
+            discovered: [...state.discovered, itemId],
+            newlyUnlocked: [itemId],
+          };
         });
-        if (newItems.length > 0) {
-          set({ discovered: newDiscovered, newlyUnlocked: newItems });
-        }
-        return newItems;
       },
 
       /**
@@ -175,6 +209,14 @@ const useGardenStore = create(
     }),
     {
       name: 'memory-garden:garden',
+      /**
+       * localStorage 写入错误回调
+       * 花园数据较小，通常不会溢出，但仍需防御
+       * @param {Error} error
+       */
+      onError: (error) => {
+        console.warn('[GardenStore] 存储写入失败:', error.name);
+      },
     }
   )
 );

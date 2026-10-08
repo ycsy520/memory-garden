@@ -1,7 +1,7 @@
 # 记忆小花园 (Memory Garden) — 文档索引
 
-> 版本: v5.0
-> 更新: 2026-07-03
+> 版本: v5.2
+> 更新: 2026-07-08
 > 本文档体系基于多专家交叉审计结果，是项目迭代的唯一权威依据。
 
 ---
@@ -16,9 +16,17 @@
 | 04 | [SDD - 软件设计文档](./04-SDD.md) | 目录结构、组件清单、接口契约、编码规范 | 开发 |
 | 05 | [ARCH - 架构约束文档](./05-ARCH.md) | 不可违背的架构规则、设计原则、代码规范 | 开发、Code Review |
 | 06 | [CHANGELOG - 版本迭代日志](./06-CHANGELOG.md) | 版本历史、变更记录 | 所有人 |
+| ROADMAP | [ROADMAP - 版本迭代路线图](./ROADMAP.md) | 核心迭代节点梳理、版本进度 | 所有人 |
 | 07 | [GARDEN-DESIGN - 花园主题设计](./07-GARDEN-DESIGN.md) | 花园叙事、科学内核、交互规则、反馈系统 | 设计、开发 |
 | 08 | [GARDEN-NARRATIVE - 花园叙事](./08-GARDEN-NARRATIVE.md) | 收藏品故事、人物关系、文案库 | 设计、开发 |
-| 09 | [NARRATIVE-IMPLEMENTATION-PLAN - 叙事实施计划](./09-NARRATIVE-IMPLEMENTATION-PLAN.md) | 叙事系统实施任务清单 | 开发 |
+| 09 | [VISUAL-SYSTEM - 全站视觉系统蓝图](./09-VISUAL-SYSTEM.md) | 12列栅格、响应式版心、圆角语言、按钮体系、页面骨架 | 设计、开发 |
+| 10 | [RESPONSIVE - 响应式设计](./10-RESPONSIVE.md) | 多端适配、断点策略、Safe Area、横屏锁定 | 开发、设计 |
+| 12 | [VISUAL-SYSTEM-TASKS - 全站视觉系统执行清单](./12-VISUAL-SYSTEM-TASKS.md) | 蓝图拆解、分阶段执行顺序、文件优先级、验收标准 | 开发、设计 |
+| 13 | [RISK-REMEDIATION-BLUEPRINT - 风险修复蓝图](./13-RISK-REMEDIATION-BLUEPRINT.md) | 安全与性能风险的 P0/P1 最小修复蓝图、优先级与成功标准 | 开发、架构、Review |
+| 14 | [RISK-REMEDIATION-TASKS - 风险修复执行清单](./14-RISK-REMEDIATION-TASKS.md) | 风险蓝图拆解后的 T0-T6 执行顺序、交付物、验收标准 | 开发、测试 |
+| 15 | [RELEASE-READINESS - 上线前收尾与人工测试计划](./15-RELEASE-READINESS.md) | 发布前自动化基线、阻断项分级、人工测试清单与进入封包条件 | 开发、测试、发布 |
+| 16 | [ANALYTICS-SPEC - 分析体系规格文档](./16-ANALYTICS-SPEC.md) | 登录用户上云统计、attempt/event/rollup 模型、隐私口径、报表维度与删除账户匿名化策略 | 产品、开发、数据 |
+| 17 | [ANALYTICS-TASKS - 分析体系执行清单](./17-ANALYTICS-TASKS.md) | 分析体系从规格冻结、表结构、ingest、离线队列到报表与匿名化落地的任务拆解 | 开发、数据、测试 |
 
 ---
 
@@ -32,10 +40,19 @@
   02-SPEC (查对应功能) → 04-SDD (查接口/组件) → 05-ARCH (确认约束)
 
 Code Review:
-  05-ARCH (检查违规) → 04-SDD (检查接口一致性)
+  05-ARCH (检查违规) → 04-SDD (检查接口一致性) → 11-REVIEW / 13-RISK-REMEDIATION-BLUEPRINT
 
 产品决策:
   01-PRD → 02-SPEC → 06-CHANGELOG
+
+风险治理:
+  11-REVIEW → 13-RISK-REMEDIATION-BLUEPRINT → 14-RISK-REMEDIATION-TASKS
+
+发布准备:
+  13-RISK-REMEDIATION-BLUEPRINT → 14-RISK-REMEDIATION-TASKS → 15-RELEASE-READINESS
+
+分析体系:
+  16-ANALYTICS-SPEC → 17-ANALYTICS-TASKS
 ```
 
 ---

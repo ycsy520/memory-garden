@@ -178,8 +178,13 @@ export function generateTrials(userConfig) {
           lureCount++;
           scoredTrials++;
         } else {
-          // 普通非目标回合
-          stimulus = pickNonRepeating(allStimuli, lastStimulusId);
+          // 普通非目标回合：排除上一个素材与 N 步前素材，
+          // 避免"视觉上与 N 步前相同却按 isTarget=false 判误判"的偶然重合
+          const excludeIds = [lastStimulusId];
+          if (i >= config.n && trials[i - config.n]) {
+            excludeIds.push(trials[i - config.n].stimulusId);
+          }
+          stimulus = pickExcluding(allStimuli, excludeIds);
           scoredTrials++;
         }
 
@@ -238,10 +243,15 @@ function generateLure(trials, currentIndex, n, allStimuli, lastStimulusId) {
 
   if (useNMinus1 && currentIndex >= n - 1 && n > 1) {
     // nMinus1: 与 N-1 步前匹配
+    // 若 N-1 步前的素材恰好等于 N 步前（真目标），则跳过该 lure 类型，
+    // 避免把"真正的目标"误标为 lure（用户按键会被判误判）
     const lureTarget = trials[currentIndex - (n - 1)];
-    const stimulus = getStimulusById(lureTarget.stimulusId);
-    if (stimulus) {
-      return { stimulus, lureType: 'nMinus1' };
+    const nBackTrial = trials[currentIndex - n];
+    if (lureTarget && (!nBackTrial || lureTarget.stimulusId !== nBackTrial.stimulusId)) {
+      const stimulus = getStimulusById(lureTarget.stimulusId);
+      if (stimulus) {
+        return { stimulus, lureType: 'nMinus1' };
+      }
     }
   }
 
@@ -254,8 +264,13 @@ function generateLure(trials, currentIndex, n, allStimuli, lastStimulusId) {
     }
   }
 
-  // 降级：随机选一个不同的素材
-  const stimulus = pickExcluding(allStimuli, [lastStimulusId]);
+  // 降级：随机选一个不同的素材（排除上一个与 N 步前素材，避免偶然重合）
+  const excludeIds = [lastStimulusId];
+  const nBackTrial = currentIndex >= n ? trials[currentIndex - n] : null;
+  if (nBackTrial) {
+    excludeIds.push(nBackTrial.stimulusId);
+  }
+  const stimulus = pickExcluding(allStimuli, excludeIds);
   return { stimulus, lureType: 'similarStimulus' };
 }
 

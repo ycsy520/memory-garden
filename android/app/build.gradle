@@ -1,0 +1,115 @@
+import groovy.json.JsonSlurper
+import java.util.Properties
+
+apply plugin: 'com.android.application'
+
+/**
+ * 从 package.json 读取应用版本号，保持前端与 Android 发布版本单一来源。
+ * 对诸如 5.2.0、5.2.0-beta.1 这类 semver，统一提取前三段数字用于 Android。
+ *
+ * @returns {String}
+ */
+def readPackageVersionName() {
+    def packageJsonFile = file("${rootProject.projectDir}/../package.json")
+    def packageJson = new JsonSlurper().parse(packageJsonFile)
+    return (packageJson.version ?: "1.0.0").toString()
+}
+
+/**
+ * 将 semver 转成 Android 的递增 versionCode。
+ * 规则：major * 10000 + minor * 100 + patch，例如 5.2.0 -> 50200。
+ *
+ * @param {String} versionName
+ * @returns {int}
+ */
+def toAndroidVersionCode(String versionName) {
+    def matcher = (versionName =~ /(\d+)\.(\d+)\.(\d+)/)
+    if (!matcher.find()) {
+        return 1
+    }
+
+    def major = matcher.group(1).toInteger()
+    def minor = matcher.group(2).toInteger()
+    def patch = matcher.group(3).toInteger()
+    return (major * 10000) + (minor * 100) + patch
+}
+
+def packageVersionName = readPackageVersionName()
+def packageVersionCode = toAndroidVersionCode(packageVersionName)
+def releaseKeyProperties = new Properties()
+def releaseKeyPropertiesFile = rootProject.file('key.properties')
+def hasReleaseSigning = releaseKeyPropertiesFile.exists()
+
+if (hasReleaseSigning) {
+    releaseKeyPropertiesFile.withInputStream { stream ->
+        releaseKeyProperties.load(stream)
+    }
+}
+
+android {
+    namespace = "com.memorygarden.app"
+    compileSdk = rootProject.ext.compileSdkVersion
+
+    signingConfigs {
+        if (hasReleaseSigning) {
+            release {
+                storeFile rootProject.file(releaseKeyProperties['storeFile'])
+                storePassword releaseKeyProperties['storePassword']
+                keyAlias releaseKeyProperties['keyAlias']
+                keyPassword releaseKeyProperties['keyPassword']
+            }
+        }
+    }
+
+    defaultConfig {
+        applicationId "com.memorygarden.app"
+        minSdkVersion rootProject.ext.minSdkVersion
+        targetSdkVersion rootProject.ext.targetSdkVersion
+        versionCode packageVersionCode
+        versionName packageVersionName
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        aaptOptions {
+             // Files and dirs to omit from the packaged assets dir, modified to accommodate modern web apps.
+             // Default: https://android.googlesource.com/platform/frameworks/base/+/282e181b58cf72b6ca770dc7ca5f91f135444502/tools/aapt/AaptAssets.cpp#61
+            ignoreAssetsPattern = '!.svn:!.git:!.ds_store:!*.scc:.*:!CVS:!thumbs.db:!picasa.ini:!*~'
+        }
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            if (hasReleaseSigning) {
+                signingConfig signingConfigs.release
+            }
+        }
+    }
+}
+
+repositories {
+    flatDir{
+        dirs '../capacitor-cordova-android-plugins/src/main/libs', 'libs'
+    }
+}
+
+dependencies {
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    implementation "androidx.appcompat:appcompat:$androidxAppCompatVersion"
+    implementation "androidx.coordinatorlayout:coordinatorlayout:$androidxCoordinatorLayoutVersion"
+    implementation "androidx.core:core-splashscreen:$coreSplashScreenVersion"
+    implementation project(':capacitor-android')
+    testImplementation "junit:junit:$junitVersion"
+    androidTestImplementation "androidx.test.ext:junit:$androidxJunitVersion"
+    androidTestImplementation "androidx.test.espresso:espresso-core:$androidxEspressoCoreVersion"
+    implementation project(':capacitor-cordova-android-plugins')
+}
+
+apply from: 'capacitor.build.gradle'
+
+try {
+    def servicesJSON = file('google-services.json')
+    if (servicesJSON.text) {
+        apply plugin: 'com.google.gms.google-services'
+    }
+} catch(Exception e) {
+    logger.info("google-services.json not found, google-services plugin not applied. Push Notifications won't work")
+}

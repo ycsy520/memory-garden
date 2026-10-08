@@ -11,6 +11,8 @@
  * - Green & Swets (1966). Signal Detection Theory and Psychophysics
  */
 
+import i18n from '@i18n/index';
+
 /**
  * 标准正态分布的逆CDF（近似）
  * 使用 Rational Approximation 方法
@@ -110,11 +112,11 @@ export function calculateSDT({ hits, misses, falseAlarms, correctRejections }) {
  * @returns {{ level: string, description: string }}
  */
 export function interpretDPrime(dPrime) {
-  if (dPrime >= 3.0) return { level: '优秀', description: '记忆辨别力极强' };
-  if (dPrime >= 2.0) return { level: '良好', description: '记忆辨别力较强' };
-  if (dPrime >= 1.0) return { level: '中等', description: '记忆辨别力一般' };
-  if (dPrime >= 0.5) return { level: '较弱', description: '记忆辨别力较弱' };
-  return { level: '需提升', description: '记忆辨别力不足' };
+  if (dPrime >= 3.0) return { level: i18n.t('signalDetection.levelExcellent'), description: i18n.t('signalDetection.descExcellent') };
+  if (dPrime >= 2.0) return { level: i18n.t('signalDetection.levelGood'), description: i18n.t('signalDetection.descGood') };
+  if (dPrime >= 1.0) return { level: i18n.t('signalDetection.levelFair'), description: i18n.t('signalDetection.descFair') };
+  if (dPrime >= 0.5) return { level: i18n.t('signalDetection.levelWeak'), description: i18n.t('signalDetection.descWeak') };
+  return { level: i18n.t('signalDetection.levelNeedsWork'), description: i18n.t('signalDetection.descNeedsWork') };
 }
 
 /**
@@ -123,7 +125,7 @@ export function interpretDPrime(dPrime) {
  * @returns {{ type: string, description: string }}
  */
 export function interpretBeta(beta) {
-  if (beta > 1.5) return { type: '保守型', description: '倾向于不标记，可能遗漏目标' };
-  if (beta > 0.8) return { type: '均衡型', description: '判断标准适中' };
-  return { type: '激进型', description: '倾向于标记，可能误判较多' };
+  if (beta > 1.5) return { type: i18n.t('signalDetection.typeConservative'), description: i18n.t('signalDetection.descConservative') };
+  if (beta > 0.8) return { type: i18n.t('signalDetection.typeBalanced'), description: i18n.t('signalDetection.descBalanced') };
+  return { type: i18n.t('signalDetection.typeAggressive'), description: i18n.t('signalDetection.descAggressive') };
 }

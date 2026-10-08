@@ -22,3 +22,16 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Android signing files
+android/key.properties
+android/*.jks
+android/*.keystore
+
+# Local debug and generated artifacts
+.dbg/
+.trae/
+dev-dist/
+playwright-report/
+test-results/
+supabase/.temp/

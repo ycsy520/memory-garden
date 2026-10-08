@@ -4,6 +4,8 @@
   "startBtn": "推开花园的门",
   "dedication": "献给最亲爱的奶奶",
   "deviceSupport": { "mobile": "手机", "pc": "电脑", "tablet": "平板" },
+  "installBtn": "下载记忆小花园",
+  "medicalDisclaimer": "记忆花园是注意力和工作记忆练习小游戏，不能用于医疗诊断，也不能替代专业评估。",
   "guide": {
     "steps": [
       { "title": "花园起了雾", "text": "奶奶，我们的花园里最近起了一些雾，有些花儿看不清了。不过没关系，我们慢慢来。", "sub": "放松心情，深呼吸..." },
@@ -18,7 +20,8 @@
   "menu": {
     "weather": "今天天气真好",
     "prompt": "准备好去哪里了吗？",
-    "startWalk": "开始散步",
+    "startWalk": "继续训练",
+    "startRun": "继续训练",
     "levels": [
       { "label": "初晨 (简单)", "desc": "和 刚刚那朵 一样吗？" },
       { "label": "午后 (进阶)", "desc": "和 上上朵 一样吗？" },
@@ -35,7 +38,108 @@
     "streakDays": "天连续训练",
     "dailyChallenge": "每日挑战",
     "dailyCompleted": "已完成",
-    "points": "分"
+    "points": "分",
+    "welcomeBack": "欢迎回来",
+    "continueWalk": "慢慢来，一起想起来",
+    "switchMode": "换一种模式",
+    "gardenDiary": "花园日记",
+    "gardenCollection": "花园收藏",
+    "settings": "设置",
+    "backToGarden": "回到花园",
+    "selectMode": "选记忆模式",
+    "selectModeDesc": "选择你想练习的记忆方式",
+    "nextStepRhythm": "下一步：选时间节奏",
+    "selectRhythm": "选时间节奏",
+    "selectRhythmDesc": "选择适合你的练习节奏",
+    "prevStep": "上一步",
+    "nextStepDifficulty": "下一步：选难度",
+    "selectDifficulty": "选记忆难度",
+    "selectDifficultyDesc": "N 值越大，需要记住的花越多",
+    "requirePrev": "需先完成散步N=1",
+    "requirePrevN": "需先完成N={{n}}",
+    "gardenLevel": "花园 · {{level}}",
+    "walkCount": "{{count}} 次训练",
+    "quickEntries": "快捷入口",
+    "customizeConfig": "自定义训练",
+    "more": "更多",
+    "mode": "记忆模式",
+    "rhythm": "节奏"
+  },
+  "modes": {
+    "walk": {
+      "label": "散步",
+      "desc": "看花认花",
+      "intro": "花儿一朵接一朵出现。记住刚见过的花，再次看到时按下按钮。",
+      "audience": "适合所有人，尤其是初次接触记忆训练的用户"
+    },
+    "standard": {
+      "label": "散步",
+      "desc": "看花认花",
+      "intro": "花儿一朵接一朵出现。记住刚见过的花，再次看到时按下按钮。",
+      "audience": "适合所有人，尤其是初次接触记忆训练的用户"
+    },
+    "dual": {
+      "label": "花与歌",
+      "desc": "看花+听声",
+      "intro": "同时出现一朵花和一个声音。只有花和声音都与之前一样时，才算匹配。",
+      "audience": "适合已熟悉散步模式、想挑战双通道记忆的用户"
+    },
+    "spatial": {
+      "label": "花坛",
+      "desc": "记位置",
+      "intro": "花会开在花坛的某个位置。记住花的位置和种类，再次出现时按下按钮。",
+      "audience": "适合想锻炼空间记忆的用户"
+    },
+    "grid": {
+      "label": "花圃",
+      "desc": "记图案",
+      "intro": "花坛上同时出现多朵花。记住整个图案，再次出现时按下按钮。",
+      "audience": "适合进阶用户，想同时锻炼视觉和空间记忆"
+    },
+    "run": {
+      "label": "晨跑",
+      "desc": "60秒冲刺",
+      "intro": "60 秒内尽可能多命中。测试你的速度和记忆极限。",
+      "audience": "适合想测试极限、追求高分的用户"
+    }
+  },
+  "rhythms": {
+    "walk": {
+      "label": "初晨",
+      "desc": "慢慢看，不赶时间",
+      "intro": "花儿慢慢出现，不赶时间。适合刚开始练习、想慢慢感受的你。",
+      "audience": "适合儿童、老人、初次使用者"
+    },
+    "daily": {
+      "label": "晨曦",
+      "desc": "每项限时 3 秒",
+      "intro": "每朵花出现 3 秒。有足够时间思考，但也需要集中注意力。",
+      "audience": "适合日常练习，巩固记忆能力"
+    },
+    "challenge": {
+      "label": "午后",
+      "desc": "每项限时 2 秒",
+      "intro": "每朵花只出现 2 秒。需要快速判断，挑战你的反应和记忆。",
+      "audience": "适合已熟练掌握、想突破自己的用户"
+    },
+    "competitive": {
+      "label": "暮色",
+      "desc": "每项限时 1.5 秒",
+      "intro": "每朵花只出现 1.5 秒。需要极快反应，挑战记忆极限。",
+      "audience": "适合追求极限、想要突破自我的高手"
+    },
+    "timed": {
+      "label": "晨跑",
+      "desc": "60 秒限时冲刺",
+      "intro": "60 秒内尽可能多命中。测试你的速度和记忆极限。",
+      "audience": "适合想测试极限、追求高分的用户"
+    }
+  },
+  "difficulties": {
+    "n1": { "title": "入门", "desc": "记住刚见过的花", "detail": "只需要记住上一朵花。适合刚开始练习的你。" },
+    "n2": { "title": "日常", "desc": "记住两步前的花", "detail": "需要记住两步前的花。适合日常练习。" },
+    "n3": { "title": "进阶", "desc": "记住三步前的花", "detail": "需要记住三步前的花。挑战你的工作记忆。" },
+    "n4": { "title": "挑战", "desc": "记住四步前的花", "detail": "需要记住四步前的花。记忆高手的试炼。" }
   },
   "stats": {
     "title": "记忆花园日记",
@@ -49,32 +153,52 @@
     "history": "最近记录",
     "noHistory": "还没有训练记录，去花园散步吧！",
     "accuracy": "准确率",
-    "score": "分"
+    "score": "分",
+    "gardenProgress": "成长进度",
+    "discoveredElements": "已发现 {{count}} 个花园元素",
+    "keepWalking": "完成散步，花园会慢慢生长。",
+    "gardenSecrets": "花园秘密",
+    "secretsHint": "花园里藏着一些秘密。也许多走走就会发现。",
+    "undiscoveredSecrets": "尚未发现的秘密",
+    "walkCount": "{{count}} 次散步",
+    "streakDays": "连续 {{days}} 天",
+    "gardenLabel": "花园 · {{level}}",
+    "growthProgress": "成长进度",
+    "growthPoints": "{{current}} / {{total}} 点",
+    "discoveredCount": "已发现 {{count}} 个花园元素",
+    "collectionProgress": "{{current}} / {{total}} 件",
+    "timed": "本局耗时"
   },
   "game": {
     "back": "返回",
-    "memoryFragment": "记忆碎片",
-    "waiting": "...",
-    "matched": "想起来了!",
     "button": "似曾相识",
-    "warmup": "请先记住这个...",
-    "warmup_emoji-flower": "请先记住这朵花...",
-    "warmup_emoji-animal": "请先记住这只动物...",
-    "warmup_emoji-food": "请先记住这个食物...",
-    "warmup_text-zh": "请先记住这个词...",
-    "warmup_text-en": "请先记住这个单词...",
-    "warmup_symbol": "请先记住这个符号...",
-    "warmup_tone": "请先记住这个音调...",
-    "question": "这个之前出现过吗？",
-    "question_emoji-flower": "这朵花之前出现过吗？",
-    "question_emoji-animal": "这只动物之前出现过吗？",
-    "question_emoji-food": "这个食物之前出现过吗？",
-    "question_text-zh": "这个词之前出现过吗？",
-    "question_text-en": "这个单词之前出现过吗？",
-    "question_symbol": "这个符号之前出现过吗？",
-    "question_tone": "这个音调之前出现过吗？",
-    "paused": "花园起雾了，稍作休息...",
-    "resume": "继续散步"
+    "warmupDefault": "先看看，熟悉一下",
+    "warmupPosition": "记住位置",
+    "warmupPattern": "记住图案",
+    "warmupDual": "看看+听听",
+    "same": "一样",
+    "different": "不一样",
+    "orientationLock": "请竖起手机继续散步",
+    "leaveConfirm": "确定要离开这次散步吗？当前进度不会保留。",
+    "leaveRunConfirm": "确定要离开这次晨跑吗？当前进度不会保留。",
+    "leftForAwhile": "刚刚离开了一会儿",
+    "continuePrompt": "要继续这次散步吗？",
+    "continueRunPrompt": "要继续这次晨跑吗？",
+    "continueStroll": "继续散步",
+    "continueRun": "继续晨跑",
+    "startStroll": "开始训练",
+    "startRun": "开始训练",
+    "timeRemaining": "剩余时间",
+    "warmupSpatial": "记住位置和花朵"
+  },
+  "gardenJournal": {
+    "title": "花园日记",
+    "growthTitle": "花园成长",
+    "empty": "完成散步后，花园会记住一些碎片。",
+    "count": "{{read}}/{{total}} 条",
+    "viewAll": "查看全部 {{count}} 条",
+    "expandFullText": "展开阅读",
+    "collapseFullText": "收起"
   },
   "finished": {
     "newRecord": "新纪录!",
@@ -88,7 +212,69 @@
     "misses": "漏判",
     "falseAlarms": "误判",
     "suggestions": "训练建议",
-    "points": "分"
+    "points": "分",
+    "score": "综合评分",
+    "sensitivity": "记忆辨别力",
+    "dPrime": "d'（灵敏度）",
+    "beta": "β（反应偏向）",
+    "avgReaction": "平均反应时间",
+    "correctRejection": "正确排除",
+    "correctRejectionDesc": "正确不标记",
+    "hitDesc": "记住并标对",
+    "missDesc": "没记住漏掉",
+    "falseAlarmLabel": "记错多标了",
+    "progressTrend": "进步趋势",
+    "growthProgress": "成长进度",
+    "detailedData": "查看详细数据",
+    "hideDetailedData": "收起详细数据",
+    "continueWalk": "继续散步",
+    "backToGarden": "回到花园",
+    "walkAgain": "再走一次",
+    "currentRun": "本局表现",
+    "accuracyRate": "记忆准确率",
+    "accuracyDesc": "{{total}} 个刺激项中正确判断 {{correct}} 个",
+    "targetRecognition": "目标识别率",
+    "targetDesc": "{{total}} 个重复项中记住 {{hits}} 个",
+    "falseAlarmRate": "误判率",
+    "falseAlarmDesc": "{{total}} 个非重复项中误标 {{fa}} 个",
+    "pastRecords": "过往记录",
+    "pastRecordsHint": "不同模式和难度的记录只作回看，不直接比较高低。",
+    "firstRecordTitle": "这是你的第一局记录。",
+    "firstRecordBody": "下一次散步后，这里会开始留下过往足迹。",
+    "recordAccuracy": "准确率 {{percent}}%",
+    "recordAccuracyLabel": "准确率",
+    "latestRecord": "最近一局",
+    "analysisReading": "分析读数",
+    "timedTag": "限时",
+    "slowDown": "可以慢一点。只要看到真的回来过的花，再按就好。",
+    "takeBreak": "最近几次有些吃力，要不要先休息一下？",
+    "recentAccuracy": "最近 {{count}} 轮准确率",
+    "barTooltip": "第{{round}}轮: {{percent}}%",
+    "gardenLevel": "花园 · {{level}}",
+    "gardenReward": "花园里多了{{reward}}。",
+    "walkCount": "这是你第 {{count}} 次来散步。",
+    "streakCount": "已连续 {{days}} 天。",
+    "progressPoints": "{{current}} / {{total}} 点",
+    "gardenFullBloom": "花园已盛开，继续守护它吧。",
+    "newCollection": "新收藏（{{current}}/{{total}}）",
+    "expandStory": "展开看看",
+    "collapseStory": "收起故事",
+    "saveToJournal": "收进花园日记",
+    "narrativeExcellent": {
+      "title": "花园今天很安静，也很明亮。",
+      "body": "你认出了几朵回来的花，也耐心看着新花走过。花园多开了一朵小花。",
+      "reward": "一朵小花"
+    },
+    "narrativeGood": {
+      "title": "今天的花园多了一片新叶。",
+      "body": "有些花你认出来了，有些花走得很轻。每一次散步，花园都会更熟悉你一点。",
+      "reward": "一片新叶"
+    },
+    "narrativePoor": {
+      "title": "今天你还是完成了一次散步。",
+      "body": "花园里多了一颗种子。下一次可以走慢一点，只看一朵花就好。",
+      "reward": "一颗种子"
+    }
   },
   "leaderboard": {
     "title": "排行榜",
@@ -97,16 +283,410 @@
     "avgAccuracy": "平均准确率",
     "modeBest": "各模式最佳",
     "filter": "筛选",
+    "allModes": "全部模式",
+    "allDifficulty": "全部难度",
     "noData": "还没有记录，去挑战吧！"
   },
   "achievements": {
     "title": "花园勋章",
     "unlocked": "已解锁",
-    "progress": "解锁进度"
+    "progress": "解锁进度",
+    "collected": "已收集",
+    "items": "{{count}} 件",
+    "currentQuality": "当前品质：{{tier}}",
+    "discoveredAt": "发现于 {{date}}",
+    "unread": "未读",
+    "gardenSecrets": "花园秘密",
+    "secretsHint": "花园里藏着一些秘密。也许多走走就会发现。",
+    "undiscoveredSecrets": "尚未发现的秘密",
+    "hiddenSecret": "尚未发现的秘密"
   },
   "settings": {
-    "title": "设置",
+    "title": "花园设置",
+    "about": "关于",
     "language": "语言",
-    "sound": "音效"
+    "audio": "音频",
+    "muted": "已静音",
+    "unmuted": "声音已开启",
+    "sound": "音效",
+    "dataManagement": "数据管理",
+    "exportData": "导出花园数据",
+    "importData": "导入花园备份",
+    "clearData": "清除所有数据",
+    "exportFailed": "导出失败，请稍后重试。",
+    "exportStarted": "备份下载已开始。",
+    "exportReady": "备份已生成，请在系统分享面板中保存或发送。",
+    "exportDialogTitle": "导出花园备份",
+    "importFailed": "导入失败，请稍后重试。",
+    "importUnsupportedFile": "导入失败，请选择 .json 备份文件。",
+    "importFileTooLarge": "导入失败，备份文件过大。",
+    "importInvalidJson": "导入失败，所选文件不是有效的 JSON 备份。",
+    "importInvalidStructure": "导入失败，备份文件结构无法识别。",
+    "importConfirm": "确定要用这个备份覆盖当前本地数据吗？当前本地花园进度会被替换。",
+    "imported": "备份已导入。本地花园状态已恢复。",
+    "clearConfirm": "确定要删除所有花园数据吗？此操作不可撤销，包括散步记录、花园成长和收藏。",
+    "cleared": "数据已清除。花园会重新生长。",
+    "version": "{{appName}} v{{version}}",
+    "backToMenu": "返回菜单",
+    "account": "我的花园",
+    "guestMode": "游客模式（数据仅保存在本机）",
+    "storageModeTitle": "存储方式",
+    "storageModeBody": "当前版本仅在本机保存数据，不提供云端登录或跨设备同步。",
+    "storageModeHint": "建议定期导出花园备份；卸载应用或清除系统存储后，本机数据将无法恢复。",
+    "loggedIn": "已登录",
+    "lastSync": "最后同步",
+    "syncNow": "立即同步",
+    "loginToBackup": "登录以备份到云端",
+    "signOut": "退出登录",
+    "deleteAccount": "注销账户",
+    "deleteConfirm": "请输入 DELETE 确认注销",
+    "disclaimer": "免责声明",
+    "disclaimerText": "本产品为注意力与工作记忆练习工具，不用于医疗诊断、治疗或任何疾病预防。",
+    "justNow": "刚刚",
+    "minutesAgo": "分钟前",
+    "hoursAgo": "小时前",
+    "daysAgo": "天前"
+  },
+  "garden": {
+    "levels": {
+      "seed": "种子",
+      "sprout": "破土",
+      "bud": "发芽",
+      "leaf": "长叶",
+      "budding": "花苞",
+      "halfBloom": "半开",
+      "fullBloom": "盛开"
+    },
+    "collections": {
+      "seed": { "name": "种子", "desc": "第一次走进花园" },
+      "dew": { "name": "露珠", "desc": "清晨的礼物" },
+      "sprout": { "name": "嫩芽", "desc": "破土而出" },
+      "pebble": { "name": "小石子", "desc": "路边的陪伴" },
+      "ladybug": { "name": "瓢虫", "desc": "花园的小访客" },
+      "butterfly": { "name": "蝴蝶", "desc": "翩翩起舞" },
+      "snail": { "name": "蜗牛", "desc": "慢慢来" },
+      "breeze": { "name": "微风", "desc": "轻轻吹过" },
+      "clover": { "name": "四叶草", "desc": "幸运的发现" },
+      "bird": { "name": "小鸟", "desc": "清晨的歌声" },
+      "mushroom": { "name": "蘑菇", "desc": "雨后的惊喜" },
+      "stonePath": { "name": "石头路", "desc": "走过的痕迹" },
+      "dragonfly": { "name": "蜻蜓", "desc": "点水而过" },
+      "sunflower": { "name": "向日葵", "desc": "向着阳光" },
+      "rainbow": { "name": "彩虹", "desc": "雨后的礼物" },
+      "cottage": { "name": "花园小屋", "desc": "温暖的归宿" }
+    },
+    "tiers": {
+      "sprout": "初芽",
+      "leaf": "翠叶",
+      "bloom": "繁花",
+      "fullBloom": "盛放"
+    }
+  },
+  "feedback": {
+    "grades": {
+      "excellent": { "label": "卓越", "desc": "记忆表现极其出色！" },
+      "good": { "label": "优秀", "desc": "记忆表现非常优秀！" },
+      "fair": { "label": "良好", "desc": "记忆表现不错，继续加油！" },
+      "poor": { "label": "一般", "desc": "还有提升空间，坚持训练！" },
+      "weak": { "label": "需努力", "desc": "别灰心，多练习会进步的！" }
+    },
+    "suggestions": {
+      "lowerDifficulty": { "title": "降低难度", "desc": "当前难度可能过高，建议降低 N 值或选择更慢的节奏。" },
+      "higherDifficulty": { "title": "挑战更高难度", "desc": "你的表现很棒！可以尝试提高 N 值或更快的节奏。" },
+      "improveAccuracy": { "title": "注意观察", "desc": "命中率偏低，试着更仔细地观察每一朵花的细节。" },
+      "reduceFalseAlarms": { "title": "减少误判", "desc": "误判率较高，不要着急按下按钮，确认后再行动。" },
+      "stayFocused": { "title": "保持专注", "desc": "训练时容易分心，试试在安静的环境中练习。" },
+      "keepTraining": { "title": "坚持训练", "desc": "本周训练频率很好，保持这个节奏！" },
+      "buildHabit": { "title": "建立习惯", "desc": "建议每天花 5-10 分钟散步，养成训练习惯。" },
+      "improveStrategy": { "title": "提升记忆策略", "desc": "尝试在心里默念花的名字，这会帮助你更好地记住它们。" },
+      "keepGoing": { "title": "继续加油", "desc": "保持训练节奏，你会看到进步的。" }
+    }
+  },
+  "stimulusIntro": {
+    "n1": "如果看到和刚才一样的，就按\"一样\"。不一样就按\"不一样\"。",
+    "n2": "如果看到和两个之前那个一样的，就按\"一样\"。慢慢看，想好了再选。",
+    "n3": "如果看到和三个之前那个一样的，就按\"一样\"。慢慢看，想好了再选。",
+    "nDefault": "如果看到和之前一样的，就按\"一样\"。不一样就按\"不一样\"。"
+  },
+  "signalDetection": {
+    "levelExcellent": "优秀",
+    "levelGood": "良好",
+    "levelFair": "中等",
+    "levelWeak": "较弱",
+    "levelNeedsWork": "需提升",
+    "descExcellent": "记忆辨别力极强",
+    "descGood": "记忆辨别力较强",
+    "descFair": "记忆辨别力一般",
+    "descWeak": "记忆辨别力较弱",
+    "descNeedsWork": "记忆辨别力不足",
+    "typeConservative": "保守型",
+    "typeBalanced": "均衡型",
+    "typeAggressive": "激进型",
+    "descConservative": "倾向于不标记，可能遗漏目标",
+    "descBalanced": "判断标准适中",
+    "descAggressive": "倾向于标记，可能误判较多"
+  },
+  "mandala": {
+    "loading": "过渡中"
+  },
+  "stimulus": {
+    "same": "一样",
+    "different": "不一样",
+    "hintN1": "和刚出现的一样吗？",
+    "hintN2": "和上上朵一样吗？",
+    "hintN3": "和更早前的一样吗？",
+    "hintNx": "和 {{n}} 次前的一样吗？",
+    "rememberRecent1": "记住刚出现的",
+    "rememberRecent2": "记住最近两个",
+    "rememberRecent3": "记住最近三个",
+    "rememberRecentN": "记住它们",
+    "warmupCount": "前 {{n}} 个是热身，你只需要看看，不需要操作。",
+    "nowStart1": "现在开始，记住刚才出现的",
+    "nowStart2": "现在开始，记住最近两个",
+    "nowStart3": "现在开始，记住最近三个",
+    "nowStartN": "现在开始，记住刚出现的"
+  },
+  "services": {
+    "factorNames": {
+      "sprite-garden": "花园",
+      "emoji-flower": "花朵",
+      "emoji-animal": "动物",
+      "emoji-food": "食物",
+      "tone": "音调"
+    },
+    "share": {
+      "template": "我在「记忆小花园」完成了 {{mode}} 挑战！得分: {{score}}，准确率: {{accuracy}}%。来试试你的记忆力吧！"
+    }
+  },
+  "errors": {
+    "gardenProblem": "花园遇到了一点小问题",
+    "dontWorry": "别担心，重新进入就好啦",
+    "reEnter": "重新进入花园",
+    "updateAvailable": "有新版本可用，是否立即更新？",
+    "offlineReady": "记忆小花园已可离线使用"
+  },
+  "narrativeUnlock": {
+    "milestone1": "你在这里走了很久。花园外还有更高的山。",
+    "milestone2": "这条路你闭着眼都能走。试试睁开眼走一条新的？",
+    "milestone3": "你开始看得更远了。",
+    "milestone4": "有些距离，走着走着就短了。",
+    "milestone5": "你记住了很远的事。花园为你亮了一盏灯。"
+  },
+  "common": {
+    "back": "返回",
+    "next": "下一步",
+    "prev": "上一步",
+    "confirm": "确定",
+    "cancel": "取消",
+    "loading": "加载中...",
+    "error": "出错了",
+    "retry": "重试",
+    "points": "分",
+    "times": "次",
+    "days": "天",
+    "modeStandard": "散步",
+    "modeDual": "花与歌",
+    "modeSpatial": "花坛",
+    "modeGrid": "花圃",
+    "modeWalk": "散步"
+  },
+  "about": {
+    "effectiveDate": "生效日期",
+    "disclaimerTitle": "免责声明",
+    "privacyTitle": "隐私政策",
+    "termsTitle": "使用条款",
+    "nbackTitle": "什么是 N-back？",
+    "disclaimer": {
+      "s1": {
+        "title": "一、产品性质声明",
+        "content": "记忆花园（Memory Garden）是一款基于 N-back 范式的认知训练娱乐软件。本产品旨在通过游戏化的方式帮助用户进行工作记忆练习，属于教育娱乐类产品，不属于医疗器械，不用于诊断、治疗、缓解或预防任何疾病或医疗状况。"
+      },
+      "s2": {
+        "title": "二、科学依据说明",
+        "content": "本产品的训练方法基于认知心理学中的 N-back 工作记忆训练范式。该范式自 1958 年由 Wayne Kirchner 提出以来，已被广泛应用于认知心理学研究。然而，关于 N-back 训练对其他认知能力的迁移效果（transfer effect），学术界仍存在争议：",
+        "li1": "Jaeggi 等人（2008）的研究声称双 N-back 训练可以提升流体智力，但后续研究对此结论存在不同观点。",
+        "li2": "Simons 等人（2017）的大规模综述认为，认知训练的效果主要局限于训练任务本身，对其他认知能力的迁移效果证据不足。"
+      },
+      "s3": {
+        "title": "三、不替代专业建议",
+        "content": "本产品不能替代医生、心理治疗师、认知康复师或其他医疗专业人员的专业评估、诊断或建议。如果您有认知健康方面的担忧，请咨询合格的医疗专业人员。"
+      },
+      "s4": {
+        "title": "四、结果不保证",
+        "content": "认知训练的效果因个体差异而不同。本产品不保证任何特定的训练效果或认知能力提升。训练结果受多种因素影响，包括但不限于训练频率、个人基础认知能力、年龄、健康状况等。"
+      },
+      "s5": {
+        "title": "五、适用人群",
+        "content": "本产品建议 9 岁及以上用户使用。9 岁以下儿童应在家长或监护人的指导下使用。本产品不会故意向 9 岁以下儿童收集个人信息。"
+      },
+      "s6": {
+        "title": "六、使用风险自担",
+        "content": "用户理解并同意，使用本产品所产生的任何结果（包括但不限于训练效果、认知变化等）均由用户自行承担。开发者不对因使用或无法使用本产品而产生的任何直接、间接、偶然、特殊或后果性损害承担责任。"
+      }
+    },
+    "privacy": {
+      "s1": {
+        "title": "一、引言与适用范围",
+        "content": "本隐私政策适用于记忆花园（Memory Garden）应用，涵盖 Web PWA、iOS、Android 及微信小程序等平台。我们重视您的隐私保护。本版本默认采用本地存储模式，训练数据与设置主要保存在您的设备上。"
+      },
+      "s2": {
+        "title": "二、我们收集的信息",
+        "h1": "用户主动提供的信息",
+        "h2": "自动采集的信息",
+        "h3": "本地存储的数据",
+        "li1": "当前版本不要求您注册账户或提交邮箱地址",
+        "li2": "当前版本不会为您创建云端账户或匿名身份标识",
+        "li3": "训练会话记录（N-back 等级、准确率、反应时间、训练时长）",
+        "li4": "叙事解锁状态和花园日记快照",
+        "li5": "用户设置偏好（语言、音量等）",
+        "p1": "本产品使用浏览器的 localStorage 或应用沙盒存储保存游戏统计数据、花园状态、成就数据和用户设置。这些数据默认仅保存在您的设备上，不会自动上传到云端。若您需要迁移或备份，请使用应用内提供的导出功能手动保存备份文件。"
+      },
+      "s3": {
+        "title": "三、我们如何使用信息",
+        "li1": "提供训练记录和统计展示服务",
+        "li2": "实现自适应难度推荐功能",
+        "li3": "支持本地导出与导入备份",
+        "li4": "改善产品体验和服务质量"
+      },
+      "s4": {
+        "title": "四、信息的存储与安全",
+        "li1": "存储位置：默认保存在您的设备本地存储空间中",
+        "li2": "传输方式：除您主动导出、分享或备份文件外，训练数据不会被自动传输",
+        "li3": "访问控制：数据由您的设备和操作系统权限机制进行保护",
+        "li4": "保留期限：数据会持续保留在本机，直到您主动清除应用数据、删除备份文件或卸载应用"
+      },
+      "s5": {
+        "title": "五、信息的共享与披露",
+        "content": "我们不会将您的个人信息出售给第三方。我们仅在以下情况下共享您的信息：",
+        "li1": "您主动执行导出、备份或分享操作时，相关文件会按您的指令发送到您选择的目标位置",
+        "li2": "法律要求：根据法律法规、诉讼或政府主管部门的要求"
+      },
+      "s6": {
+        "title": "六、用户权利",
+        "li1": "访问和查看您设备上的本地训练数据",
+        "li2": "导出训练记录（JSON 格式）",
+        "li3": "导入备份或清除本地训练数据",
+        "li4": "撤回同意并停止使用服务"
+      },
+      "s7": {
+        "title": "七、儿童隐私保护",
+        "content": "本产品建议 9 岁及以上用户使用。我们不会故意向 9 岁以下儿童收集个人信息。当前版本默认采用本地存储模式，训练数据不会自动上传到云端，也不会自动发送到第三方分析或错误监控服务。如发现我们在未获得家长同意的情况下收集了 9 岁以下儿童的个人信息，我们将及时删除相关数据。"
+      },
+      "s8": {
+        "title": "八、Cookie 与本地存储",
+        "content": "本产品不使用追踪 Cookie。我们使用浏览器的 localStorage 存储游戏数据，这些数据仅存储在您的设备上，不会自动传输到我们的服务器。"
+      },
+      "s9": {
+        "title": "九、隐私政策的更新",
+        "content": "我们可能会不时更新本隐私政策。更新后的政策将在应用内通知您。继续使用本产品即视为同意更新后的隐私政策。"
+      },
+      "s10": {
+        "title": "十、联系方式",
+        "content": "如您对本隐私政策有任何疑问，请通过以下方式联系我们："
+      }
+    },
+    "terms": {
+      "s1": {
+        "title": "一、服务说明",
+        "content": "记忆花园（Memory Garden）是一款基于 N-back 范式的认知训练娱乐软件。本产品目前免费提供，未来可能提供增值服务。我们保留随时修改、暂停或终止服务的权利。"
+      },
+      "s2": {
+        "title": "二、知识产权",
+        "content": "本产品的所有内容（包括但不限于代码、设计、文字、图形、用户界面等）均受知识产权法律保护：",
+        "li1": "游戏代码、美术资源、叙事内容的版权归开发者所有",
+        "li2": "用户生成的数据（训练记录、成就等）归用户所有"
+      },
+      "s3": {
+        "title": "三、用户行为规范",
+        "content": "使用本产品时，您同意遵守以下规范：",
+        "li1": "不得对本产品进行反向工程、反编译或反汇编",
+        "li2": "不得将本产品用于商业用途（除非获得书面授权）",
+        "li3": "不得干扰或破坏本产品的正常运行"
+      },
+      "s4": {
+        "title": "四、本地数据与设备安全",
+        "content": "当前版本默认不提供账户体系。您应自行保管设备访问权限，并妥善保存导出的备份文件。因设备丢失、误删应用、清除系统存储或备份文件泄露造成的数据损失或暴露，需由用户自行承担相应后果。"
+      },
+      "s5": {
+        "title": "五、服务变更与终止",
+        "content": "我们保留随时修改或终止本产品（或其任何部分）的权利，无论是否事先通知。我们不对您或任何第三方承担因服务修改、暂停或终止而产生的任何责任。"
+      },
+      "s6": {
+        "title": "六、免责声明",
+        "content": "本产品按\"现状\"和\"可用\"基础提供，不作任何明示或暗示的保证。请参阅独立的免责声明页面了解详细信息。"
+      },
+      "s7": {
+        "title": "七、管辖法律与争议解决",
+        "content": "本使用条款受中华人民共和国法律管辖。因本使用条款引起的任何争议，双方应首先通过友好协商解决；协商不成时，任何一方均可向开发者所在地有管辖权的人民法院提起诉讼。"
+      },
+      "s8": {
+        "title": "八、条款更新",
+        "content": "我们保留随时修改本使用条款的权利。更新后的条款将在应用内通知您。继续使用本产品即视为同意更新后的使用条款。"
+      }
+    },
+    "nback": {
+      "s1": {
+        "title": "一、什么是 N-back 任务？",
+        "p1": "N-back 是一种经典的工作记忆（Working Memory, WM）评估和训练范式，由 Wayne Kirchner 于 1958 年提出。它属于连续表现任务（continuous performance task）。",
+        "p2": "基本原理：参与者需要持续监测一系列刺激（如字母、位置、图形等），并判断当前刺激是否与序列中往前第 n 个刺激相同。\"n\" 值代表难度级别（如 1-back、2-back、3-back）。n 值越大，工作记忆负荷越高。",
+        "h1": "常见变体",
+        "p3": "单 N-back 仅处理一种模态（如视觉位置或听觉字母）；双 N-back（Dual N-back）同时处理两种模态（视觉 + 听觉），难度更高，常用于训练研究。",
+        "h2": "具体形式",
+        "li1": "单 N-back：仅处理一种模态（如视觉位置或听觉字母）",
+        "li2": "双 N-back（Dual N-back）：同时处理两种模态（视觉 + 听觉），参与者需同时判断视觉位置和听觉字母是否匹配 n 步前",
+        "p4": "任务通常自适应：表现好时自动增加 n 值，表现差时降低，以保持挑战性。"
+      },
+      "s2": {
+        "title": "二、它解决什么问题？",
+        "p1": "工作记忆是短期储存和操纵信息的能力，是认知核心，与注意力、学习、推理、问题解决等密切相关。N-back 训练主要针对以下问题：",
+        "h1": "工作记忆容量不足",
+        "p2": "帮助提升信息更新、维持和抑制无关信息的能力。",
+        "h2": "注意力与执行功能",
+        "p3": "改善认知控制、冲突解决（如 Stroop 任务）。",
+        "h3": "特定人群问题",
+        "li1": "ADHD（注意力缺陷多动障碍）：改善言语工作记忆",
+        "li2": "老年人认知衰退、神经康复",
+        "li3": "健康成人：提升日常记忆、学习效率",
+        "h4": "潜在远迁移",
+        "p4": "有望提高流体智力（Fluid Intelligence, Gf），即抽象推理和解决新问题的能力，而非晶体智力（已学知识）。"
+      },
+      "s3": {
+        "title": "三、为什么有效？机制与证据",
+        "h1": "理论基础",
+        "li1": "N-back 要求持续更新工作记忆内容、抑制旧信息、切换注意，训练核心执行功能",
+        "li2": "双 N-back 同时涉及多模态，可能模拟更复杂的认知需求，增强转移潜力",
+        "h2": "实证证据",
+        "p1": "几乎所有研究都显示训练任务本身表现显著提升（近迁移到类似 N-back 任务）。",
+        "li3": "近迁移：中等效果，到其他工作记忆任务（如运行记忆、数字广度）",
+        "li4": "远迁移：到流体智力、注意力、执行功能等，小效果（Hedges' g ≈ 0.16–0.24）",
+        "li5": "一些研究显示优于记忆宫殿法等其他方法，在转移到未训练任务上更突出",
+        "h3": "神经机制",
+        "p2": "可能增加前额叶活动、P300 成分增强，扩大注意焦点容量。",
+        "h4": "局限性（科学共识）",
+        "li7": "远迁移效果小且不一致，受对照组类型（主动 vs 被动）、训练剂量、个体差异影响",
+        "li8": "改善可能部分来自策略学习（如组块化）而非纯容量增加",
+        "li9": "并非万能：短期训练效果有限，长期坚持更重要"
+      },
+      "s4": {
+        "title": "四、关键论文与文献",
+        "h1": "开创性研究",
+        "ref1": "Jaeggi, S. M., et al. (2008). Improving fluid intelligence with training on working memory. PNAS. 首次报道双 N-back 训练显著提升流体智力，引发广泛关注。",
+        "h2": "元分析",
+        "ref2": "Au et al. (2015)：支持小幅 Gf 提升",
+        "ref3": "Soveri et al. (2017)：近迁移中等，远迁移小",
+        "h3": "中文/后续研究",
+        "ref4": "已有中文研究探索手机 APP 双维 N-back 对视觉空间工作记忆、Stroop 等执行功能的改善潜力",
+        "ref5": "针对 ADHD 青少年及成人的相关应用研究",
+        "h4": "更多资源",
+        "p1": "PubMed / Google Scholar 搜索 \"dual n-back training\" 或 \"N-back 工作记忆训练\"。实践建议：从 2-back 开始，每天 15–20 分钟，持续数周。结合反馈和自适应难度效果更好。",
+        "summary": "总结：N-back 是科学验证的工作记忆训练工具，对近迁移可靠，远迁移有潜力但效果温和。适合作为日常认知维护或辅助康复手段，坚持与个性化调整是关键。效果因人而异，结合其他认知训练或生活方式可能更佳。"
+      }
+    },
+    "contactBlock": {
+      "title": "问题反馈与联系方式",
+      "content": "如果您对游戏有任何问题、意见、建议、Bug 反馈或合作意向，欢迎随时通过以下邮箱联系：",
+      "email": "ycsy520@gmail.com"
+    },
+    "copyrightLine": "© 2026 Memory Garden 记忆花园 · ycsy520@gmail.com · All rights reserved."
   }
 }

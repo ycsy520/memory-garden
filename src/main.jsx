@@ -3,6 +3,7 @@
  * v3.0: PWA Service Worker 自动注册
  * v3.1: Capacitor 原生初始化（状态栏、启动画面）
  * v3.3: Sentry 错误监控 + Analytics 初始化
+ * v4.0: 国际化支持
  */
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
@@ -16,6 +17,48 @@ import App from './App.jsx'
 import PlatformService from '@services/PlatformService'
 import AnalyticsService from '@services/AnalyticsService'
 import { initSentry } from './sentry.client.config'
+import i18n from '@i18n/index'
+import { confirmDialog } from '@stores/useConfirmStore'
+
+const isE2E = import.meta.env.VITE_E2E === '1';
+
+/**
+ * 首屏遮罩收尾
+ * 保留一层不可感知的纯色首屏遮罩，React 挂载后直接移除它，避免首帧出现黑色横线。
+ */
+function hideInitialLoader() {
+  const loader = document.getElementById('initial-loader');
+
+  if (!loader) {
+    document.body.classList.add('app-ready');
+    return;
+  }
+
+  // 1. 直接移除首屏遮罩，随后再让主界面接管
+
+  if (loader.parentNode) loader.remove();
+  document.body.classList.add('app-ready');
+}
+
+/**
+ * 开发环境清理历史 Service Worker 与缓存
+ * 避免本地调试时被旧版 PWA 资源接管，导致页面与当前代码不一致。
+ */
+function cleanupDevServiceWorkers() {
+  if (!import.meta.env.DEV || typeof window === 'undefined' || !('serviceWorker' in navigator)) return;
+
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.getRegistrations()
+      .then((registrations) => Promise.all(registrations.map((registration) => registration.unregister())))
+      .catch(() => {});
+
+    if ('caches' in window) {
+      caches.keys()
+        .then((cacheKeys) => Promise.all(cacheKeys.map((cacheKey) => caches.delete(cacheKey))))
+        .catch(() => {});
+    }
+  }, { once: true });
+}
 
 // Sentry 错误监控初始化（仅生产环境 + 有 DSN）
 initSentry();
@@ -29,8 +72,8 @@ AnalyticsService.track('app', 'launch', {
 // Capacitor 原生初始化
 const platform = PlatformService.detect();
 if (platform.isCapacitor) {
-  // 设置状态栏颜色与主题一致
-  PlatformService.setStatusBar({ style: 'LIGHT', backgroundColor: '#7C9A6E' });
+  // 使用透明沉浸式状态栏，让页面背景自然延伸到顶部系统栏区域。
+  PlatformService.setStatusBar({ style: 'LIGHT', overlaysWebView: true });
   // 延迟隐藏启动画面，等待 React 挂载
   window.addEventListener('load', () => {
     setTimeout(() => PlatformService.hideSplash(), 300);
@@ -39,19 +82,28 @@ if (platform.isCapacitor) {
 
 // PWA Service Worker 注册 — 仅在非 Capacitor 环境下注册
 // Capacitor 使用原生应用更新机制，不需要 Service Worker
-if (!platform.isCapacitor) {
+if (isE2E) {
+  // e2e 模式下禁用 SW，避免缓存导致测试结果不稳定
+} else if (import.meta.env.DEV) {
+  cleanupDevServiceWorkers();
+} else if (!platform.isCapacitor) {
   import('virtual:pwa-register').then(({ registerSW }) => {
     const updateSW = registerSW({
       onNeedRefresh() {
-        if (confirm('有新版本可用，是否立即更新？')) {
-          updateSW(true);
-        }
+        confirmDialog({
+          title: i18n.t('common.confirm'),
+          message: i18n.t('errors.updateAvailable'),
+          confirmLabel: i18n.t('common.confirm'),
+          cancelLabel: i18n.t('common.cancel'),
+        }).then((accepted) => {
+          if (accepted) updateSW(true);
+        });
       },
       onOfflineReady() {
         console.log('[PWA] 应用已可离线使用');
         const toast = document.createElement('div');
         toast.className = 'fixed bottom-20 left-1/2 -translate-x-1/2 bg-stone-800 text-white px-4 py-2 rounded-full text-sm z-50 animate-fade-in shadow-lg';
-        toast.textContent = '🌿 记忆小花园已可离线使用';
+        toast.textContent = `🌿 ${i18n.t('errors.offlineReady')}`;
         document.body.appendChild(toast);
         setTimeout(() => toast.remove(), 3000);
       },
@@ -64,3 +116,9 @@ createRoot(document.getElementById('root')).render(
     <App />
   </StrictMode>,
 )
+
+window.requestAnimationFrame(() => {
+  window.requestAnimationFrame(() => {
+    hideInitialLoader();
+  });
+});

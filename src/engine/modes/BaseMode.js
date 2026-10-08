@@ -81,7 +81,7 @@ export default class BaseMode {
    * @returns {boolean}
    */
   isWarmup() {
-    const warmupTrials = this.config.warmupTrials || this.config.n + 1;
+    const warmupTrials = this.config.warmupTrials ?? this.config.n;
     return this.turnIndex < warmupTrials;
   }
 

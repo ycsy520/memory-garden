@@ -5,7 +5,7 @@
  */
 import { create } from 'zustand';
 
-const useGameStore = create((set, get) => ({
+const useGameStore = create((set) => ({
   // === 状态枚举 ===
   /** @type {'idle'|'ready'|'active'|'paused'|'finished'|'abandoned'} */
   status: 'idle',
@@ -61,6 +61,8 @@ const useGameStore = create((set, get) => ({
   // === 暂停 ===
   /** @type {number|null} */
   pausedAt: null,
+  /** @type {string|null} */
+  pauseReason: null,
 
   // === 单局计时（散步模式显示已用时间） ===
   /** @type {number|null} */
@@ -89,6 +91,7 @@ const useGameStore = create((set, get) => ({
     streakCurrent: 0,
     startedAt: Date.now(),
     pausedAt: null,
+    pauseReason: null,
     trialStartTime: null,
     trialWaitingForInput: false,
     trialVisibleDuration: 2500,
@@ -102,15 +105,19 @@ const useGameStore = create((set, get) => ({
   })),
 
   /** 展示刺激 */
-  show: () => set({
-    showStimulus: true,
-    userAnswered: false,
-    feedback: null,
-    trialStartTime: Date.now(),
-  }),
+  show: () => {
+    set({
+      showStimulus: true,
+      userAnswered: false,
+      feedback: null,
+      trialStartTime: Date.now(),
+    });
+  },
 
   /** 隐藏刺激 */
-  hide: () => set({ showStimulus: false }),
+  hide: () => {
+    set({ showStimulus: false });
+  },
 
   /** 设置当前回合是否等待用户输入 */
   setTrialWaitingForInput: (value) => set({ trialWaitingForInput: value }),
@@ -119,75 +126,14 @@ const useGameStore = create((set, get) => ({
   setTrialVisibleDuration: (value) => set({ trialVisibleDuration: value }),
 
   /** 推进到下一回合 */
-  nextTurn: () => set((state) => ({
-    currentTurn: state.currentTurn + 1,
-  })),
+  nextTurn: () => {
+    set((state) => ({
+      currentTurn: state.currentTurn + 1,
+    }));
+  },
 
   /** 标记游戏开始 (第一个回合) */
   start: () => set({ status: 'active' }),
-
-  /**
-   * 提交玩家答案并计算结果
-   * @deprecated v5.0 — WalkMode + ScoringEngine 接管了判分逻辑。
-   *             新代码应通过 useGameEngine.handleMatch() → WalkMode.submitAnswer() → syncModeResult() 路径。
-   *             此方法仅作为旧版模式兼容层保留，待所有旧模式迁移完成后移除。
-   * @param {boolean} isMatch - 玩家是否按下"似曾相识"
-   * @param {number} n - N-back的N值
-   * @returns {{ isCorrect: boolean, feedback: string }}
-   */
-  submitAnswer: (isMatch, n) => {
-    const state = get();
-    const { history } = state;
-    const currentIndex = history.length - 1;
-    const isWarmup = history.length <= n;
-
-    // 暖身期不计分
-    if (isWarmup) {
-      return { isCorrect: false, feedback: 'warmup' };
-    }
-
-    const currentItem = history[currentIndex];
-    const targetItem = history[currentIndex - n];
-    const isTarget = currentItem.value === targetItem.value;
-
-    let isCorrect = false;
-    let feedback = 'wrong';
-    let scoreDelta = 0;
-
-    if (isTarget && isMatch) {
-      // 正确命中
-      isCorrect = true;
-      feedback = 'correct';
-      scoreDelta = 1;
-    } else if (!isTarget && !isMatch) {
-      // 正确拒绝
-      isCorrect = true;
-      feedback = null;
-    } else if (isTarget && !isMatch) {
-      // 漏判
-      feedback = 'missed';
-    } else {
-      // 误判
-      feedback = 'wrong';
-    }
-
-    set((prev) => {
-      const newStreak = isCorrect ? prev.streakCurrent + 1 : 0;
-      return {
-        userAnswered: true,
-        feedback,
-        score: prev.score + scoreDelta,
-        hits: isTarget && isMatch ? prev.hits + 1 : prev.hits,
-        misses: isTarget && !isMatch ? prev.misses + 1 : prev.misses,
-        falseAlarms: !isTarget && isMatch ? prev.falseAlarms + 1 : prev.falseAlarms,
-        correctRejections: !isTarget && !isMatch ? prev.correctRejections + 1 : prev.correctRejections,
-        streakCurrent: newStreak,
-        streakBest: Math.max(prev.streakBest, newStreak),
-      };
-    });
-
-    return { isCorrect, feedback };
-  },
 
   /**
    * 同步模式系统的作答结果到Store
@@ -263,16 +209,21 @@ const useGameStore = create((set, get) => ({
     }
   },
 
-  /** 暂停游戏 */
-  pause: () => set({
+  /**
+   * 暂停游戏并记录原因
+   * @param {string} reason
+   */
+  pause: (reason = 'user-pause') => set({
     status: 'paused',
     pausedAt: Date.now(),
+    pauseReason: reason,
   }),
 
   /** 恢复游戏 */
   resume: () => set({
     status: 'active',
     pausedAt: null,
+    pauseReason: null,
   }),
 
   /** 放弃游戏 */
@@ -296,6 +247,7 @@ const useGameStore = create((set, get) => ({
     streakBest: 0,
     startedAt: null,
     pausedAt: null,
+    pauseReason: null,
     trialStartTime: null,
     trialWaitingForInput: false,
     trialVisibleDuration: 2500,

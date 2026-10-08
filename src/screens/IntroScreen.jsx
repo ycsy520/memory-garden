@@ -10,6 +10,11 @@ import useSettingsStore from '@stores/useSettingsStore';
 import usePWAInstall from '@hooks/usePWAInstall';
 import i18n from '@i18n/index';
 
+/**
+ * 首屏入口组件
+ * 承担品牌首屏、语言切换与进入引导的入口职责
+ * @returns {JSX.Element}
+ */
 export default function IntroScreen() {
   const { t } = useTranslation();
   const navigate = useNavigate();
@@ -43,11 +48,11 @@ export default function IntroScreen() {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center h-full w-full relative overflow-hidden animate-fade-in px-4">
+    <div className="ui-page-shell ui-page-shell-centered relative overflow-hidden">
       {/* 语言切换按钮 */}
       <button
         onClick={handleLangSwitch}
-        className="absolute top-6 right-6 z-20 bg-white/50 backdrop-blur-md p-2 rounded-full text-[var(--color-text-secondary)] hover:bg-white transition-all flex items-center gap-2 px-4 shadow-sm"
+        className="ui-icon-btn ui-icon-btn-soft absolute right-4 top-4 z-20 inline-flex items-center gap-2 px-4 text-[var(--color-text-secondary)] shadow-[0_12px_24px_rgba(120,113,108,0.08)] backdrop-blur-md sm:right-6 sm:top-6"
         style={{ minHeight: 'var(--touch-min-size)' }}
       >
         <Globe size={18} />
@@ -64,14 +69,14 @@ export default function IntroScreen() {
         <Wind size={60} className="text-green-300" />
       </div>
 
-      <div className="z-10 text-center flex flex-col items-center max-w-md w-full">
+      <div className="ui-page-narrow z-10 flex w-full flex-col items-center text-center">
         {/* 花朵图标 */}
         <div className="mb-6 relative">
-          <div className="w-40 h-40 sm:w-48 sm:h-48 bg-gradient-to-tr from-green-100 to-yellow-50 rounded-full flex items-center justify-center shadow-[0_0_40px_rgba(255,255,255,0.8)] animate-breathe-slow relative">
-            <span className="text-8xl sm:text-9xl filter drop-shadow-sm transform -translate-y-2">🌻</span>
+          <div className="ui-chip relative flex h-40 w-40 items-center justify-center bg-gradient-to-tr from-green-100 to-yellow-50 shadow-[0_0_40px_rgba(255,255,255,0.8)] animate-breathe-slow sm:h-48 sm:w-48">
+            <span className="text-8xl sm:text-9xl filter drop-shadow-[0_10px_18px_rgba(120,113,108,0.10)] transform -translate-y-2">🌻</span>
             <div className="absolute inset-0 animate-spin-slow opacity-60">
-              <div className="absolute top-0 left-1/2 w-3 h-3 bg-yellow-300 rounded-full blur-[2px]"></div>
-              <div className="absolute bottom-4 right-8 w-2 h-2 bg-green-300 rounded-full blur-[1px]"></div>
+              <div className="ui-dot absolute left-1/2 top-0 h-3 w-3 bg-yellow-300 blur-[2px]" />
+              <div className="ui-dot absolute bottom-4 right-8 h-2 w-2 bg-green-300 blur-[1px]" />
             </div>
           </div>
         </div>
@@ -93,17 +98,17 @@ export default function IntroScreen() {
                 console.log('[PWA] 用户接受安装');
               }
             }}
-            className="mb-3 bg-gradient-to-r from-green-500 to-emerald-600 text-white text-sm py-3 px-8 rounded-full shadow-lg transition-all hover:scale-105 active:scale-95 flex items-center gap-2 w-full sm:w-auto justify-center"
+            className="ui-btn-base ui-btn-primary mb-3 flex w-full items-center justify-center gap-2 px-8 py-3 text-sm transition-all hover:scale-105 sm:w-auto"
             style={{ minHeight: 'var(--touch-min-size)' }}
           >
             <Download size={16} />
-            <span>下载记忆小花园</span>
+            <span>{t('installBtn')}</span>
           </button>
         )}
 
         <button
           onClick={handleStart}
-          className="group relative bg-[var(--color-brand)] text-white text-lg sm:text-xl py-4 px-12 sm:px-16 rounded-full shadow-xl transition-all duration-300 hover:bg-[var(--color-brand-hover)] hover:scale-105 active:scale-95 flex items-center gap-3 overflow-hidden w-full sm:w-auto justify-center"
+          className="ui-btn-base ui-btn-primary group relative flex w-full items-center justify-center gap-3 overflow-hidden px-12 py-4 text-lg transition-all duration-300 hover:scale-105 sm:w-auto sm:px-16 sm:text-xl"
           style={{ minHeight: 'var(--touch-min-size)' }}
         >
           <span className="relative z-10" style={{ fontFamily: 'var(--font-family-serif)' }}>
@@ -114,18 +119,18 @@ export default function IntroScreen() {
         </button>
 
         {/* 设备支持提示 */}
-        <div className="mt-8 flex gap-4 text-[var(--color-text-muted)] opacity-60 text-xs">
-          <span className="flex items-center gap-1"><Smartphone size={12} /> {t('deviceSupport.mobile')}</span>
-          <span className="flex items-center gap-1"><Monitor size={12} /> {t('deviceSupport.pc')}</span>
-          <span className="flex items-center gap-1"><Heart size={12} /> {t('deviceSupport.tablet')}</span>
+        <div className="mt-8 flex flex-wrap items-center justify-center gap-3 text-xs text-[var(--color-text-muted)] opacity-70">
+          <span className="ui-chip inline-flex items-center gap-1 bg-white/45 px-3 py-1.5"><Smartphone size={12} /> {t('deviceSupport.mobile')}</span>
+          <span className="ui-chip inline-flex items-center gap-1 bg-white/45 px-3 py-1.5"><Monitor size={12} /> {t('deviceSupport.pc')}</span>
+          <span className="ui-chip inline-flex items-center gap-1 bg-white/45 px-3 py-1.5"><Heart size={12} /> {t('deviceSupport.tablet')}</span>
         </div>
       </div>
 
       {/* 底部版权 + 医疗声明 */}
       <div className="absolute bottom-4 w-full flex flex-col items-center gap-1 text-[var(--color-text-muted)] font-light">
         <div className="text-sm">{t('dedication')}</div>
-        <div className="text-[10px] opacity-60 text-center leading-relaxed max-w-xs" style={{ fontFamily: 'var(--font-family-sans)' }}>
-          记忆花园是注意力和工作记忆练习小游戏，不能用于医疗诊断，也不能替代专业评估。
+        <div className="text-[10px] opacity-60 text-center leading-relaxed" style={{ fontFamily: 'var(--font-family-sans)', maxWidth: '20rem' }}>
+          {t('medicalDisclaimer')}
         </div>
         <div className="text-[10px] opacity-60" style={{ fontFamily: 'var(--font-family-sans)' }}>
           © Memory Garden | ycsy520@gmail.com

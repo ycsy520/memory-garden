@@ -12,10 +12,9 @@ const config: CapacitorConfig = {
   },
   plugins: {
     StatusBar: {
-      // 与主题色一致
-      backgroundColor: '#7C9A6E',
-      style: 'LIGHT', // 浅色内容（深色状态栏文字）
-      overlaysWebView: false,
+      // 使用透明沉浸式状态栏，让页面背景自然延伸到系统栏区域。
+      style: 'LIGHT',
+      overlaysWebView: true,
     },
     SplashScreen: {
       launchAutoHide: true,

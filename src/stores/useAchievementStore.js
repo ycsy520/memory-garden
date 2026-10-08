@@ -12,6 +12,7 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 import { NARRATIVE_COLLECTIBLES } from '@engine/narratives';
+import SyncService from '@services/SyncService';
 
 /**
  * v1 → v2 收藏品 ID 映射
@@ -60,6 +61,18 @@ function migrateV1Collection(v1Collection) {
   return migrated;
 }
 
+const initialAchievementState = {
+  achievementSchemaVersion: 2,
+  unlockedNarratives: {},
+  unlockTimestamps: {},
+  recentUnlockQueue: [],
+  readNarratives: [],
+  diaryEntries: [],
+  fullTextEntries: {},
+  hasViewedGardenDiary: false,
+  hiddenAchievements: {},
+};
+
 /**
  * 花园收藏状态 Store
  *
@@ -69,6 +82,7 @@ function migrateV1Collection(v1Collection) {
  * - recentUnlockQueue: Array<{collectibleId, tierId, unlockedAt}> — 待展示队列
  * - readNarratives: string[] — 已读故事（格式 "collectibleId:tierId"）
  * - diaryEntries: Array<{collectibleId, tierId, fragmentIndex, readAt}> — 已读日记碎片
+ * - fullTextEntries: { [collectibleId]: { text: string, savedAt: string } } — 完整故事文本
  * - hasViewedGardenDiary: boolean — 是否已查看花园日记入口
  * - hiddenAchievements: { [id: string]: string } — 隐藏成就 { 'walk-50': unlockedAt }
  */
@@ -76,14 +90,7 @@ const useAchievementStore = create(
   persist(
     (set, get) => ({
       // ── 状态 ──
-      achievementSchemaVersion: 2,
-      unlockedNarratives: {},
-      unlockTimestamps: {},
-      recentUnlockQueue: [],
-      readNarratives: [],
-      diaryEntries: [],
-      hasViewedGardenDiary: false,
-      hiddenAchievements: {},
+      ...initialAchievementState,
 
       // ── 解锁操作 ──
 
@@ -110,9 +117,22 @@ const useAchievementStore = create(
             if (!newTimestamps[collectibleId]) {
               newTimestamps[collectibleId] = ts;
             }
-            // 加入待展示队列
-            newQueue.push({ collectibleId, tierId, unlockedAt: ts });
+            // R10: 加入待展示队列前按 collectibleId:tierId 去重
+            const queueKey = `${collectibleId}:${tierId}`;
+            const alreadyQueued = newQueue.some(
+              (item) => `${item.collectibleId}:${item.tierId}` === queueKey
+            );
+            if (!alreadyQueued) {
+              newQueue.push({ collectibleId, tierId, unlockedAt: ts });
+            }
           });
+
+          // 云端同步：解锁发生时上传到 Supabase（仅已登录用户）
+          try {
+            SyncService.syncNarrativeUnlocks(unlocks);
+          } catch {
+            /* 同步异常不影响解锁流程 */
+          }
 
           return {
             unlockedNarratives: newUnlocked,
@@ -196,10 +216,19 @@ const useAchievementStore = create(
             (e) => e.collectibleId === collectibleId && e.tierId === tierId && e.fragmentIndex === fragmentIndex
           );
           if (exists) return state;
+          const newEntry = { collectibleId, tierId, fragmentIndex, readAt: new Date().toISOString() };
+
+          // 云端同步：日记碎片新增时上传（仅已登录用户）
+          try {
+            SyncService.syncDiaryEntry(newEntry);
+          } catch {
+            /* 同步异常不影响日记记录 */
+          }
+
           return {
             diaryEntries: [
               ...state.diaryEntries,
-              { collectibleId, tierId, fragmentIndex, readAt: new Date().toISOString() },
+              newEntry,
             ],
           };
         });
@@ -209,6 +238,32 @@ const useAchievementStore = create(
        * 标记花园日记入口已查看
        */
       markGardenDiaryViewed: () => set({ hasViewedGardenDiary: true }),
+
+      // ── 完整故事文本 ──
+
+      /**
+       * 保存完整故事文本到日记
+       * @param {string} collectibleId - 收藏品 ID
+       * @param {string} text - 完整故事文本
+       */
+      saveFullText: (collectibleId, text) => set((state) => ({
+        fullTextEntries: {
+          ...state.fullTextEntries,
+          [collectibleId]: {
+            text,
+            savedAt: new Date().toISOString(),
+          },
+        },
+      })),
+
+      /**
+       * 获取已保存的完整故事
+       * @param {string} collectibleId
+       * @returns {{ text: string, savedAt: string }|undefined}
+       */
+      getFullText: (collectibleId) => {
+        return get().fullTextEntries[collectibleId];
+      },
 
       // ── 查询方法 ──
 
@@ -271,9 +326,46 @@ const useAchievementStore = create(
           percentage: total > 0 ? Math.round((unlocked / total) * 100) : 0,
         };
       },
+
+      /**
+       * 重置收藏与日记状态到新用户初始态
+       */
+      reset: () => set(initialAchievementState),
     }),
     {
       name: 'memory-garden:achievements',
+      /**
+       * 仅持久化用户事实数据
+       * 完整故事文本可由 narratives.js 重建，不落盘以保持备份和本地存储精简
+       */
+      partialize: (state) => ({
+        achievementSchemaVersion: state.achievementSchemaVersion,
+        unlockedNarratives: state.unlockedNarratives,
+        unlockTimestamps: state.unlockTimestamps,
+        recentUnlockQueue: state.recentUnlockQueue,
+        readNarratives: state.readNarratives,
+        diaryEntries: state.diaryEntries,
+        hasViewedGardenDiary: state.hasViewedGardenDiary,
+        hiddenAchievements: state.hiddenAchievements,
+      }),
+      /**
+       * localStorage 写入错误回调
+       * 捕获 QuotaExceededError 后自动裁剪 diaryEntries
+       * @param {Error} error
+       */
+      onError: (error) => {
+        console.warn('[AchievementStore] 存储写入失败:', error.name);
+        if (error.name === 'QuotaExceededError') {
+          try {
+            const state = useAchievementStore.getState();
+            const trimmed = (state.diaryEntries || []).slice(-50);
+            useAchievementStore.setState({ diaryEntries: trimmed });
+            console.warn('[AchievementStore] 已自动裁剪 diaryEntries 至最近 50 条');
+          } catch {
+            // 裁剪也失败，静默降级
+          }
+        }
+      },
       /**
        * 自定义反序列化：处理 v1 → v2 迁移
        */

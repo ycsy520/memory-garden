@@ -2,18 +2,62 @@
 <html lang="zh-CN">
   <head>
     <meta charset="UTF-8" />
+    <link rel="icon" type="image/png" href="/icon-192.png" sizes="192x192" />
     <link rel="icon" type="image/svg+xml" href="/icon-192.svg" />
+    <style>
+      html, body {
+        margin: 0;
+        background: #F2F0E9;
+      }
+
+      body {
+        overflow: hidden;
+      }
+
+      #root {
+        opacity: 0;
+        transition: opacity 320ms ease;
+      }
+
+      body.app-ready {
+        overflow: auto;
+      }
+
+      body.app-ready #root {
+        opacity: 1;
+      }
+
+      #initial-loader {
+        position: fixed;
+        inset: 0;
+        z-index: 999;
+        background: #f2f0e9;
+        pointer-events: none;
+      }
+    </style>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
     <meta name="theme-color" content="#7C9A6E" />
     <meta name="description" content="记忆小花园 — 基于N-back认知训练的记忆小游戏" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
     <meta name="apple-mobile-web-app-title" content="记忆小花园" />
-    <link rel="apple-touch-icon" href="/icon-192.svg" />
+    <link rel="apple-touch-icon" href="/icon-192.png" />
     <title>记忆小花园 — Memory Garden</title>
   </head>
   <body>
+    <div id="initial-loader" aria-hidden="true"></div>
     <div id="root"></div>
+    <script>
+      // 安全网：如果主 JS 10 秒内没接管，自动收掉 Loading
+      (function(){
+        var fallback = document.getElementById('initial-loader');
+        if (!fallback) return;
+        window.setTimeout(function(){
+          if (fallback.parentNode) fallback.remove();
+          document.body.classList.add('app-ready');
+        }, 10000);
+      })();
+    </script>
     <script type="module" src="/src/main.jsx"></script>
   </body>
 </html>

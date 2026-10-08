@@ -171,37 +171,4 @@ export default class LeaderboardService {
       favoriteFactor,
     };
   }
-
-  /**
-   * 获取模式名称
-   * @param {string} modeId - 模式ID
-   * @returns {string}
-   */
-  static getModeName(modeId) {
-    const names = {
-      standard: '标准模式',
-      dual: '双通道模式',
-      spatial: '空间模式',
-      grid: '栅格模式',
-    };
-    return names[modeId] || modeId;
-  }
-
-  /**
-   * 获取因子名称
-   * @param {string} factorId - 因子ID
-   * @returns {string}
-   */
-  static getFactorName(factorId) {
-    const names = {
-      'emoji-flower': '花朵',
-      'emoji-animal': '动物',
-      'emoji-food': '食物',
-      'text-zh': '中文词',
-      'text-en': '英文词',
-      'symbol': '符号',
-      'tone': '音调',
-    };
-    return names[factorId] || factorId;
-  }
 }

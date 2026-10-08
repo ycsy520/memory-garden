@@ -19,6 +19,7 @@
  * @property {boolean} wasWarmup - 是否暖身回合
  * @property {boolean} wasPaused - 是否在暂停后恢复的回合
  * @property {boolean} wasHedged - 是否为辅助回合
+ * @property {boolean} [isLure] - 是否为 Lure 干扰回合（R5: 用于隔离冲动抑制失败）
  */
 
 /**
@@ -154,7 +155,11 @@ export function computeValidForAdaptation(session) {
     (session.scoredTrials || 0) >= 12 &&
     (session.pauseCount || 0) <= 1 &&
     (session.hedgeCount || 0) === 0 &&
-    !session.hasAssetError
+    !session.hasAssetError &&
+    // R4: timeout 超过 40% 的局不参与自适应，避免老年用户因生理反应延迟被频繁降 N
+    (session.timeoutRate || 0) <= 0.4 &&
+    // R6: 前 3 局暖身局不参与自适应计算，避免冷启动锚定失真
+    !session.isWarmupSession
   );
 }
 
@@ -179,6 +184,7 @@ export function buildSessionMetrics({
   pauseCount = 0,
   hedgeCount = 0,
   completed = true,
+  isWarmupSession = false,  // R6: 前 3 局暖身标记
 }) {
   // 只统计非暖身回合
   const scoredResults = trialResults.filter((r) => !r.wasWarmup);
@@ -187,6 +193,7 @@ export function buildSessionMetrics({
   let misses = 0;
   let falseAlarms = 0;
   let correctRejections = 0;
+  let lureFalseAlarms = 0;  // R5: Lure 误判独立计数
   const rts = [];
 
   for (const result of scoredResults) {
@@ -198,7 +205,12 @@ export function buildSessionMetrics({
         misses++;
         break;
       case 'falseAlarm':
-        falseAlarms++;
+        // R5: Lure 误判单独计数，不混入基础误判
+        if (result.isLure) {
+          lureFalseAlarms++;
+        } else {
+          falseAlarms++;
+        }
         break;
       case 'correctRejection':
         correctRejections++;
@@ -208,6 +220,9 @@ export function buildSessionMetrics({
       rts.push(result.responseTimeMs);
     }
   }
+
+  // R4: 超时 = 所有 responded === false 且非暖身的回合
+  const totalTimeouts = scoredResults.filter((r) => !r.responded).length;
 
   const rates = computeRates(hits, misses, falseAlarms, correctRejections);
   const score = computeScore(rates);
@@ -226,6 +241,10 @@ export function buildSessionMetrics({
     misses,
     falseAlarms,
     correctRejections,
+    lureFalseAlarms,             // R5: Lure 误判独立计数
+    timeoutRate: scoredResults.length > 0
+      ? totalTimeouts / scoredResults.length
+      : 0,                       // R4: 超时率
     ...rates,
     medianReactionTimeMs: computeMedianRT(rts),
     responseTimeStability: computeRTStability(rts),
@@ -234,6 +253,7 @@ export function buildSessionMetrics({
     pauseCount,
     hedgeCount,
     completed,
+    isWarmupSession,  // R6: 暖身局标记
   };
 
   session.validForAdaptation = computeValidForAdaptation(session);

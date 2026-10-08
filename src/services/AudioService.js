@@ -171,6 +171,21 @@ const AudioService = {
   },
 
   /**
+   * 直接设置 BGM 静音状态
+   * @param {boolean} nextMuted - 目标静音状态
+   * @returns {boolean} 设置后的静音状态
+   */
+  setMuted(nextMuted) {
+    this.isMuted = !!nextMuted;
+    if (this.isMuted) {
+      this.stopAmbience();
+    } else {
+      this.startAmbience();
+    }
+    return this.isMuted;
+  },
+
+  /**
    * 切换游戏音效静音状态
    * @returns {boolean} 切换后的静音状态
    */

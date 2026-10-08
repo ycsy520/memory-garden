@@ -1,9 +1,11 @@
 /**
  * 分享服务 — 生成成绩分享内容
  * v3.1: 优先使用 Capacitor 原生分享，降级到 Web Share API，最终降级到复制文本
+ * v4.0: 国际化支持
  */
 
 import PlatformService from '@services/PlatformService';
+import i18n from '@i18n/index';
 
 const ShareService = {
   /**
@@ -15,23 +17,16 @@ const ShareService = {
   },
 
   /**
-   * 生成分享文本
+   * 生成分享文本（使用 i18n 翻译）
    * @param {Object} session - 游戏会话数据
-   * @param {string} lang - 当前语言
    * @returns {string}
    */
-  generateText(session, lang = 'zh-CN') {
+  generateText(session) {
     const accuracy = Math.round((session.accuracy || 0) * 100);
     const score = session.score || 0;
     const mode = session.modeId || `N${session.difficulty || 1}`;
 
-    const templates = {
-      'zh-CN': `我在「记忆小花园」完成了 ${mode} 挑战！得分: ${score}，准确率: ${accuracy}%。来试试你的记忆力吧！`,
-      'zh-TW': `我在「記憶小花園」完成了 ${mode} 挑戰！得分: ${score}，準確率: ${accuracy}%。來試試你的記憶力吧！`,
-      'en-US': `I completed the ${mode} challenge in Memory Garden! Score: ${score}, Accuracy: ${accuracy}%. Try it!`,
-    };
-
-    return templates[lang] || templates['zh-CN'];
+    return i18n.t('services.share.template', { mode, score, accuracy });
   },
 
   /**

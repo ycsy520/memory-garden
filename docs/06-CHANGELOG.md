@@ -1,8 +1,85 @@
 # 06 — 版本迭代日志 (CHANGELOG)
 
-> 版本: v3.3
-> 更新: 2026-06-28
+> 版本: v5.2
+> 更新: 2026-07-08
 > 格式: Keep a Changelog (<https://keepachangelog.com/zh-CN/1.0.0/>)
+
+---
+
+## [v5.2.0] — 2026-07-08 (后端集成 P0 — Supabase 云端同步)
+
+### Added
+
+- **Supabase 客户端集成**: `@supabase/supabase-js` SDK 接入，单例初始化
+- **匿名登录**: 应用启动时自动创建匿名账户，无需用户操作
+- **邮箱 OTP 登录**: 设置页输入邮箱 → 收到验证链接 → 点击完成登录
+- **云端同步服务 (SyncService)**: 游戏结束时自动上传 session + 花园状态
+- **离线队列**: 网络不可用时暂存数据，联网后自动批量上传
+- **叙事解锁同步**: 叙事收藏品解锁时上传到 `narrative_unlocks` 表
+- **日记碎片同步**: 花园日记新增时上传到 `diary_entries` 表
+- **设置页账号卡片**: 游客模式显示登录入口，已登录显示同步状态
+- **账户注销**: Edge Function `delete-account` 级联删除云端数据
+- **免责声明**: 设置页底部展示合规声明
+- **数据库迁移**: profiles 表扩展花园字段 + RLS 策略禁止匿名写入
+- **文档**: 后端 PRD + 技术架构文档 (`.trae/documents/`)
+
+### Changed
+
+- **App.jsx**: 启动时初始化 AuthService + SyncService
+- **useGameEngine.js**: handleGameEnd 结束后触发云端同步
+- **useAchievementStore.js**: applyUnlocks / markDiaryFragmentRead 触发同步
+- **SettingsScreen.jsx**: 新增账号状态卡片 + 邮箱登录 + 注销流程
+- **i18n**: zh-CN / en-US / zh-TW 新增 15 个 settings 账号相关翻译 key
+
+### Architecture
+
+- **本地优先**: 所有数据先写 localStorage，同步在后台异步执行
+- **登录才同步**: 匿名用户不触发任何云端操作
+- **离线可用**: 网络不可用时写入离线队列，联网后自动 flush
+- **不阻塞 UI**: 所有 Supabase 调用都是 fire-and-forget
+
+---
+
+## [v5.1.0] — 2026-07-04 (响应式布局 + UI动效)
+
+### Added
+
+- **响应式布局**: 手机全宽/平板全宽/PC限宽三级容器策略
+- **Safe Area**: PWA模式刘海/Home Indicator自动适配
+- **横屏锁定**: 手机横屏显示"请竖起手机"提示并暂停游戏
+- **iPad横屏分栏**: GameScreen横屏时刺激区+按钮区左右分栏
+- **Double-Bezel**: StimulusStage卡片嵌套架构（外壳+内核）
+- **渐显渐隐**: 所有刺激项使用opacity过渡替代条件渲染
+- **页面切换动画**: AnimatedRoutes路由切换淡入动画
+- **按钮光晕**: MenuScreen"开始散步"按钮glow-pulse动画
+- **触摸反馈**: 统一active:scale-[0.97]按钮回弹效果
+- **滚动优化**: 所有列表页添加overscroll-contain
+- **useMediaQuery Hook**: 媒体查询响应式检测
+- **useOrientationGuard Hook**: 手机横屏锁定检测
+- **文档**: 新增10-RESPONSIVE.md响应式设计文档
+
+### Changed
+
+- **容器宽度**: `max-w-lg` → `sm:max-w-none xl:max-w-6xl`（平板全宽）
+- **刺激卡片**: StimulusStage添加lg:断点响应式尺寸
+- **按钮区**: GameScreen按钮容器响应式宽度+横屏垂直排列
+- **统计卡片**: StatsScreen grid-cols-2 → sm:grid-cols-4
+- **花园收藏**: StatsScreen grid-cols-4 → sm:grid-cols-6 lg:grid-cols-8
+- **动画曲线**: 统一使用cubic-bezier(0.32,0.72,0,1)
+- **废弃因子清理**: 删除TextZhFactor、TextEnFactor、SymbolFactor
+
+### Fixed
+
+- **DualMode双通道目标不对齐**: 重写_ensureSequences共享统一目标索引
+- **warmup轮数bug**: warmup从n+1改为n
+- **限时模式倒计时失效**: 旧版引擎路径添加倒计时逻辑
+- **跳过刺激不计入统计**: recordNoResponse分类+syncModeResult同步
+- **一局解锁多个花园收集**: 统一候选队列+每局只取1个
+
+### Removed
+
+- 废弃因子: TextZhFactor.js、TextEnFactor.js、SymbolFactor.js
+- 废弃文档: 09-NARRATIVE-IMPLEMENTATION-PLAN.md（已完成）
 
 ---
 

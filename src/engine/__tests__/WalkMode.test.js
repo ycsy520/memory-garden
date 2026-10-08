@@ -44,9 +44,9 @@ describe('WalkMode', () => {
     expect(mode.trialResults).toHaveLength(1);
   });
 
-  it('isWarmup 前 N+1 回合应返回 true', () => {
+  it('isWarmup 前 N 回合应返回 true', () => {
     const mode = new WalkMode({ n: 1, totalTurns: 16 });
-    // 第 0 回合
+    // 第 0 回合（warmup=1）
     expect(mode.isWarmup()).toBe(true);
   });
 

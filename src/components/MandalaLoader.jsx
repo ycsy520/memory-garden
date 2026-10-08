@@ -15,14 +15,17 @@
  * @param {string} [props.color] - 颜色，默认继承 currentColor
  * @param {string} [props.className] - 额外 CSS 类名
  */
+import { useTranslation } from 'react-i18next';
+
 export default function MandalaLoader({ size = 40, color, className = '' }) {
+  const { t } = useTranslation();
   const petalPath = 'M50 20 C56 28 56 38 50 44 C44 38 44 28 50 20';
 
   return (
     <span
       className={`mandala-loader ${className}`}
       role="status"
-      aria-label="过渡中"
+      aria-label={t('mandala.loading')}
       style={color ? { color } : undefined}
     >
       <svg viewBox="0 0 100 100" width={size} height={size}>

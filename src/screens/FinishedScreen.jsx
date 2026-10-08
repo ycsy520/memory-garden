@@ -13,7 +13,8 @@
  */
 import React, { useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { RefreshCw, Flower2, Leaf, ChevronDown, ChevronUp, Wind, TrendingUp, Clock, Brain } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
+import { Flower2, ChevronDown, ChevronUp, Wind, Clock, Brain } from 'lucide-react';
 import useGameStore from '@stores/useGameStore';
 import useStatsStore from '@stores/useStatsStore';
 import useGardenStore from '@stores/useGardenStore';
@@ -21,6 +22,70 @@ import useAchievementStore from '@stores/useAchievementStore';
 import { getCollectibleById, getNarrativeTier } from '@engine/narratives';
 import AudioService from '@services/AudioService';
 import { calculateSDT, interpretDPrime, interpretBeta } from '@engine/SignalDetection';
+import StoreIcon from '@components/StoreIcon';
+import MODE_I18N_KEYS from '@i18n/modeKeys';
+
+/**
+ * 计算单局准确率，兼容旧 session 数据。
+ * @param {Object} session - 历史会话对象
+ * @returns {number}
+ */
+function getSessionAccuracy(session) {
+  if (typeof session?.accuracy === 'number' && session.accuracy > 0) {
+    return session.accuracy;
+  }
+
+  const total = (session?.hits || 0) + (session?.misses || 0) + (session?.falseAlarms || 0) + (session?.correctRejections || 0);
+  return total > 0 ? ((session?.hits || 0) + (session?.correctRejections || 0)) / total : 0;
+}
+
+/**
+ * 将秒数格式化为适合结算页显示的中文时长。
+ * @param {number} seconds - 秒数
+ * @returns {string}
+ */
+function formatSessionDuration(seconds) {
+  const safeSeconds = Math.max(0, Math.round(seconds || 0));
+  const minutes = Math.floor(safeSeconds / 60);
+  const remainSeconds = safeSeconds % 60;
+
+  if (minutes <= 0) return `${safeSeconds}秒`;
+  if (remainSeconds === 0) return `${minutes}分钟`;
+  return `${minutes}分${remainSeconds}秒`;
+}
+
+/**
+ * 将会话时间格式化为简洁的月/日 时:分。
+ * @param {number|string} value - 时间戳或可解析日期
+ * @returns {string}
+ */
+function formatSessionDate(value) {
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) return '';
+
+  const month = date.getMonth() + 1;
+  const day = date.getDate();
+  const hours = date.getHours();
+  const minutes = String(date.getMinutes()).padStart(2, '0');
+  return `${month}/${day} ${hours}:${minutes}`;
+}
+
+/**
+ * 格式化历史记录卡片的副信息。
+ * @param {Object} session - 历史会话对象
+ * @param {(key: string, options?: Object) => string} t - i18n 翻译函数
+ * @returns {string}
+ */
+function formatSessionMeta(session, t) {
+  const modeLabel = MODE_I18N_KEYS[session?.modeId]
+    ? t(MODE_I18N_KEYS[session.modeId])
+    : (session?.modeId || t('common.modeWalk'));
+  const difficultyLabel = `N${session?.difficulty || 1}`;
+  const durationLabel = formatSessionDuration(session?.duration || 0);
+  const timedLabel = session?.timed ? t('finished.timedTag') : null;
+
+  return [modeLabel, difficultyLabel, durationLabel, timedLabel].filter(Boolean).join(' · ');
+}
 
 /**
  * 根据记忆准确率选择反馈文案
@@ -36,32 +101,33 @@ import { calculateSDT, interpretDPrime, interpretBeta } from '@engine/SignalDete
  * @param {number} accuracy - 记忆准确率 (0-1)
  * @returns {{ title: string, body: string, reward: string, rewardIcon: string }}
  */
-function getGardenFeedback(accuracy) {
+function getGardenFeedback(accuracy, t) {
   if (accuracy >= 0.80) {
     return {
-      title: '花园今天很安静，也很明亮。',
-      body: '你认出了几朵回来的花，也耐心看着新花走过。花园多开了一朵小花。',
-      reward: '一朵小花',
-      rewardIcon: '🌸',
+      title: t('finished.narrativeExcellent.title'),
+      body: t('finished.narrativeExcellent.body'),
+      reward: t('finished.narrativeExcellent.reward'),
+      rewardIcon: 17, // store.png 樱花
     };
   }
   if (accuracy >= 0.60) {
     return {
-      title: '今天的花园多了一片新叶。',
-      body: '有些花你认出来了，有些花走得很轻。每一次散步，花园都会更熟悉你一点。',
-      reward: '一片新叶',
-      rewardIcon: '🍃',
+      title: t('finished.narrativeGood.title'),
+      body: t('finished.narrativeGood.body'),
+      reward: t('finished.narrativeGood.reward'),
+      rewardIcon: 13, // store.png 飘叶
     };
   }
   return {
-    title: '今天你还是完成了一次散步。',
-    body: '花园里多了一颗种子。下一次可以走慢一点，只看一朵花就好。',
-    reward: '一颗种子',
-    rewardIcon: '🌱',
+    title: t('finished.narrativePoor.title'),
+    body: t('finished.narrativePoor.body'),
+    reward: t('finished.narrativePoor.reward'),
+    rewardIcon: 10, // store.png 幼苗
   };
 }
 
 export default function FinishedScreen() {
+  const { t, i18n } = useTranslation();
   const navigate = useNavigate();
   const score = useGameStore((s) => s.score);
   const hits = useGameStore((s) => s.hits);
@@ -69,6 +135,7 @@ export default function FinishedScreen() {
   const falseAlarms = useGameStore((s) => s.falseAlarms);
   const correctRejections = useGameStore((s) => s.correctRejections);
   const reactionTimes = useGameStore((s) => s.reactionTimes);
+  const startedAt = useGameStore((s) => s.startedAt);
   const sessions = useStatsStore((s) => s.sessions);
 
   // 详细数据折叠状态
@@ -77,11 +144,14 @@ export default function FinishedScreen() {
   // 解锁队列展示状态
   const [unlockQueueIndex, setUnlockQueueIndex] = useState(0);
   const [storyExpanded, setStoryExpanded] = useState(false);
+  /** R10: 消费锁，防止连点导致重复操作 */
+  const [isProcessing, setIsProcessing] = useState(false);
 
   // 从 store 获取解锁队列
   const unlockQueue = useAchievementStore((s) => s.recentUnlockQueue);
   const markNarrativeRead = useAchievementStore((s) => s.markNarrativeRead);
   const clearUnlockQueue = useAchievementStore((s) => s.clearUnlockQueue);
+  const saveFullText = useAchievementStore((s) => s.saveFullText);
 
   /** 计算核心指标 */
   const metrics = useMemo(() => {
@@ -118,15 +188,24 @@ export default function FinishedScreen() {
     };
   }, [hits, misses, falseAlarms, correctRejections, reactionTimes]);
 
-  /** 进步趋势：最近10轮的准确率 */
-  const recentAccuracy = useMemo(() => {
-    return sessions
-      .slice(-10)
-      .map((s) => {
-        const total = (s.hits || 0) + (s.misses || 0) + (s.falseAlarms || 0) + (s.correctRejections || 0);
-        return total > 0 ? ((s.hits || 0) + (s.correctRejections || 0)) / total : 0;
-      });
-  }, [sessions]);
+  /** 过往记录：排除当前这一局，仅展示最近 5 局 */
+  const pastSessions = useMemo(() => {
+    return [...sessions]
+      .filter((session) => session && typeof session.score === 'number' && session.startedAt)
+      .filter((session) => session.startedAt !== startedAt)
+      .reverse()
+      .slice(0, 5)
+      .map((session, index) => ({
+        ...session,
+        accuracyValue: getSessionAccuracy(session),
+        metaLabel: formatSessionMeta(session, t),
+        modeLabel: MODE_I18N_KEYS[session.modeId]
+          ? t(MODE_I18N_KEYS[session.modeId])
+          : (session.modeId || t('common.modeWalk')),
+        dateLabel: formatSessionDate(session.endedAt || session.startedAt),
+        isLatest: index === 0,
+      }));
+  }, [sessions, startedAt, t]);
 
   /** 反脆弱：检测连续困难（最近3局命中率均<50%） */
   const isConsecutiveDifficult = useMemo(() => {
@@ -140,7 +219,7 @@ export default function FinishedScreen() {
   }, [sessions]);
 
   /** 花园叙事反馈 */
-  const feedback = useMemo(() => getGardenFeedback(metrics.memoryAccuracy), [metrics.memoryAccuracy]);
+  const feedback = useMemo(() => getGardenFeedback(metrics.memoryAccuracy, t), [metrics.memoryAccuracy, t]);
 
   /** 再来一局 */
   const handleRestart = () => {
@@ -159,118 +238,176 @@ export default function FinishedScreen() {
   };
 
   return (
-    <div className="flex flex-col items-center justify-start h-full animate-fade-in px-6 py-8 text-center bg-white/40 backdrop-blur-sm overflow-y-auto">
-      <div className="bg-white p-6 sm:p-8 rounded-[2rem] shadow-2xl max-w-sm w-full border-4 border-white relative">
-        {/* 花园成长图标 */}
-        <div className="text-5xl mb-4">{feedback.rewardIcon}</div>
+    <div className="ui-page-shell animate-fade-in text-center bg-white/35 backdrop-blur-sm">
+      <div className="ui-page-frame">
+        <div className="ui-page-narrow">
+      <div className="ui-card-primary bg-white p-6 sm:p-8 shadow-2xl w-full border-4 border-white relative">
+        {/* 花园成长图标 + 叙事文案（限宽防拉伸） */}
+        <div className="ui-heading-block">
+          <div className="mb-4 flex items-center justify-center">
+            <StoreIcon
+              value={feedback.rewardIcon}
+              className="text-5xl"
+              spriteClass="sprite-frame w-24 sm:w-28"
+            />
+          </div>
 
-        {/* 叙事标题 */}
-        <h2
-          className="text-xl sm:text-2xl text-[var(--color-text-primary)] mb-3"
-          style={{ fontFamily: 'var(--font-family-serif)' }}
-        >
-          {feedback.title}
-        </h2>
+          {/* 叙事标题 */}
+          <h2
+            className="text-xl sm:text-2xl text-[var(--color-text-primary)] mb-3"
+            style={{ fontFamily: 'var(--font-family-serif)' }}
+          >
+            {feedback.title}
+          </h2>
 
-        {/* 叙事正文 */}
-        <p className="text-[var(--color-text-secondary)] font-light mb-6 text-sm leading-relaxed">
-          {feedback.body}
-        </p>
+          {/* 叙事正文 */}
+          <p className="text-[var(--color-text-secondary)] font-light mb-8 text-sm leading-relaxed">
+            {feedback.body}
+          </p>
+        </div>
 
         {/* 反脆弱辅助：连续困难时显示温和提示 */}
         {metrics.memoryAccuracy < 0.50 && (
-          <div className="bg-amber-50 rounded-xl p-3 mb-4 text-center">
+          <div className="ui-card-secondary bg-amber-50 p-3 mb-4 text-center">
             <p className="text-sm text-amber-700 leading-relaxed">
-              可以慢一点。只要看到真的回来过的花，再按就好。
+              {t('finished.slowDown')}
             </p>
             {isConsecutiveDifficult && (
-              <p className="text-xs text-amber-500 mt-2">
-                最近几次有些吃力，要不要先休息一下？
+              <p className="text-sm text-amber-500 mt-2">
+                {t('finished.takeBreak')}
               </p>
             )}
           </div>
         )}
 
-        {/* 核心指标展示 */}
-        <div className="bg-stone-50 rounded-2xl p-4 mb-4">
-          {/* 记忆准确率 */}
-          <div className="text-center mb-4">
-            <div className="text-xs text-[var(--color-text-muted)] mb-1">记忆准确率</div>
-            <div className="text-4xl font-bold text-[var(--color-text-primary)]">
-              {Math.round(metrics.memoryAccuracy * 100)}%
+        <div className="ui-section-stack mb-4">
+          {/* 本局表现 */}
+          <section className="ui-card-primary bg-stone-50 p-4">
+            <div className="text-center mb-4">
+              <div className="flex items-center justify-center gap-3 mb-2">
+                <span className="h-px w-8 bg-stone-300/80" />
+                <div className="text-sm tracking-[0.14em] text-[var(--color-text-muted)]">
+                  {t('finished.currentRun')}
+                </div>
+                <span className="h-px w-8 bg-stone-300/80" />
+              </div>
+              <div className="text-sm text-[var(--color-text-muted)] mb-1">{t('finished.accuracyRate')}</div>
+              <div className="text-4xl font-semibold text-[var(--color-text-primary)] tabular-nums">
+                {Math.round(metrics.memoryAccuracy * 100)}%
+              </div>
+              <div className="text-sm text-[var(--color-text-muted)] mt-1">
+                {t('finished.accuracyDesc', { total: metrics.totalTurns, correct: Math.round(metrics.memoryAccuracy * metrics.totalTurns) })}
+              </div>
             </div>
-            <div className="text-xs text-[var(--color-text-muted)] mt-1">
-              {metrics.totalTurns} 个刺激项中正确判断 {Math.round(metrics.memoryAccuracy * metrics.totalTurns)} 个
-            </div>
-          </div>
 
-          {/* 目标识别率和误判率 */}
-          <div className="grid grid-cols-2 gap-3">
-            <div className="bg-white rounded-xl p-3 text-center">
-              <div className="text-xs text-[var(--color-text-muted)] mb-1">目标识别率</div>
-              <div className="text-2xl font-bold text-green-600">
-                {Math.round(metrics.target识别率 * 100)}%
+            <div className="grid grid-cols-2 gap-3">
+              <div className="ui-card-secondary bg-white p-3 text-center">
+                <div className="text-sm text-[var(--color-text-muted)] mb-1">{t('finished.targetRecognition')}</div>
+                <div className="text-2xl font-semibold text-green-600 tabular-nums">
+                  {Math.round(metrics.target识别率 * 100)}%
+                </div>
+                <div className="text-sm text-[var(--color-text-muted)]">
+                  {t('finished.targetDesc', { total: metrics.targetCount, hits })}
+                </div>
               </div>
-              <div className="text-xs text-[var(--color-text-muted)]">
-                {metrics.targetCount} 个重复项中记住 {hits} 个
+              <div className="ui-card-secondary bg-white p-3 text-center">
+                <div className="text-sm text-[var(--color-text-muted)] mb-1">{t('finished.falseAlarmRate')}</div>
+                <div className="text-2xl font-semibold text-red-500 tabular-nums">
+                  {Math.round(metrics.falseAlarmRate * 100)}%
+                </div>
+                <div className="text-sm text-[var(--color-text-muted)]">
+                  {t('finished.falseAlarmDesc', { total: metrics.nonTargetCount, fa: falseAlarms })}
+                </div>
               </div>
             </div>
-            <div className="bg-white rounded-xl p-3 text-center">
-              <div className="text-xs text-[var(--color-text-muted)] mb-1">误判率</div>
-              <div className="text-2xl font-bold text-red-500">
-                {Math.round(metrics.falseAlarmRate * 100)}%
-              </div>
-              <div className="text-xs text-[var(--color-text-muted)]">
-                {metrics.nonTargetCount} 个非重复项中误标 {falseAlarms} 个
-              </div>
-            </div>
-          </div>
 
-          {/* 记忆辨别力 */}
-          <div className="mt-3 bg-blue-50 rounded-xl p-3 flex items-center justify-between">
-            <div className="flex items-center gap-1">
-              <Brain size={14} className="text-blue-600" />
-              <span className="text-xs text-blue-700">记忆辨别力 d'</span>
-            </div>
-            <div className="text-right">
-              <span className="text-lg font-bold text-blue-600">{metrics.dPrime}</span>
-              <span className="text-xs text-blue-400 ml-1">{metrics.dPrimeInterpretation.level}</span>
-            </div>
-          </div>
-
-          {/* 反应时间 */}
-          {metrics.avgRT > 0 && (
-            <div className="mt-2 bg-purple-50 rounded-xl p-3 flex items-center justify-between">
+            <div className="ui-card-secondary mt-3 bg-blue-50 p-3 flex items-center justify-between">
               <div className="flex items-center gap-1">
-                <Clock size={14} className="text-purple-600" />
-                <span className="text-xs text-purple-700">平均反应</span>
+                <Brain size={14} className="text-blue-600" />
+                <span className="text-sm text-blue-700">{t('finished.sensitivity')} d'</span>
               </div>
-              <span className="text-lg font-bold text-purple-600">{metrics.avgRT}ms</span>
+              <div className="text-right">
+                  <span className="text-lg font-semibold text-blue-600 tabular-nums">{metrics.dPrime}</span>
+                <span className="text-sm text-blue-400 ml-1">{metrics.dPrimeInterpretation.level}</span>
+              </div>
             </div>
-          )}
 
-          {/* 进步趋势（最近10轮） */}
-          {recentAccuracy.length > 1 && (
-            <div className="mt-3 bg-green-50 rounded-xl p-3">
-              <div className="flex items-center gap-1 mb-2">
-                <TrendingUp size={14} className="text-green-600" />
-                <span className="text-xs font-medium text-green-700">进步趋势</span>
+            {metrics.avgRT > 0 && (
+              <div className="ui-card-secondary mt-2 bg-purple-50 p-3 flex items-center justify-between">
+                <div className="flex items-center gap-1">
+                  <Clock size={14} className="text-purple-600" />
+                  <span className="text-sm text-purple-700">{t('finished.avgReaction')}</span>
+                </div>
+                <span className="text-lg font-semibold text-purple-600 tabular-nums">{metrics.avgRT}ms</span>
               </div>
-              <div className="flex items-end gap-1 h-12">
-                {recentAccuracy.map((acc, i) => (
+            )}
+          </section>
+
+          {/* 过往记录 */}
+          <section className="ui-card-primary bg-stone-50 p-4 text-left">
+            <div className="mb-3 text-center">
+              <div className="flex items-center justify-center gap-3 mb-2">
+                <span className="h-px w-8 bg-stone-300/80" />
+                <div className="text-sm tracking-[0.14em] text-[var(--color-text-muted)]">
+                  {t('finished.pastRecords')}
+                </div>
+                <span className="h-px w-8 bg-stone-300/80" />
+              </div>
+              <p className="text-sm text-[var(--color-text-muted)] leading-relaxed">
+                {t('finished.pastRecordsHint')}
+              </p>
+            </div>
+
+            {pastSessions.length === 0 ? (
+              <div className="ui-card-secondary bg-white/80 border border-stone-200/80 px-4 py-5 text-center">
+                <div className="text-sm text-[var(--color-text-secondary)] mb-1">
+                  {t('finished.firstRecordTitle')}
+                </div>
+                <p className="text-sm text-[var(--color-text-muted)] leading-relaxed">
+                  {t('finished.firstRecordBody')}
+                </p>
+              </div>
+            ) : (
+              <div className="relative ml-1 space-y-1.5 before:absolute before:left-[6px] before:top-2 before:bottom-2 before:w-px before:bg-stone-200/90">
+                {pastSessions.map((session) => (
                   <div
-                    key={i}
-                    className="flex-1 bg-green-200 rounded-t"
-                    style={{ height: `${Math.max(acc * 100, 5)}%` }}
-                    title={`第${i + 1}轮: ${Math.round(acc * 100)}%`}
-                  />
+                    key={session.id}
+                    className="group relative pl-5"
+                  >
+                    <span className="ui-dot absolute left-[1px] top-5 h-[11px] w-[11px] border border-stone-300 bg-stone-50 shadow-[0_0_0_3px_rgba(245,245,244,0.95)]" />
+                    <div className="ui-card-primary flex items-start justify-between gap-3 bg-white/75 px-4 py-3 border border-stone-200/70 transition-colors duration-200 group-hover:bg-white">
+                      <div className="min-w-0 flex-1">
+                        <div className="flex items-center gap-2 min-w-0">
+                          <div className="text-sm text-[var(--color-text-primary)] font-medium truncate">
+                            {session.modeLabel}
+                          </div>
+                          {session.isLatest && (
+                            <span className="ui-chip shrink-0 bg-stone-100 px-2 py-0.5 text-sm tracking-[0.08em] text-[var(--color-text-muted)]">
+                              {t('finished.latestRecord')}
+                            </span>
+                          )}
+                        </div>
+                        <div className="text-sm text-[var(--color-text-muted)] mt-1 break-words">
+                          {session.metaLabel}
+                        </div>
+                        <div className="text-sm text-stone-400 mt-2">
+                          {session.dateLabel}
+                        </div>
+                      </div>
+                      <div className="shrink-0 text-right pt-0.5">
+                        <div className="text-[28px] leading-none font-semibold text-green-600 tabular-nums">
+                          {Math.round(session.accuracyValue * 100)}%
+                        </div>
+                        <div className="text-sm text-stone-400 mt-1">
+                          {t('finished.recordAccuracyLabel')}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                 ))}
               </div>
-              <div className="text-xs text-green-500 mt-1 text-center">
-                最近 {recentAccuracy.length} 轮准确率
-              </div>
-            </div>
-          )}
+            )}
+          </section>
         </div>
 
         {/* 花园成长卡片 */}
@@ -280,81 +417,95 @@ export default function FinishedScreen() {
           const growthPoints = useGardenStore.getState().growthPoints;
           const streakDays = useGardenStore.getState().streakDays;
           return (
-            <div className="bg-green-50 rounded-2xl p-4 mb-4">
+            <div className="ui-card-primary bg-green-50 p-4 mb-4">
               <div className="flex items-center justify-center gap-2 mb-2">
-                <span className="text-2xl">{gardenLevel.icon}</span>
-                <span className="text-sm font-medium text-green-700">花园 · {gardenLevel.name}</span>
+                <StoreIcon
+                  value={gardenLevel.icon}
+                  className="text-2xl"
+                  spriteClass="sprite-frame w-10"
+                />
+                <span className="text-sm font-medium text-green-700">{t('finished.gardenLevel', { level: gardenLevel.name })}</span>
               </div>
               <p className="text-sm text-green-600">
-                花园里多了{feedback.reward}。
+                {t('finished.gardenReward', { reward: feedback.reward })}
               </p>
-              <p className="text-xs text-green-500 mt-1">
-                这是你第 {totalWalks} 次来散步。
-                {streakDays > 1 && <span> 已连续 {streakDays} 天。</span>}
+              <p className="text-sm text-green-500 mt-1">
+                {t('finished.walkCount', { count: totalWalks })}
+                {streakDays > 1 && <span> {t('finished.streakCount', { days: streakDays })}</span>}
               </p>
               {/* 成长进度条 */}
               {gardenLevel.level < 6 && (
                 <div className="mt-3">
-                  <div className="flex justify-between text-xs text-green-500 mb-1">
-                    <span>成长进度</span>
-                    <span>{growthPoints} / {gardenLevel.nextThreshold} 点</span>
+                  <div className="flex justify-between text-sm text-green-500 mb-1">
+                    <span>{t('finished.growthProgress')}</span>
+                    <span>{t('finished.progressPoints', { current: growthPoints, total: gardenLevel.nextThreshold })}</span>
                   </div>
-                  <div className="w-full h-2 bg-green-100 rounded-full overflow-hidden">
+                  <div className="ui-progress-track h-2 w-full bg-green-100">
                     <div
-                      className="h-full bg-green-400 rounded-full transition-all duration-500"
+                      className="ui-progress-fill bg-green-400"
                       style={{ width: `${Math.round(gardenLevel.progress * 100)}%` }}
                     />
                   </div>
                 </div>
               )}
               {gardenLevel.level >= 6 && (
-                <p className="text-xs text-green-400 mt-2 text-center">花园已盛开，继续守护它吧。</p>
+                <p className="text-sm text-green-400 mt-2 text-center">{t('finished.gardenFullBloom')}</p>
               )}
               {/* 新解锁的收藏品：短卡片 + 展开故事 + 多解锁队列 */}
               {unlockQueue.length > 0 && (() => {
                 const current = unlockQueue[Math.min(unlockQueueIndex, unlockQueue.length - 1)];
-                const collectible = getCollectibleById(current.collectibleId);
-                const tier = getNarrativeTier(current.collectibleId, current.tierId);
+                const collectible = getCollectibleById(current.collectibleId, i18n.language);
+                const tier = getNarrativeTier(current.collectibleId, current.tierId, i18n.language);
                 if (!collectible || !tier) return null;
 
                 const isLast = unlockQueueIndex >= unlockQueue.length - 1;
-                const tierName = { sprout: '初芽', leaf: '翠叶', bloom: '繁花', fullBloom: '盛放' }[current.tierId] || current.tierId;
+                const tierName = t('garden.tiers.' + current.tierId) || current.tierId;
 
                 const handleNext = () => {
+                  // R10: 消费锁，防止连点重复操作
+                  if (isProcessing) return;
+                  setIsProcessing(true);
                   markNarrativeRead(current.collectibleId, current.tierId);
+                  saveFullText(current.collectibleId, tier.story || tier.shortText);
                   if (isLast) {
                     clearUnlockQueue();
+                    setIsProcessing(false);
                   } else {
                     setUnlockQueueIndex(unlockQueueIndex + 1);
                     setStoryExpanded(false);
+                    setIsProcessing(false);
                   }
                 };
 
                 return (
                   <div className="mt-3 pt-3 border-t border-green-100">
-                    <p className="text-xs text-green-500 mb-2">
-                      新收藏（{unlockQueueIndex + 1}/{unlockQueue.length}）
+                    <p className="text-sm text-green-500 mb-2">
+                      {t('finished.newCollection', { current: unlockQueueIndex + 1, total: unlockQueue.length })}
                     </p>
-                    <div className="bg-white rounded-xl p-3 shadow-sm">
+                    <div className="ui-card-secondary bg-white p-3 shadow-[0_10px_20px_rgba(120,113,108,0.06)]">
                       <div className="flex items-center gap-2 mb-2">
-                        <span className="text-2xl">{collectible.icon}</span>
+                        <StoreIcon
+                          value={collectible.icon}
+                          className="text-2xl"
+                          spriteClass="sprite-frame w-10"
+                        />
                         <div>
-                          <span className="text-sm font-medium text-green-700">{collectible.name}</span>
-                          <span className="text-[10px] text-green-500 ml-1">· {tierName}</span>
+                          <span className="break-words text-sm font-medium text-green-700">{collectible.name}</span>
+                          <span className="text-sm text-green-500 ml-1">· {tierName}</span>
                         </div>
                       </div>
-                      <p className="text-xs text-green-600 leading-relaxed">{tier.shortText}</p>
+                      <p className="break-words text-sm leading-relaxed text-green-600">{tier.shortText}</p>
 
                       {/* 展开/收起故事 */}
                       <button
                         onClick={() => setStoryExpanded(!storyExpanded)}
-                        className="mt-2 text-[10px] text-green-400 hover:text-green-600 transition-colors"
+                        className="mt-2 text-sm text-green-400 hover:text-green-600 transition-colors"
                       >
-                        {storyExpanded ? '收起故事' : '展开看看'}
+                        {storyExpanded ? t('finished.collapseStory') : t('finished.expandStory')}
                       </button>
                       {storyExpanded && (
-                        <div className="mt-2 p-2 bg-green-50 rounded-lg">
-                          <p className="text-xs text-green-700 leading-relaxed whitespace-pre-line">{tier.story}</p>
+                        <div className="ui-card-tertiary mt-2 p-2 bg-green-50 animate-expand">
+                          <p className="break-words whitespace-pre-line text-sm leading-relaxed text-green-700">{tier.story}</p>
                         </div>
                       )}
 
@@ -362,9 +513,10 @@ export default function FinishedScreen() {
                       <div className="flex gap-2 mt-3">
                         <button
                           onClick={handleNext}
-                          className="flex-1 bg-green-500 text-white text-xs py-2 rounded-lg hover:bg-green-600 transition-colors"
+                          className="ui-btn-base ui-btn-primary flex-1 py-2 text-sm hover:bg-green-600 transition-colors"
+                          style={{ minHeight: '40px' }}
                         >
-                          收进花园日记
+                          {t('finished.saveToJournal')}
                         </button>
                         {!isLast && (
                           <button
@@ -373,9 +525,10 @@ export default function FinishedScreen() {
                               unlockQueue.forEach((u) => markNarrativeRead(u.collectibleId, u.tierId));
                               clearUnlockQueue();
                             }}
-                            className="px-3 bg-stone-100 text-stone-500 text-xs py-2 rounded-lg hover:bg-stone-200 transition-colors"
+                            className="ui-btn-base ui-btn-neutral px-3 py-2 text-sm hover:bg-stone-200 transition-colors"
+                            style={{ minHeight: '40px' }}
                           >
-                            继续散步
+                            {t('finished.continueWalk')}
                           </button>
                         )}
                       </div>
@@ -391,84 +544,64 @@ export default function FinishedScreen() {
         <div className="mb-4">
           <button
             onClick={() => setShowDetails(!showDetails)}
-            className="flex items-center justify-center gap-1 text-xs text-[var(--color-text-muted)] hover:text-[var(--color-text-secondary)] transition-colors mx-auto"
+            className="flex items-center justify-center gap-1 text-sm text-[var(--color-text-muted)] hover:text-[var(--color-text-secondary)] transition-colors mx-auto"
           >
             {showDetails ? (
               <>
-                <ChevronUp size={14} /> 收起详细数据
+                <ChevronUp size={14} /> {t('finished.hideDetailedData')}
               </>
             ) : (
               <>
-                <ChevronDown size={14} /> 查看详细数据
+                <ChevronDown size={14} /> {t('finished.detailedData')}
               </>
             )}
           </button>
 
           {showDetails && (
-            <div className="mt-3 space-y-2 animate-fade-in">
-              {/* 综合评分 */}
-              <div className="bg-stone-50 rounded-xl p-3">
-                <div className="text-xs text-[var(--color-text-muted)] mb-1">综合评分</div>
-                <div className="text-2xl font-bold text-[var(--color-text-primary)]">
-                  {score}
-                  <span className="text-sm font-normal text-[var(--color-text-muted)] ml-1">分</span>
-                </div>
-              </div>
-
-              {/* 信号检测论指标 */}
-              <div className="bg-blue-50 rounded-xl p-3">
-                <div className="flex items-center gap-1 mb-2">
-                  <Brain size={14} className="text-blue-600" />
-                  <span className="text-xs font-medium text-blue-700">记忆辨别力</span>
-                </div>
-                <div className="grid grid-cols-2 gap-2">
-                  <div className="text-center">
-                    <div className="text-xl font-bold text-blue-600">{metrics.dPrime}</div>
-                    <div className="text-xs text-blue-500">d'（灵敏度）</div>
-                    <div className="text-xs text-blue-400">{metrics.dPrimeInterpretation.level}</div>
-                  </div>
-                  <div className="text-center">
-                    <div className="text-xl font-bold text-blue-600">{metrics.beta}</div>
-                    <div className="text-xs text-blue-500">β（反应偏向）</div>
-                    <div className="text-xs text-blue-400">{metrics.betaInterpretation.type}</div>
+            <div className="ui-section-stack mt-3 animate-expand">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                {/* 综合评分 */}
+                <div className="ui-card-secondary bg-stone-50 p-3">
+                  <div className="text-sm text-[var(--color-text-muted)] mb-1">{t('finished.score')}</div>
+                  <div className="text-2xl font-bold text-[var(--color-text-primary)]">
+                    {score}
+                    <span className="text-sm font-normal text-[var(--color-text-muted)] ml-1">{t('finished.points')}</span>
                   </div>
                 </div>
-              </div>
 
-              {/* 反应时间 */}
-              {metrics.avgRT > 0 && (
-                <div className="bg-purple-50 rounded-xl p-3">
+                {/* 深层分析：只保留上半区未直接显示的 β */}
+                <div className="ui-card-secondary bg-blue-50 p-3">
                   <div className="flex items-center gap-1 mb-1">
-                    <Clock size={14} className="text-purple-600" />
-                    <span className="text-xs font-medium text-purple-700">平均反应时间</span>
+                    <Brain size={14} className="text-blue-600" />
+                    <span className="text-sm font-medium text-blue-700">{t('finished.analysisReading')}</span>
                   </div>
-                  <div className="text-center">
-                    <div className="text-2xl font-bold text-purple-600">{metrics.avgRT}ms</div>
-                  </div>
+                  <div className="text-2xl font-bold text-blue-600">{metrics.beta}</div>
+                  <div className="text-sm text-blue-500 mt-1">{t('finished.beta')}</div>
+                  <div className="text-sm text-blue-400">{metrics.betaInterpretation.type}</div>
                 </div>
-              )}
+              </div>
 
               {/* 四分类 */}
-              <div className="grid grid-cols-2 gap-2 text-xs">
-                <div className="bg-green-50 rounded-lg p-2 text-center">
+              <div className="grid grid-cols-2 gap-2 text-sm">
+                <div className="ui-card-tertiary bg-green-50 p-2 text-center">
                   <div className="text-green-600 font-bold text-lg">{hits}</div>
-                  <div className="text-green-500">命中</div>
-                  <div className="text-xs text-green-400">记住并标对</div>
+                  <div className="text-green-500">{t('finished.hits')}</div>
+                  <div className="text-sm text-green-400">{t('finished.hitDesc')}</div>
                 </div>
-                <div className="bg-amber-50 rounded-lg p-2 text-center">
+                <div className="ui-card-tertiary bg-amber-50 p-2 text-center">
                   <div className="text-amber-600 font-bold text-lg">{misses}</div>
-                  <div className="text-amber-500">遗漏</div>
-                  <div className="text-xs text-amber-400">没记住漏掉</div>
+                  <div className="text-amber-500">{t('finished.misses')}</div>
+                  <div className="text-sm text-amber-400">{t('finished.missDesc')}</div>
                 </div>
-                <div className="bg-red-50 rounded-lg p-2 text-center">
+                <div className="ui-card-tertiary bg-red-50 p-2 text-center">
                   <div className="text-red-500 font-bold text-lg">{falseAlarms}</div>
-                  <div className="text-red-400">误判</div>
-                  <div className="text-xs text-red-300">记错多标了</div>
+                  <div className="text-red-400">{t('finished.falseAlarms')}</div>
+                  <div className="text-sm text-red-300">{t('finished.falseAlarmLabel')}</div>
                 </div>
-                <div className="bg-blue-50 rounded-lg p-2 text-center">
+                <div className="ui-card-tertiary bg-blue-50 p-2 text-center">
                   <div className="text-blue-600 font-bold text-lg">{correctRejections}</div>
-                  <div className="text-blue-500">正确排除</div>
-                  <div className="text-xs text-blue-400">正确不标记</div>
+                  <div className="text-blue-500">{t('finished.correctRejection')}</div>
+                  <div className="text-sm text-blue-400">{t('finished.correctRejectionDesc')}</div>
                 </div>
               </div>
             </div>
@@ -479,8 +612,8 @@ export default function FinishedScreen() {
         <div className="space-y-3">
           <button
             onClick={handleRestart}
-            aria-label="再走一次"
-            className="w-full bg-gradient-to-r from-[var(--color-brand)] to-[var(--color-brand-hover)] text-white py-4 rounded-full text-lg transition-all flex items-center justify-center gap-2 shadow-xl"
+            aria-label={t('finished.walkAgain')}
+            className="ui-btn-base ui-btn-primary w-full py-4 text-lg transition-all flex items-center justify-center gap-2"
             style={{
               fontFamily: 'var(--font-family-serif)',
               minHeight: '56px',
@@ -489,18 +622,20 @@ export default function FinishedScreen() {
             }}
           >
             <Wind size={20} />
-            再走一次
+            {t('finished.walkAgain')}
           </button>
 
           <button
             onClick={handleBackToGarden}
-            aria-label="回到花园"
-            className="w-full bg-white hover:bg-stone-50 text-[var(--color-text-secondary)] py-3 rounded-full text-sm transition-all flex items-center justify-center gap-2 border border-stone-200"
-            style={{ minHeight: '48px', touchAction: 'manipulation' }}
+            aria-label={t('finished.backToGarden')}
+            className="ui-btn-base ui-btn-secondary w-full py-3 text-sm transition-all flex items-center justify-center gap-2"
+            style={{ minHeight: '48px' }}
           >
             <Flower2 size={16} />
-            回到花园
+            {t('finished.backToGarden')}
           </button>
+        </div>
+      </div>
         </div>
       </div>
     </div>

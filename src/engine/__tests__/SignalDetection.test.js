@@ -1,8 +1,28 @@
 /**
  * SignalDetection 单元测试 — d'/β 计算
  */
-import { describe, it, expect } from 'vitest';
+import { beforeAll, afterAll, describe, it, expect } from 'vitest';
+import i18n from '@i18n/index';
 import { calculateSDT, interpretDPrime, interpretBeta } from '../SignalDetection';
+
+let originalLanguage = 'en-US';
+
+/**
+ * 在断言文案前锁定测试语言
+ * 避免不同机器上的默认语言不同，导致同一套测试出现不稳定结果。
+ */
+beforeAll(async () => {
+  originalLanguage = i18n.language;
+  await i18n.changeLanguage('zh-CN');
+});
+
+/**
+ * 恢复测试前语言
+ * 避免当前用例对其他测试文件产生额外影响。
+ */
+afterAll(async () => {
+  await i18n.changeLanguage(originalLanguage);
+});
 
 describe('calculateSDT', () => {
   it('理想用户：全命中，零误判', () => {

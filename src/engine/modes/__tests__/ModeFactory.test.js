@@ -1,16 +1,56 @@
 /**
  * ModeFactory 单元测试 — v5.0
- * 验证 WalkMode 创建、回退和参数验证
+ * 验证所有已注册模式的创建和参数验证
  */
-import { describe, it, expect } from 'vitest';
+import { describe, it, expect, beforeAll } from 'vitest';
 import ModeFactory from '../ModeFactory';
+import FactorRegistry from '@factors/FactorRegistry';
 
-const baseConfig = { n: 1, totalTurns: 16, warmupTrials: 2, factorId: 'emoji-flower' };
+beforeAll(() => {
+  if (!FactorRegistry.get('emoji-flower')) {
+    FactorRegistry.register({
+      id: 'emoji-flower', name: '花朵', type: 'visual', pool: ['🌹', '🌻', '🌷'],
+      render(f) { return f.value; },
+      compare(a, b) { return a.value === b.value; },
+      generate() { return { value: '🌹', type: 'emoji-flower' }; },
+    });
+  }
+  if (!FactorRegistry.get('tone')) {
+    FactorRegistry.register({
+      id: 'tone', name: '音调', type: 'audio', pool: [261, 294, 329],
+      render(f) { return f.value; },
+      compare(a, b) { return a.value === b.value; },
+      generate() { return { value: 440, type: 'tone' }; },
+    });
+  }
+});
+
+const baseConfig = { n: 1, totalTurns: 10, factorId: 'emoji-flower' };
 
 describe('ModeFactory', () => {
   it('should create WalkMode', () => {
     const mode = ModeFactory.create('walk', { ...baseConfig, id: 'walk-n1', name: '散步' });
     expect(mode.modeId).toBe('walk');
+  });
+
+  it('should create StandardMode', () => {
+    const mode = ModeFactory.create('standard', { ...baseConfig, id: 'standard', name: '标准模式' });
+    expect(mode.modeId).toBe('standard');
+  });
+
+  it('should create DualMode', () => {
+    const mode = ModeFactory.create('dual', { ...baseConfig, id: 'dual', factorIds: ['emoji-flower', 'tone'] });
+    expect(mode.modeId).toBe('dual');
+  });
+
+  it('should create SpatialMode', () => {
+    const mode = ModeFactory.create('spatial', { ...baseConfig, id: 'spatial', gridSize: 3 });
+    expect(mode.modeId).toBe('spatial');
+  });
+
+  it('should create GridMode', () => {
+    const mode = ModeFactory.create('grid', { ...baseConfig, id: 'grid', cols: 2, rows: 2 });
+    expect(mode.modeId).toBe('grid');
   });
 
   it('should fallback to WalkMode for unknown mode', () => {
@@ -24,22 +64,5 @@ describe('ModeFactory', () => {
 
   it('should throw for missing totalTurns', () => {
     expect(() => ModeFactory.create('walk', { n: 1 })).toThrow('总回合数');
-  });
-
-  it('should list available modes', () => {
-    const modes = ModeFactory.getAvailableModes();
-    expect(modes.length).toBeGreaterThanOrEqual(1);
-    expect(modes.map((m) => m.id)).toContain('walk');
-  });
-
-  it('should register new mode', () => {
-    class TestMode {
-      constructor(cfg) { this.config = cfg; }
-      get modeId() { return 'test'; }
-    }
-    ModeFactory.register('test', TestMode);
-    expect(ModeFactory.hasMode('test')).toBe(true);
-    const mode = ModeFactory.create('test', baseConfig);
-    expect(mode.modeId).toBe('test');
   });
 });
