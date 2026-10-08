@@ -6,19 +6,22 @@
  *
  * @version 8.0
  */
-import React, { useState } from 'react';
+import React, { useCallback, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import {
   Wind, Sprout, BarChart3, Award, Flower2, Eye, Ear, MapPin, Grid3X3,
   Timer, Zap, Sun, ChevronRight, ChevronLeft, Settings, MoreHorizontal,
 } from 'lucide-react';
-import { useMemo } from 'react';
+import AppExitIconButton from '@components/AppExitIconButton';
 import BackIconButton from '@components/BackIconButton';
 import useGameStore from '@stores/useGameStore';
 import useStatsStore from '@stores/useStatsStore';
 import GardenBackground from '@components/GardenBackground';
 import useGardenStore, { computeLevel } from '@stores/useGardenStore';
+import NativeAppService from '@services/NativeAppService';
+import PlatformService from '@services/PlatformService';
+import { confirmDialog } from '@stores/useConfirmStore';
 import StoreIcon from '@components/StoreIcon';
 
 /**
@@ -258,6 +261,10 @@ const DEFAULTS = {
 export default function MenuScreen() {
   const { t } = useTranslation();
   const navigate = useNavigate();
+  const canShowExitButton = useMemo(() => {
+    const platform = PlatformService.detect();
+    return platform.isCapacitor && platform.os === 'android';
+  }, []);
 
   // 当前步骤（1=记忆模式, 2=时间节奏, 3=记忆难度）
   const [step, setStep] = useState(1);
@@ -331,6 +338,32 @@ export default function MenuScreen() {
   const handleSwitchToWizard = () => {
     setShowQuickStart(false);
   };
+
+  /**
+   * 退出 Android 原生应用
+   * 仅在原生环境中展示按钮，并在执行前给用户一次确认机会，避免误触直接关闭应用。
+   */
+  const handleExitApp = useCallback(() => {
+    const run = async () => {
+      if (!canShowExitButton) return;
+
+      const accepted = await confirmDialog({
+        title: t('common.confirm'),
+        message: t('menu.exitConfirm'),
+        confirmLabel: t('menu.exitApp'),
+        cancelLabel: t('common.cancel'),
+      });
+      if (!accepted) return;
+
+      try {
+        await NativeAppService.exitApp();
+      } catch (error) {
+        console.warn('[MenuScreen] 退出应用失败', error);
+      }
+    };
+
+    run();
+  }, [canShowExitButton, t]);
 
   /**
    * 获取翻译后的游戏模式列表
@@ -429,6 +462,14 @@ export default function MenuScreen() {
 
         {/* 前景内容 — 方案L「禅意极简」V3：主按钮下方 改配置 + 底部3个次级快捷入口（花园日记/收藏/设置）展开平铺 */}
         <div className="ui-page-narrow relative z-10 flex flex-col items-center justify-between min-h-[90vh] sm:min-h-[86vh] py-8 sm:py-10">
+          {canShowExitButton && (
+            <div className="absolute right-0 top-0">
+              <AppExitIconButton
+                onClick={handleExitApp}
+                ariaLabel={t('menu.exitApp')}
+              />
+            </div>
+          )}
 
           {/* 上半：标题 + 主CTA + 改配置，集中注意力 */}
           <div className="w-full flex flex-col items-center justify-center gap-8 sm:gap-12 mt-8 sm:mt-10">
@@ -557,12 +598,18 @@ export default function MenuScreen() {
       <div className="ui-page-frame">
         <div className="ui-page-narrow ui-section-stack pt-6 sm:pt-8">
           {/* 顶层返回统一为图标按钮，和其他页面保持一致。 */}
-          <div className="mb-4 sm:mb-6">
-            <BackIconButton
-              onClick={() => setShowQuickStart(true)}
-              ariaLabel={t('menu.backToGarden')}
-            />
-          </div>
+            <div className="mb-4 sm:mb-6 flex items-center justify-between gap-3">
+              <BackIconButton
+                onClick={() => setShowQuickStart(true)}
+                ariaLabel={t('menu.backToGarden')}
+              />
+              {canShowExitButton && (
+                <AppExitIconButton
+                  onClick={handleExitApp}
+                  ariaLabel={t('menu.exitApp')}
+                />
+              )}
+            </div>
 
           {/* 步骤指示器 */}
           <StepIndicator currentStep={step} totalSteps={3} />

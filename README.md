@@ -83,6 +83,11 @@ docs/           # 项目文档
 
 当前仓库已包含首页快速开始、训练流程、训练结算、花园日记、花园收藏、多语言与基础 PWA 能力，适合继续做产品化迭代。
 
+### 许可证
+
+- 仓库中的程序代码采用 [MIT License](file:///F:/git/game/memory-garden/LICENSE)
+- 品牌名称、Logo、应用图标、插画、美术资源、宣传素材等不在 MIT 范围内，详见 [NOTICE](file:///F:/git/game/memory-garden/NOTICE)
+
 ---
 
 ## English
@@ -164,6 +169,11 @@ docs/           # Project documentation
 
 The repository already includes the quick-start home flow, playable training loop, session summary, garden diary, garden collection, localization, and basic PWA support.
 
+### License
+
+- The source code in this repository is licensed under the [MIT License](file:///F:/git/game/memory-garden/LICENSE)
+- Brand assets, logos, app icons, illustrations, artwork, and promotional materials are not covered by the MIT License; see [NOTICE](file:///F:/git/game/memory-garden/NOTICE)
+
 ---
 
 ## 繁體中文
@@ -218,6 +228,11 @@ npm run build:capacitor
 npm run build:android
 npm run build:ios
 ```
+
+### 授權說明
+
+- 倉庫中的程式碼採用 [MIT License](file:///F:/git/game/memory-garden/LICENSE)
+- 品牌名稱、Logo、應用圖示、插畫、美術資源、宣傳素材等不在 MIT 授權範圍內，詳見 [NOTICE](file:///F:/git/game/memory-garden/NOTICE)
 
 ### 專案結構
 

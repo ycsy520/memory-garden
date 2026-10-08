@@ -90,6 +90,18 @@ export default function TermsPage() {
           <p className="text-sm leading-relaxed">{t('about.terms.s8.content')}</p>
         </section>
 
+        {/* 九、开源许可与品牌资产 */}
+        <section>
+          <h2 className="text-base font-semibold mb-2" style={{ color: 'var(--color-text-primary)' }}>
+            {t('about.terms.s9.title')}
+          </h2>
+          <p className="text-sm leading-relaxed">{t('about.terms.s9.content')}</p>
+          <ul className="text-sm leading-relaxed mt-2 space-y-1 list-disc pl-4">
+            <li>{t('about.terms.s9.li1')}</li>
+            <li>{t('about.terms.s9.li2')}</li>
+          </ul>
+        </section>
+
       </div>
     </AboutLayout>
   );

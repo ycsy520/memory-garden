@@ -63,7 +63,9 @@
     "customizeConfig": "Custom Training",
     "more": "More",
     "mode": "Mode",
-    "rhythm": "Rhythm"
+    "rhythm": "Rhythm",
+    "exitApp": "Exit App",
+    "exitConfirm": "Are you sure you want to exit Memory Garden? Any unsaved temporary state will be closed."
   },
   "modes": {
     "walk": {
@@ -477,6 +479,7 @@
     "prev": "Previous",
     "confirm": "Confirm",
     "cancel": "Cancel",
+    "exit": "Exit",
     "loading": "Loading...",
     "error": "Something went wrong",
     "retry": "Retry",
@@ -621,6 +624,12 @@
       "s8": {
         "title": "8. Terms Updates",
         "content": "We reserve the right to modify these Terms of Service at any time. Updated terms will be notified within the application. Continued use of this product constitutes acceptance of the updated Terms."
+      },
+      "s9": {
+        "title": "9. Open-Source License and Brand Assets",
+        "content": "The source code portions of this project are provided under the MIT License, and you may use, copy, modify, and distribute that code in accordance with the LICENSE file in the repository. However, the following items are not covered by the MIT License and remain fully reserved by the developer:",
+        "li1": "The Memory Garden name, logo, app icons, brand visuals, and store listing assets",
+        "li2": "Illustrations, art resources, narrative copy, promotional images, and any content explicitly marked as not reusable"
       }
     },
     "nback": {

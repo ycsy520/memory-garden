@@ -140,6 +140,19 @@ const NativeAppService = {
       appStateListener.remove();
     };
   },
+
+  /**
+   * 主动退出原生应用
+   * 仅在 Capacitor 原生环境中生效，Web 环境静默忽略。
+   *
+   * @returns {Promise<void>}
+   */
+  async exitApp() {
+    if (!PlatformService.detect().isCapacitor) return;
+
+    const { App } = await import('@capacitor/app');
+    await App.exitApp();
+  },
 };
 
 export default NativeAppService;
